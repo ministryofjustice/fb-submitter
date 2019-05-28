@@ -1,6 +1,12 @@
 require 'rails_helper'
 
 describe ProcessSubmissionJob do
+  around :each do |example|
+    Timecop.freeze(Time.new(2019, 5, 28, 9, 10).utc) do
+      example.run
+    end
+  end
+
   let(:mock_downloaded_files) { {'http://service-slug.formbuilder-services-test:3000/api/submitter/pdf/default/guid1.pdf' => '/path/to/file1', 'http://service-slug.formbuilder-services-test:3000/api/submitter/pdf/default/guid2.pdf' => '/path/to/file2'} }
   let(:downloaded_body_parts) { mock_downloaded_files }
   let(:body_part_content) do
@@ -10,7 +16,12 @@ describe ProcessSubmissionJob do
     }
   end
   let(:token) { 'some token' }
-  let(:headers) { {'x-encrypted-user-id-and-token' => token} }
+  let(:headers) do
+    {
+      'x-encrypted-user-id-and-token' => token,
+      'x-access-token' => 'eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NTkwMzEwMDB9.2qu9MnO0ZYz2IelbVwOTyzVO7FUqIlW6Wsp_RmAarjs'
+    }
+  end
 
   describe '#perform' do
     let(:submission_detail) do
@@ -327,7 +338,8 @@ describe ProcessSubmissionJob do
       it 'attaches filestore attachments' do
         expect(DownloadService).to receive(:download_in_parallel)
           .with(headers: {
-            "x-encrypted-user-id-and-token" => "encrypted_user_id_and_token"
+            "x-encrypted-user-id-and-token" => "encrypted_user_id_and_token",
+            "x-access-token" => headers['x-access-token']
           }, urls: [
             "http://fb-user-filestore-api-svc-test-dev.formbuilder-platform-test-dev//service/ioj/user/a239313d-4d2d-4a16-b5ef-69d6e8e53e86/28d-dae59621acecd4b1596dd0e96968c6cec3fae7927613a12c357e7a62e11877d8",
             "http://service-slug.formbuilder-services-test:3000/api/submitter/pdf/default/guid1.pdf"

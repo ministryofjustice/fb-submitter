@@ -2,9 +2,15 @@ require 'rails_helper'
 
 describe DownloadService do
   let(:url) { 'https://my.domain/some/path/file.ext' }
-  let(:headers) { { 'x-encrypted-user-id-and-token' => 'sometoken' } }
   let(:args) { {url: url, target_dir: '/my/target/dir', headers: headers} }
   let(:mock_hydra) { double('hydra', run: 'run result', queue: 'queue result') }
+  let(:headers) do
+    {
+      'x-encrypted-user-id-and-token' => 'sometoken',
+      'x-access-token' => 'sometoken'
+    }
+  end
+
   before do
     allow(Typhoeus::Hydra).to receive(:hydra).and_return(mock_hydra)
   end
@@ -85,7 +91,7 @@ describe DownloadService do
 
             expected_url1 = "https://example.com/service/some-service/user/some-user/fingerprint"
             expected_url2 = "https://another.domain/some/otherfile.ext"
-            expected_headers = { 'x-encrypted-user-id-and-token' => 'sometoken' }
+            expected_headers = headers
 
             expect(Typhoeus::Request).to receive(:new).with(expected_url1, followlocation: true, headers: expected_headers).and_return(double.as_null_object)
             expect(Typhoeus::Request).to receive(:new).with(expected_url2, followlocation: true, headers: expected_headers).and_return(double.as_null_object)

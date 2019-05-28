@@ -8,8 +8,10 @@ class ProcessSubmissionJob < ApplicationJob
   def perform(submission_id:)
     @submission = Submission.find(submission_id)
     headers = {
-      'x-encrypted-user-id-and-token' => @submission.encrypted_user_id_and_token
+      'x-encrypted-user-id-and-token' => @submission.encrypted_user_id_and_token,
+      'x-access-token' => JWT.encode(jwt_payload, service_slug, 'HS256')
     }
+
     @submission.update_status(:processing)
 
     url_file_map = DownloadService.download_in_parallel(
@@ -87,5 +89,13 @@ class ProcessSubmissionJob < ApplicationJob
       object
     end
     array.map{|o| Attachment.new(o.symbolize_keys)}
+  end
+
+  def service_slug
+    'submitter'
+  end
+
+  def jwt_payload
+    { iat: Time.now.to_i }
   end
 end
