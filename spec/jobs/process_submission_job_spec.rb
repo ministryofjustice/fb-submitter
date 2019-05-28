@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe ProcessSubmissionJob do
   around :each do |example|
-    Timecop.freeze(Time.new(2019, 5, 28, 9, 10).utc) do
+    Timecop.freeze(Time.new(2019, 5, 28, 9, 10)) do
       example.run
     end
   end
@@ -19,7 +19,7 @@ describe ProcessSubmissionJob do
   let(:headers) do
     {
       'x-encrypted-user-id-and-token' => token,
-      'x-access-token' => 'eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NTkwMzEwMDB9.2qu9MnO0ZYz2IelbVwOTyzVO7FUqIlW6Wsp_RmAarjs'
+      'x-access-token' => 'eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NTkwMzQ2MDB9.ftHMD2K6obQOqpm98wLD3y87Hf1F7jfac8tCa-QM_I8'
     }
   end
 
