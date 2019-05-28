@@ -37,7 +37,7 @@ group :test do
   gem 'phantomjs'
   gem 'selenium-webdriver'
   gem 'shoulda-matchers', '~> 3.1'
-  gem 'simplecov'
+  gem 'simplecov', require: false
   gem 'webmock'
   gem 'timecop'
 end
