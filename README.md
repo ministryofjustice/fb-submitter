@@ -1,4 +1,5 @@
 # fb-submitter
+[![CircleCI](https://circleci.com/gh/ministryofjustice/fb-submitter/tree/master.svg?style=svg)](https://circleci.com/gh/ministryofjustice/fb-submitter/tree/master)
 [![Build Status](https://travis-ci.org/ministryofjustice/fb-submitter.svg?branch=master)](https://travis-ci.org/ministryofjustice/fb-submitter)
 
 API for services built &amp; deployed on Form Builder to send the user data to
