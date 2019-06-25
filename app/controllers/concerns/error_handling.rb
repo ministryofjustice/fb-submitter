@@ -4,6 +4,8 @@ module Concerns
 
     included do
       rescue_from StandardError do |e|
+        Raven.capture_exception(e)
+
         args = { message: e.message }
         unless Rails.env.production?
           args.merge!(
