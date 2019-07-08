@@ -24,7 +24,6 @@ module Concerns
         logger.info "in fail!, retryable: #{retryable}"
         status = retryable ? STATUS[:failed_retryable] : STATUS[:failed_non_retryable]
         update_attributes(status: status, completed_at: Time.now)
-        logger.info "attributes updated to #{attributes}"
       end
     end
   end
