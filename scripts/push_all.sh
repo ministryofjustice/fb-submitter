@@ -16,7 +16,7 @@ concat_and_uppercase() {
   echo "$1_$2" | tr '[:lower:]' '[:upper:]'
 }
 
-for TYPE in base api worker
+for TYPE in api worker
 do
   REPO_NAME=${REPO_SCOPE}/fb-submitter-${TYPE}
   KEY_VAR_NAME=$(concat_and_uppercase "AWS_ACCESS_KEY_ID" $TYPE)

@@ -30,7 +30,7 @@ else
 endif
 
 init:
-	$(eval export ECR_REPO_NAME_SUFFIXES=base web api)
+	$(eval export ECR_REPO_NAME_SUFFIXES=web api)
 	$(eval export ECR_REPO_URL_ROOT=754256621582.dkr.ecr.eu-west-2.amazonaws.com/formbuilder)
 
 # install aws cli w/o sudo
