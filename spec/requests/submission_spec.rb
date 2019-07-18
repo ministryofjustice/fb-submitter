@@ -120,7 +120,7 @@ describe 'UserData API', type: :request do
 
           context 'when the request is successful' do
             before do
-              allow(ProcessSubmissionJob).to receive(:perform_later)
+              allow(ProcessSubmissionWorker).to receive(:perform_async)
             end
 
             it 'creates a submission record' do
@@ -152,9 +152,9 @@ describe 'UserData API', type: :request do
               end
             end
 
-            it 'puts a ProcessSubmissionJob on the queue for the submission id' do
+            it 'puts a ProcessSubmissionWorker on the queue for the submission id' do
               post_request
-              expect(ProcessSubmissionJob).to have_received(:perform_later).with(submission_id: Submission.last.id)
+              expect(ProcessSubmissionWorker).to have_received(:perform_async).with(Submission.last.id)
             end
 
             describe 'the response' do
