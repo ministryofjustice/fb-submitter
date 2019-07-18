@@ -1,3 +1,5 @@
+return if ENV['RAILS_ENV'] == 'test'
+
 url = (ENV['REDISCLOUD_URL'] || ENV['REDIS_URL'])
 uri_with_protocol = (ENV['REDIS_PROTOCOL'] || 'redis://') + url.to_s
 uri = URI.parse(uri_with_protocol)
