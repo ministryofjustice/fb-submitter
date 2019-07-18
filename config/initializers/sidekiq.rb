@@ -5,14 +5,13 @@ uri = URI.parse(uri_with_protocol)
 Sidekiq.configure_server do |config|
   config.redis = {
     url: uri_with_protocol,
-    password: ENV.fetch('REDIS_AUTH_TOKEN')
+    password: ENV['REDIS_AUTH_TOKEN']
   }
 end
 
 Sidekiq.configure_client do |config|
   config.redis = {
     url: uri_with_protocol,
-    password: ENV.fetch('REDIS_AUTH_TOKEN')
+    password: ENV['REDIS_AUTH_TOKEN']
   }
-
 end
