@@ -1,7 +1,5 @@
 class ProcessSubmissionService
-  attr_reader :submission_id
-
-  def initialize(submission_id:)
+  def initialize(submission_id)
     @submission_id = submission_id
   end
 
@@ -25,7 +23,7 @@ class ProcessSubmissionService
           response = EmailService.send_mail(
             from:         mail.from,
             to:           mail.to,
-            subject:      "#{mail.subject} {#{submission_id}} [#{n+1}/#{number_of_attachments(mail)}]",
+            subject:      "#{mail.subject} {#{@submission_id}} [#{n+1}/#{number_of_attachments(mail)}]",
             body_parts:   retrieve_mail_body_parts(mail),
             attachments:  [a]
           )
@@ -80,7 +78,7 @@ class ProcessSubmissionService
   end
 
   def submission
-    @submission ||= Submission.find(submission_id)
+    Submission.find(@submission_id)
   end
 
   def headers

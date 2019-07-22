@@ -9,6 +9,11 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_DB: submitter_local
 
+  redis:
+    image: 'bitnami/redis:latest'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+
   app:
     build:
       context: .
@@ -27,5 +32,33 @@ services:
       NOTIFY_SMS_RETURN_SETUP_MOBILE: '54dcaad7-4967-431d-8606-72b0b80b5c6a'
       FB_ENVIRONMENT_SLUG: 'test'
       SECRET_KEY_BASE: 'xxxyyy'
+      REDIS_URL: 'redis://redis:6379'
     links:
       - db
+    ports:
+      - "3000:3000"
+
+  worker:
+    build:
+      context: .
+      dockerfile: ./docker/worker/Dockerfile
+    environment:
+      DATABASE_URL: "postgres://postgres:password@db/submitter_local"
+      NOTIFY_EMAIL_GENERIC: '46a72b64-9541-4000-91a7-fa8a3fa10bf9'
+      NOTIFY_EMAIL_RETURN_SETUP_EMAIL_TOKEN: '38f6a1cd-a810-4f59-8899-2c300236c5b4'
+      NOTIFY_EMAIL_RETURN_SETUP_EMAIL_VERIFIED: ''
+      NOTIFY_EMAIL_RETURN_SETUP_MOBILE_VERIFIED: '54dcaad7-4967-431d-8606-72b0b80b5c6a'
+      NOTIFY_EMAIL_RETURN_SIGNIN_EMAIL: ''
+      NOTIFY_EMAIL_RETURN_SIGNIN_SUCCESS: ''
+      NOTIFY_SMS_GENERIC: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa'
+      NOTIFY_SMS_RETURN_SETUP_MOBILE: '54dcaad7-4967-431d-8606-72b0b80b5c6a'
+      NOTIFY_SMS_RETURN_SIGNIN_MOBILE: 'something'
+      NOTIFY_SMS_RETURN_SETUP_MOBILE: '54dcaad7-4967-431d-8606-72b0b80b5c6a'
+      FB_ENVIRONMENT_SLUG: 'test'
+      SECRET_KEY_BASE: 'xxxyyy'
+      REDISCLOUD_URL: 'redis://redis:6379'
+      REDIS_URL: 'redis://redis:6379'
+      QUEUES: "*"
+    links:
+      - db
+      - redis
