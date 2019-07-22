@@ -19,5 +19,5 @@ RUN chown -R 1001:appgroup /app
 USER 1001
 
 ARG RAILS_ENV=production
-CMD sidekiq
+CMD sidekiq -c 2
 #CMD rake resque:work
