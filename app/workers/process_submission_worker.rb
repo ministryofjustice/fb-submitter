@@ -1,8 +1,11 @@
 class ProcessSubmissionWorker
   include Sidekiq::Worker
+  sidekiq_options retry: false
 
   def perform(submission_id)
-    service = ProcessSubmissionService.new(submission_id)
-    service.perform
+    ActiveRecord::Base.uncached do
+      service = ProcessSubmissionService.new(submission_id)
+      service.perform
+    end
   end
 end
