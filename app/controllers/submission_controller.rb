@@ -4,8 +4,8 @@ class SubmissionController < ApplicationController
       submission_params(params).merge(status: Submission::STATUS[:queued])
     )
     @submission.save!
-    #ProcessSubmissionWorker.perform_async(@submission.id)
-    ProcessSubmissionJob.perform_later(@submission.id)
+    ProcessSubmissionWorker.perform_async(@submission.id)
+    # ProcessSubmissionJob.perform_later(@submission.id)
     render status: :created, json: @submission
   end
 
