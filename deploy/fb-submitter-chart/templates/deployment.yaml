@@ -225,7 +225,7 @@ metadata:
   name: tmp-files-pv-claim
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
       storage: 5G
