@@ -1,5 +1,9 @@
 DOCKER_COMPOSE = docker-compose -f docker-compose.yml
 
+ifndef CIRCLE_SHA1
+	DOCKER_COMPOSE += -f docker-compose.development.yml
+endif
+
 dev:
 	echo "TODO: Remove dev function call from deploy-utils"
 

@@ -2,6 +2,7 @@ deploy/
 scripts/
 tmp/
 !tmp/.keep
+tmp/pids/server.pid
 node_modules/
 package.json
 package-lock.json
