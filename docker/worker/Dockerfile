@@ -10,6 +10,7 @@ WORKDIR /app
 COPY Gemfile* .ruby-version ./
 
 ARG BUNDLE_FLAGS
+RUN gem install bundler
 RUN bundle install --no-cache ${BUNDLE_FLAGS}
 
 COPY . .
