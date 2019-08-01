@@ -95,6 +95,9 @@ spec:
       - name: "fb-submitter-worker"
         image: "754256621582.dkr.ecr.eu-west-2.amazonaws.com/formbuilder/fb-submitter-worker:{{ .Values.circleSha1 }}"
         imagePullPolicy: Always
+        volumeMounts:
+        - mountPath: /tmp
+          name: tmp-files
         # command:
         #   - "cd /var/www/fb-submitter && bundle exec rake resque:work"
         # ports:
@@ -217,3 +220,6 @@ spec:
               secretKeyRef:
                 name: fb-submitter-app-secrets-{{ .Values.environmentName }}
                 key: sentry_dsn
+      volumes:
+        - name: tmp-files
+          emptyDir: {}
