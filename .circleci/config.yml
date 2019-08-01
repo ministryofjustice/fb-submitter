@@ -126,13 +126,13 @@ workflows:
   version: 2
   test_and_build:
     jobs:
-      # - test
-      - build_and_deploy_to_test
-          # requires:
-            # - test
-          # filters:
-          #   branches:
-          #     only: master
+      - test
+      - build_and_deploy_to_test:
+          requires:
+            - test
+          filters:
+            branches:
+              only: master
       - confirm_integration_deploy:
           type: approval
           requires:
