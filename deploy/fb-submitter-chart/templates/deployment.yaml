@@ -73,8 +73,7 @@ spec:
                 key: sentry_dsn
       volumes:
         - name: tmp-files
-          persistentVolumeClaim:
-            claimName: tmp-files-pv-claim
+          emptyDir: {}
 ---
 # workers
 apiVersion: extensions/v1beta1
@@ -218,14 +217,3 @@ spec:
               secretKeyRef:
                 name: fb-submitter-app-secrets-{{ .Values.environmentName }}
                 key: sentry_dsn
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: tmp-files-pv-claim
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 5G
