@@ -1,7 +1,7 @@
 version: '3.4'
 
 services:
-  db:
+  submitter-db:
     image: postgres
     restart: always
     environment:
@@ -28,7 +28,7 @@ services:
       FB_ENVIRONMENT_SLUG: 'test'
       SECRET_KEY_BASE: 'xxxyyy'
     links:
-      - db
+      - submitter-db
 
   worker:
     build:
@@ -49,4 +49,4 @@ services:
       FB_ENVIRONMENT_SLUG: 'test'
       SECRET_KEY_BASE: 'xxxyyy'
     links:
-      - db
+      - submitter-db
