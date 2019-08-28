@@ -272,7 +272,7 @@ GEM
     tzinfo-data (1.2019.2)
       tzinfo (>= 1.0.0)
     unicode-display_width (1.6.0)
-    webmock (3.6.2)
+    webmock (3.7.0)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
