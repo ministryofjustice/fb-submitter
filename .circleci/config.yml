@@ -3,7 +3,7 @@ jobs:
   test:
     working_directory: ~/circle
     docker:
-      - image: circleci/ruby:2.6.3
+      - image: circleci/ruby:2.6.4
         environment:
           RAILS_ENV: test
           PGHOST: 127.0.0.1
