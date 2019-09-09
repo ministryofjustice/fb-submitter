@@ -18,7 +18,6 @@ gem 'tzinfo-data'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
-  gem 'capybara', '>= 2.15', '< 4.0'
   gem 'rspec-rails', '>= 3.8.0'
   gem 'rswag-specs'
 end
@@ -34,11 +33,6 @@ end
 group :test do
   gem 'database_cleaner'
   gem 'factory_bot_rails', '~> 5.0'
-  gem 'faker'
-  gem 'poltergeist'
-  gem 'phantomjs'
-  gem 'selenium-webdriver'
-  gem 'shoulda-matchers', '~> 4.1'
   gem 'simplecov'
   gem 'simplecov-console', require: false
   gem 'webmock'
