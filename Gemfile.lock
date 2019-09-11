@@ -47,13 +47,13 @@ GEM
     ansi (1.5.0)
     arel (9.0.0)
     aws-eventstream (1.0.3)
-    aws-partitions (1.194.0)
-    aws-sdk-core (3.61.2)
+    aws-partitions (1.211.0)
+    aws-sdk-core (3.67.0)
       aws-eventstream (~> 1.0, >= 1.0.2)
       aws-partitions (~> 1.0)
       aws-sigv4 (~> 1.1)
       jmespath (~> 1.0)
-    aws-sdk-ses (1.25.0)
+    aws-sdk-ses (1.26.0)
       aws-sdk-core (~> 3, >= 3.61.1)
       aws-sigv4 (~> 1.1)
     aws-sigv4 (1.1.0)
@@ -260,7 +260,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  aws-sdk-ses (~> 1.25.0)
+  aws-sdk-ses (~> 1.26.0)
   bootsnap (>= 1.1.0)
   byebug
   daemons
