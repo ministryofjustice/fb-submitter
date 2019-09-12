@@ -11,7 +11,6 @@ describe JsonWebhookService do
 
   subject do
     described_class.new(
-      service_slug: submission.service_slug,
       runner_callback_adapter: runner_callback_adapter,
       webhook_destination_adapter: webhook_destination_adapter
     )
@@ -33,7 +32,7 @@ describe JsonWebhookService do
   it 'gets full submission from the frontend service' do
     allow(webhook_destination_adapter).to receive(:send_webhook)
 
-    subject.execute
+    subject.execute(service_slug: submission.service_slug)
   end
 
   it 'modifies and sends the submission to the destination' do
@@ -41,6 +40,6 @@ describe JsonWebhookService do
       .with(body: json_payload)
       .once
 
-    subject.execute
+    subject.execute(service_slug: submission.service_slug)
   end
 end
