@@ -11,7 +11,7 @@ describe JsonWebhookService do
 
   subject do
     described_class.new(
-      submission: submission,
+      service_slug: submission.service_slug,
       runner_callback_adapter: runner_callback_adapter,
       webhook_destination_adapter: webhook_destination_adapter
     )
