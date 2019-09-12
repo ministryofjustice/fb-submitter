@@ -135,7 +135,7 @@ describe ProcessSubmissionService do
       end
 
       before do
-        stub_request(:get, runner_callback_url).with(headers: headers).to_return(status: 200, body: '{"foo": "bar"')
+        stub_request(:get, runner_callback_url).with(headers: headers).to_return(status: 200, body: '{"foo": "bar"}')
         stub_request(:post, json_destination_url).with(headers: headers).to_return(status: 200)
       end
 

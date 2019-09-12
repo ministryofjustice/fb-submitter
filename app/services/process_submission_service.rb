@@ -19,6 +19,7 @@ class ProcessSubmissionService
         encryption_key = submission_detail.fetch(:encryption_key)
 
         JsonWebhookService.new(
+          submission: submission,
           runner_callback_adapter: Adapters::RunnerCallback.new(url: submission_detail.fetch(:data_url), token: token),
           webhook_destination_adapter: Adapters::JweWebhookDestination.new(url: submission_detail.fetch(:url), key: encryption_key)
         ).execute
