@@ -275,7 +275,6 @@ DEPENDENCIES
   mime-types
   notifications-ruby-client
   pg (>= 0.18, < 2.0)
-  pry
   puma (~> 4.1)
   rails (~> 5.2.3)
   rspec-rails (>= 3.8.0)
