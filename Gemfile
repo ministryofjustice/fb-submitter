@@ -19,6 +19,7 @@ gem 'jwe', '~> 0.4.0'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'pry'
   gem 'rspec-rails', '>= 3.8.0'
   gem 'rswag-specs'
 end

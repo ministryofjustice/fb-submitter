@@ -24,7 +24,8 @@ describe 'Submits JSON given a JSON submission type', type: :request do
     }
   end
   let(:encryption_key) { "fb730a667840d79c" }
-  let(:encrypted_submission) { JWE.encrypt(submission_answers.to_json, encryption_key, alg: 'dir') }
+  # let(:encrypted_submission) { JWE.encrypt(submission_answers.to_json, encryption_key, alg: 'dir') }
+  let(:encrypted_submission) { submission_answers.to_json }
 
   describe 'POST /submission' do
     before do
@@ -63,7 +64,7 @@ describe 'Submits JSON given a JSON submission type', type: :request do
     end
     let!(:json_payload_submission) do
       stub_request(:post, json_destination_url)
-         .with(body: encrypted_submission.to_json)
+         .with(body: encrypted_submission)
          .to_return(status: 200, body: "", headers: {})
     end
 
