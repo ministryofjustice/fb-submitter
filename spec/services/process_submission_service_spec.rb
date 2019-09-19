@@ -101,8 +101,28 @@ describe ProcessSubmissionService do
 
       let(:email_submission) do
         {
-          'type' => 'email',
-          'attachments' => []
+            'from' => 'some.one@example.com',
+            'to' => 'destination@example.com',
+            'subject' => 'mail subject',
+            'type' => 'email',
+            'body_parts' => {
+                'text/html' => 'https://tools.ietf.org/html/rfc2324',
+                'text/plain' => 'https://tools.ietf.org/rfc/rfc2324.txt'
+            },
+            'attachments' => [
+                {
+                    'type' => 'output',
+                    'mimetype' => 'application/pdf',
+                    'url' => '/api/submitter/pdf/default/guid1.pdf',
+                    'filename' => 'form1'
+                },
+                {
+                    'type' => 'output',
+                    'mimetype' => 'application/pdf',
+                    'url' => '/api/submitter/pdf/default/guid2.pdf',
+                    'filename' => 'form2'
+                }
+            ]
         }
       end
 
@@ -176,7 +196,7 @@ describe ProcessSubmissionService do
       end
 
       it 'gets the detail_objects from the Submission' do
-        expect(submission).to receive(:detail_objects).at_least(:once).and_return(submission.detail_objects)
+        expect(submission).to receive(:detail_objects).at_least(:once).and_call_original
         subject.perform
       end
 
@@ -184,7 +204,7 @@ describe ProcessSubmissionService do
         let(:detail_object) { submission.detail_objects.first }
 
         it 'retrieves the mail body parts' do
-          expect(subject).to receive(:retrieve_mail_body_parts).with(detail_object).and_return(body_part_content)
+          expect(subject).to receive(:retrieve_mail_body_parts).and_return(body_part_content)
           subject.perform
         end
 
