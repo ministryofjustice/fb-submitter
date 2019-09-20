@@ -160,8 +160,7 @@ describe ProcessSubmissionService do
         stub_request(:post, json_destination_url).with(headers: headers).to_return(status: 200)
       end
 
-      it 'dispatches email submissions to the email class' do
-        # both emails have 2 attachments therefore 4 are sent
+      it 'dispatches 1 email for each submission email attachment' do
         expect(EmailService).to receive(:send_mail).exactly(4).times
         subject.perform
       end
