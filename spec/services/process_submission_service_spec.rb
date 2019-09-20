@@ -142,6 +142,7 @@ describe ProcessSubmissionService do
             email_submission,
             email_submission,
             json_submission,
+            json_submission,
             json_submission
           ], status: 'queued'
         )
@@ -160,14 +161,15 @@ describe ProcessSubmissionService do
       end
 
       it 'dispatches email submissions to the email class' do
-        expect(EmailService).to receive(:send_mail).twice
+        # both emails have 2 attachments therefore 4 are sent
+        expect(EmailService).to receive(:send_mail).exactly(4).times
         subject.perform
       end
 
       it 'dispatches json submissions to the webhook class' do
         subject.perform
-        expect(WebMock).to have_requested(:get, runner_callback_url).twice
-        expect(WebMock).to have_requested(:post, json_destination_url).twice
+        expect(WebMock).to have_requested(:get, runner_callback_url).times(3)
+        expect(WebMock).to have_requested(:post, json_destination_url).times(3)
       end
     end
 
