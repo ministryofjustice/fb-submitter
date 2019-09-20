@@ -205,11 +205,6 @@ describe ProcessSubmissionService do
       describe 'for each detail object' do
         let(:detail_object) { submission.detail_objects.first }
 
-        it 'retrieves the mail body parts' do
-          expect(subject).to receive(:retrieve_mail_body_parts).and_return(body_part_content)
-          subject.perform
-        end
-
         it 'asks the EmailService to send an email' do
           allow(subject).to receive(:attachments).and_return(processed_attachments)
 
