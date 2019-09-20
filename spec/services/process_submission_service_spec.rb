@@ -101,28 +101,28 @@ describe ProcessSubmissionService do
 
       let(:email_submission) do
         {
-            'from' => 'some.one@example.com',
-            'to' => 'destination@example.com',
-            'subject' => 'mail subject',
-            'type' => 'email',
-            'body_parts' => {
-                'text/html' => 'https://tools.ietf.org/html/rfc2324',
-                'text/plain' => 'https://tools.ietf.org/rfc/rfc2324.txt'
+          'from' => 'some.one@example.com',
+          'to' => 'destination@example.com',
+          'subject' => 'mail subject',
+          'type' => 'email',
+          'body_parts' => {
+            'text/html' => 'https://tools.ietf.org/html/rfc2324',
+            'text/plain' => 'https://tools.ietf.org/rfc/rfc2324.txt'
+          },
+          'attachments' => [
+            {
+              'type' => 'output',
+              'mimetype' => 'application/pdf',
+              'url' => '/api/submitter/pdf/default/guid1.pdf',
+              'filename' => 'form1'
             },
-            'attachments' => [
-                {
-                    'type' => 'output',
-                    'mimetype' => 'application/pdf',
-                    'url' => '/api/submitter/pdf/default/guid1.pdf',
-                    'filename' => 'form1'
-                },
-                {
-                    'type' => 'output',
-                    'mimetype' => 'application/pdf',
-                    'url' => '/api/submitter/pdf/default/guid2.pdf',
-                    'filename' => 'form2'
-                }
-            ]
+            {
+              'type' => 'output',
+              'mimetype' => 'application/pdf',
+              'url' => '/api/submitter/pdf/default/guid2.pdf',
+              'filename' => 'form2'
+            }
+          ]
         }
       end
 
