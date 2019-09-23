@@ -53,7 +53,14 @@ describe 'Submits JSON given a JSON submission type', type: :request do
         'url': json_destination_url,
         'data_url': runner_callback_url,
         'encryption_key': encryption_key,
-        'attachments' => []
+        'attachments': [
+          {
+            'type' => 'output',
+            'mimetype' => 'application/pdf',
+            'url': attachment_url,
+            'filename' => 'form1'
+          },
+        ]
       }
     ]
   end
@@ -66,14 +73,18 @@ describe 'Submits JSON given a JSON submission type', type: :request do
     }.to_json
   end
 
+  let(:attachment_url) { 'https://some-url/1' }
+
   before do
     Delayed::Worker.delay_jobs = false
     allow_any_instance_of(ApplicationController).to receive(:verify_token!)
 
-    stub_request(:get, "https://formbuilder.com/runner_frontend_callback")
+    stub_request(:get, 'https://formbuilder.com/runner_frontend_callback')
        .to_return(status: 200, body: submission_answers.to_json)
 
-    stub_request(:post, json_destination_url).to_return(status: 200, body: "")
+    stub_request(:post, json_destination_url).to_return(status: 200, body: '')
+
+    stub_request(:post, "#{attachment_url}/public-file" ).to_return(status: 200, body: '')
   end
 
   after do
@@ -84,5 +95,10 @@ describe 'Submits JSON given a JSON submission type', type: :request do
     post '/submission', params: params, headers: headers
     json_submission_payload = JWE.decrypt(WebMock.last_request.body, encryption_key)
     expect(json_submission_payload).to eq(expected_json_payload)
+  end
+
+  it 'calls the user file store to get a public signed url' do
+    post '/submission', params: params, headers: headers
+    expect(WebMock).to have_requested(:post, "#{attachment_url}/public-file").once
   end
 end

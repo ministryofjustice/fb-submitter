@@ -13,10 +13,18 @@ class ProcessSubmissionService
 
     token = submission.encrypted_user_id_and_token
     submission.submission_details.each do |submission_detail|
-      submission_detail = submission_detail.symbolize_keys
+      submission_detail = submission_detail.with_indifferent_access
 
       if submission_detail.fetch(:type) == 'json'
         encryption_key = submission_detail.fetch(:encryption_key)
+
+        attachment_urls = submission_detail.fetch(:attachments).map do |attachment|
+          attachment.fetch(:url)
+        end
+
+        PublicAttachmentService.new(
+          user_file_store_gateway: Adapters::UserFileStore.new(key: token)
+        ).execute(attachment_urls)
 
         JsonWebhookService.new(
           runner_callback_adapter: Adapters::RunnerCallback.new(url: submission_detail.fetch(:data_url), token: token),
