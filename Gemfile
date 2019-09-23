@@ -5,7 +5,7 @@ ruby File.read(".ruby-version").strip
 gem 'bootsnap', '>= 1.1.0', require: false
 gem 'rails', '~> 5.2.3'
 gem 'pg', '>= 0.18', '< 2.0'
-gem 'puma', '~> 4.1'
+gem 'puma', '~> 4.2'
 gem 'aws-sdk-ses', '~> 1.26.0'
 gem 'jwt'
 gem 'typhoeus'
