@@ -28,6 +28,23 @@ describe ProcessSubmissionService do
   let(:token) { 'some token' }
   let(:headers) { { 'x-encrypted-user-id-and-token' => token } }
 
+  let(:attachments) do
+    [
+      {
+        'type' => 'output',
+        'mimetype' => 'application/pdf',
+        'url' => '/api/submitter/pdf/default/guid1.pdf',
+        'filename' => 'form1'
+      },
+      {
+        'type' => 'output',
+        'mimetype' => 'application/pdf',
+        'url' => '/api/submitter/pdf/default/guid2.pdf',
+        'filename' => 'form2'
+      }
+    ]
+  end
+
   describe '#perform' do
     let(:submission_detail) do
       {
@@ -39,20 +56,7 @@ describe ProcessSubmissionService do
           'text/html' => 'https://tools.ietf.org/html/rfc2324',
           'text/plain' => 'https://tools.ietf.org/rfc/rfc2324.txt'
         },
-        'attachments' => [
-          {
-            'type' => 'output',
-            'mimetype' => 'application/pdf',
-            'url' => '/api/submitter/pdf/default/guid1.pdf',
-            'filename' => 'form1'
-          },
-          {
-            'type' => 'output',
-            'mimetype' => 'application/pdf',
-            'url' => '/api/submitter/pdf/default/guid2.pdf',
-            'filename' => 'form2'
-          }
-        ]
+        'attachments' => attachments
       }
     end
 
@@ -109,20 +113,7 @@ describe ProcessSubmissionService do
             'text/html' => 'https://tools.ietf.org/html/rfc2324',
             'text/plain' => 'https://tools.ietf.org/rfc/rfc2324.txt'
           },
-          'attachments' => [
-            {
-              'type' => 'output',
-              'mimetype' => 'application/pdf',
-              'url' => '/api/submitter/pdf/default/guid1.pdf',
-              'filename' => 'form1'
-            },
-            {
-              'type' => 'output',
-              'mimetype' => 'application/pdf',
-              'url' => '/api/submitter/pdf/default/guid2.pdf',
-              'filename' => 'form2'
-            }
-          ]
+          'attachments' => attachments
         }
       end
 
@@ -296,20 +287,7 @@ describe ProcessSubmissionService do
             'text/html' => 'https://tools.ietf.org/html/rfc2324',
             'text/plain' => 'https://tools.ietf.org/rfc/rfc2324.txt'
           },
-          'attachments' => [
-            {
-              'type' => 'output',
-              'mimetype' => 'application/pdf',
-              'url' => '/api/submitter/pdf/default/guid1.pdf',
-              'filename' => 'form1'
-            },
-            {
-              'type' => 'output',
-              'mimetype' => 'application/pdf',
-              'url' => '/api/submitter/pdf/default/guid2.pdf',
-              'filename' => 'form2'
-            }
-          ]
+          'attachments' => attachments
         }
       end
 
