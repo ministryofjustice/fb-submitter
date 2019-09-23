@@ -25,8 +25,16 @@ describe Adapters::UserFileStore do
     })
   end
 
-  xit 'the post has the desired_url in the body' do
-    adaptor.get_presigned_url(url)
-    expect(WebMock).to have_requested(:post, requested_url).once
+  context 'when there is a failing responce' do
+
+    before do
+      stub_request(:post, requested_url).to_return(status: 400)
+    end
+
+    it 'throws an exception' do
+      expect {
+        adaptor.get_presigned_url(url)
+      }.to raise_error(Adapters::UserFileStore::ClientRequestError).with_message("Request for #{requested_url} returned response status of: 400")
+    end
   end
 end
