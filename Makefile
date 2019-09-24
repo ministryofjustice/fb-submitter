@@ -1,4 +1,5 @@
-DOCKER_COMPOSE = docker-compose -f docker-compose.yml
+UID ?= $(shell id -u)
+DOCKER_COMPOSE = env UID=$(UID) docker-compose -f docker-compose.yml -f docker-compose.development.yml
 
 dev:
 	echo "TODO: Remove dev function call from deploy-utils"
@@ -29,6 +30,12 @@ spec: build
 	./scripts/wait_for_db.sh db postgres
 	$(DOCKER_COMPOSE) run --rm app bundle exec rspec
 
+.PHONY: shell
+shell: stop build
+	$(DOCKER_COMPOSE) up -d app
+	$(DOCKER_COMPOSE) exec app bash
+
+.PHONY: init
 init:
 	$(eval export ECR_REPO_NAME_SUFFIXES=base web api)
 	$(eval export ECR_REPO_URL_ROOT=754256621582.dkr.ecr.eu-west-2.amazonaws.com/formbuilder)
