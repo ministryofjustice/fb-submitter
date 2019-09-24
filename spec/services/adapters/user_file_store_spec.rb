@@ -9,7 +9,7 @@ describe Adapters::UserFileStore do
   let(:url) { "https://the-url/#{SecureRandom.alphanumeric(10)}" }
   let(:key) { SecureRandom.alphanumeric(10) }
 
-  let(:requested_url) { "#{url}/public-file" }
+  let(:requested_url) { "#{url}/presigned-s3-url" }
 
   it 'posts to the user file store endpoint' do
     adaptor.get_presigned_url(url)

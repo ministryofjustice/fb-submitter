@@ -7,7 +7,7 @@ module Adapters
     end
 
     def get_presigned_url(url)
-      signed_url = "#{url}/public-file"
+      signed_url = "#{url}/presigned-s3-url"
       response = Typhoeus::Request.new(
         signed_url,
         headers: { 'x-encrypted-user-id-and-token': @key },

@@ -105,8 +105,8 @@ describe 'Submits JSON given a JSON submission type', type: :request do
 
     stub_request(:post, json_destination_url).to_return(status: 200, body: '')
 
-    stub_request(:post, "https://some-url/1/public-file" ).to_return(status: 200, body: expected_attachments[0].to_json)
-    stub_request(:post, "https://some-url/2/public-file" ).to_return(status: 200, body: expected_attachments[1].to_json)
+    stub_request(:post, "https://some-url/1/presigned-s3-url" ).to_return(status: 200, body: expected_attachments[0].to_json)
+    stub_request(:post, "https://some-url/2/presigned-s3-url" ).to_return(status: 200, body: expected_attachments[1].to_json)
   end
 
   after do
@@ -121,6 +121,6 @@ describe 'Submits JSON given a JSON submission type', type: :request do
 
   it 'calls the user file store to get a public signed url' do
     post '/submission', params: params, headers: headers
-    expect(WebMock).to have_requested(:post, "#{attachment_url}/public-file").once
+    expect(WebMock).to have_requested(:post, "#{attachment_url}/presigned-s3-url").once
   end
 end
