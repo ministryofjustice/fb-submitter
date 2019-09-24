@@ -1,4 +1,4 @@
-class PublicAttachmentService
+class WebhookAttachmentService
   def initialize(user_file_store_gateway:, attachments:)
     @user_file_store_gateway = user_file_store_gateway
     @attachments = attachments

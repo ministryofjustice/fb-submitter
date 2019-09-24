@@ -10,7 +10,7 @@ describe JsonWebhookService do
   end
 
   let(:webhook_attachment_fetcher) do
-    instance_double(PublicAttachmentService)
+    instance_double(WebhookAttachmentService)
   end
 
   subject do

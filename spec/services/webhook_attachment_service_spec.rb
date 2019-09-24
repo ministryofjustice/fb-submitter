@@ -1,4 +1,4 @@
-describe PublicAttachmentService do
+describe WebhookAttachmentService do
 
   before do
     allow(user_file_store_gateway).to receive(:get_presigned_url).with(attachment_1).and_return({:key=>"somekey_1", :url=>"example.com/public_url_1"})
