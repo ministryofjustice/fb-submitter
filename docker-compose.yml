@@ -13,6 +13,9 @@ services:
     build:
       context: .
       dockerfile: ./docker/api/Dockerfile
+      args:
+        UID: "${UID}"
+    user: "${UID}:${UID}"
     environment:
       DATABASE_URL: "postgres://postgres:password@db/submitter_local"
       NOTIFY_EMAIL_GENERIC: '46a72b64-9541-4000-91a7-fa8a3fa10bf9'
