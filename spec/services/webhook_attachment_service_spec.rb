@@ -1,8 +1,8 @@
 describe WebhookAttachmentService do
 
   before do
-    allow(user_file_store_gateway).to receive(:get_presigned_url).with(attachment_1).and_return({:key=>"somekey_1", :url=>"example.com/public_url_1"})
-    allow(user_file_store_gateway).to receive(:get_presigned_url).with(attachment_2).and_return({:key=>"somekey_2", :url=>"example.com/public_url_2"})
+    allow(user_file_store_gateway).to receive(:get_presigned_url).with(attachment_1).and_return(expected_attachments[0])
+    allow(user_file_store_gateway).to receive(:get_presigned_url).with(attachment_2).and_return(expected_attachments[1])
   end
 
   let(:user_file_store_gateway) { instance_spy(Adapters::UserFileStore) }
@@ -31,14 +31,8 @@ describe WebhookAttachmentService do
 
   let(:expected_attachments) do
     [
-      {
-        url: 'example.com/public_url_1',
-        key: 'somekey_1'
-      },
-      {
-        url: 'example.com/public_url_2',
-        key: 'somekey_2'
-      }
+      {url: 'example.com/public_url_1', encryption_key: 'somekey_1', encryption_iv: 'somekey_iv_1'},
+      {url: 'example.com/public_url_2', encryption_key: 'somekey_2', encryption_iv: 'somekey_iv_2'}
     ]
   end
 
@@ -47,15 +41,16 @@ describe WebhookAttachmentService do
       expect(service.execute).to eq(expected_attachments)
     end
 
-    it 'calls the gateway for each object' do
+    it 'calls the gateway for each attachment url' do
       service.execute
-      expect(user_file_store_gateway).to have_received(:get_presigned_url).twice
+      expect(user_file_store_gateway).to have_received(:get_presigned_url).with(attachment_1).once
+      expect(user_file_store_gateway).to have_received(:get_presigned_url).with(attachment_2).once
     end
 
     context 'when attachments are empty' do
       subject(:service) { described_class.new(attachments: [], user_file_store_gateway: user_file_store_gateway) }
 
-      it 'returns empty arry when given one' do
+      it 'returns empty array when given one' do
         expect(service.execute).to eq([])
       end
     end

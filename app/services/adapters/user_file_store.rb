@@ -19,7 +19,8 @@ module Adapters
       json = JSON.parse(response.body).symbolize_keys!
       {
         url: json.fetch(:url),
-        key: json.fetch(:key)
+        encryption_key: json.fetch(:encryption_key),
+        encryption_iv: json.fetch(:encryption_iv)
       }
     end
   end

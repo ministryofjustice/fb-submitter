@@ -1,14 +1,12 @@
 describe Adapters::UserFileStore do
-
   subject(:adaptor) { described_class.new(key: key) }
 
   before do
-    stub_request(:post, requested_url).to_return(body: {url: 'foo', key: 'bar'}.to_json)
+    stub_request(:post, requested_url).to_return(body: {url: 'foo', encryption_key: 'bar', encryption_iv: 'baz'}.to_json)
   end
 
   let(:url) { "https://the-url/#{SecureRandom.alphanumeric(10)}" }
   let(:key) { SecureRandom.alphanumeric(10) }
-
   let(:requested_url) { "#{url}/presigned-s3-url" }
 
   it 'posts to the user file store endpoint' do
@@ -28,7 +26,8 @@ describe Adapters::UserFileStore do
   it 'returns url and key of the file' do
     expect(adaptor.get_presigned_url(url)).to eq({
       url: 'foo',
-      key: 'bar'
+      encryption_key: 'bar',
+      encryption_iv: 'baz'
     })
   end
 
