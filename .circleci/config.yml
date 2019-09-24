@@ -4,15 +4,6 @@ jobs:
     working_directory: ~/circle
     docker:
       - image: circleci/ruby:2.6.4
-        environment:
-          RAILS_ENV: test
-          PGHOST: 127.0.0.1
-          PGUSER: root
-          DATABASE_URL: postgresql://root@localhost/fb-submitter_test
-      - image: circleci/postgres:10.6-alpine-ram
-        environment:
-          POSTGRES_USER: root
-          POSTGRES_DB: circle-test_test
     steps:
       - checkout
       - setup_remote_docker
