@@ -7,14 +7,14 @@ module Adapters
     end
 
     def get_presigned_url(url)
-      public_url = "#{url}/public-file"
+      signed_url = "#{url}/public-file"
       response = Typhoeus::Request.new(
-        public_url,
+        signed_url,
         headers: { 'x-encrypted-user-id-and-token': @key },
         method: :post
       ).run
       unless response.success?
-        raise ClientRequestError, "Request for #{public_url} returned response status of: #{response&.code}"
+        raise ClientRequestError, "Request for #{signed_url} returned response status of: #{response&.code}"
       end
       json = JSON.parse(response.body).symbolize_keys!
       {
