@@ -33,7 +33,7 @@ end
 
 group :test do
   gem 'database_cleaner'
-  gem 'factory_bot_rails', '~> 5.0'
+  gem 'factory_bot_rails', '~> 5.1'
   gem 'simplecov'
   gem 'simplecov-console', require: false
   gem 'webmock'
