@@ -41,11 +41,15 @@ describe 'Submits JSON given a JSON submission type', type: :request do
       {
         url: 'example.com/1',
         encryption_key: 'bar1',
-        encryption_iv: 'baz1'
+        encryption_iv: 'baz1',
+        mimetype: 'application/pdf',
+        filename: 'form1'
       }, {
         url: 'example.com/2',
         encryption_key: 'bar1',
-        encryption_iv: 'baz1'
+        encryption_iv: 'baz1',
+        mimetype: 'application/pdf',
+        filename: 'form2'
       }
     ]
   }
@@ -82,7 +86,7 @@ describe 'Submits JSON given a JSON submission type', type: :request do
             'type' => 'output',
             'mimetype' => 'application/pdf',
             'url' => 'https://some-url/2',
-            'filename' => 'form1'
+            'filename' => 'form2'
           },
         ]
       }

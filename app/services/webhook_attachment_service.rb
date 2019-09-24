@@ -6,7 +6,10 @@ class WebhookAttachmentService
 
   def execute
     attachments.map do |attachment|
-      user_file_store_gateway.get_presigned_url(attachment.fetch(:url))
+      hash = user_file_store_gateway.get_presigned_url(attachment.fetch(:url))
+      hash[:mimetype] = attachment.fetch(:mimetype)
+      hash[:filename] = attachment.fetch(:filename)
+      hash
     end
   end
 

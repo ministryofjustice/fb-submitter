@@ -16,23 +16,34 @@ describe WebhookAttachmentService do
     [
       {
         'type': 'output',
-        'mimetype': 'application/pdf',
         'url': attachment_1,
+        'mimetype': 'application/pdf',
         'filename': 'form1'
       },
       {
         'type': 'output',
-        'mimetype': 'application/pdf',
         'url': attachment_2,
-        'filename': 'form2'
+        'mimetype': 'application/json',
+        'filename': 'afile'
       }
     ]
   end
 
   let(:expected_attachments) do
     [
-      {url: 'example.com/public_url_1', encryption_key: 'somekey_1', encryption_iv: 'somekey_iv_1'},
-      {url: 'example.com/public_url_2', encryption_key: 'somekey_2', encryption_iv: 'somekey_iv_2'}
+      {
+        url: 'example.com/public_url_1',
+        encryption_key: 'somekey_1',
+        encryption_iv: 'somekey_iv_1',
+        mimetype: 'application/pdf',
+        filename: 'form1'
+      }, {
+        url: 'example.com/public_url_2',
+        encryption_key: 'somekey_2',
+        encryption_iv: 'somekey_iv_2',
+        mimetype: 'application/json',
+        filename: 'afile'
+      }
     ]
   end
 
