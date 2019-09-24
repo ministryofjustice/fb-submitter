@@ -23,10 +23,7 @@ build: stop
 
 .PHONY: serve
 serve: build
-	$(DOCKER_COMPOSE) up -d db
-	./scripts/wait_for_db.sh db postgres
-	$(DOCKER_COMPOSE) up -d app
-	$(DOCKER_COMPOSE) up -d worker
+	$(DOCKER_COMPOSE) up app
 
 .PHONY: stop
 stop:
