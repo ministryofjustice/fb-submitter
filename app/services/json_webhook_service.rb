@@ -1,22 +1,29 @@
 class JsonWebhookService
-  def initialize(runner_callback_adapter:, webhook_destination_adapter:)
+  def initialize(runner_callback_adapter:, webhook_attachment_fetcher:, webhook_destination_adapter:)
     @runner_callback_adapter = runner_callback_adapter
+    @webhook_attachment_fetcher = webhook_attachment_fetcher
     @webhook_destination_adapter = webhook_destination_adapter
   end
 
   def execute(service_slug:)
-    webhook_destination_adapter.send_webhook(body: build_payload(service_slug))
+    webhook_destination_adapter.send_webhook(
+      body: build_payload(
+        service_slug: service_slug,
+        attachments:  webhook_attachment_fetcher.execute
+      )
+    )
   end
 
   private
 
-  attr_reader :runner_callback_adapter, :webhook_destination_adapter
+  attr_reader :runner_callback_adapter, :webhook_destination_adapter, :webhook_attachment_fetcher
 
-  def build_payload(service_slug)
+  def build_payload(service_slug:, attachments:)
     {
       "serviceSlug": service_slug,
       "submissionId": submission_answers['submissionId'],
-      "submissionAnswers": submission_answers.except('submissionId')
+      "submissionAnswers": submission_answers.except('submissionId'),
+      "attachments": attachments
     }.to_json
   end
 

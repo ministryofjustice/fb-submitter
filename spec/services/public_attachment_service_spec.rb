@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 describe PublicAttachmentService do
 
   before do
@@ -9,10 +7,27 @@ describe PublicAttachmentService do
 
   let(:user_file_store_gateway) { instance_spy(Adapters::UserFileStore) }
 
-  subject(:service) { described_class.new(user_file_store_gateway: user_file_store_gateway) }
+  subject(:service) { described_class.new(attachments: attachments, user_file_store_gateway: user_file_store_gateway) }
 
   let(:attachment_1) { 'https://example.com/private_url_1'}
   let(:attachment_2) { 'https://example.com/private_url_2'}
+
+  let(:attachments) do
+    [
+      {
+        'type': 'output',
+        'mimetype': 'application/pdf',
+        'url': attachment_1,
+        'filename': 'form1'
+      },
+      {
+        'type': 'output',
+        'mimetype': 'application/pdf',
+        'url': attachment_2,
+        'filename': 'form2'
+      }
+    ]
+  end
 
   let(:expected_attachments) do
     [
@@ -29,16 +44,20 @@ describe PublicAttachmentService do
 
   describe '#execute' do
     it 'returns a url and key hash' do
-      expect(service.execute([attachment_1, attachment_2])).to eq(expected_attachments)
+      expect(service.execute).to eq(expected_attachments)
     end
 
     it 'calls the gateway for each object' do
-      service.execute([attachment_1, attachment_2])
+      service.execute
       expect(user_file_store_gateway).to have_received(:get_presigned_url).twice
     end
 
-    it 'returns empty arry when given one' do
-      expect(service.execute([])).to eq([])
+    context 'when attachments are empty' do
+      subject(:service) { described_class.new(attachments: [], user_file_store_gateway: user_file_store_gateway) }
+
+      it 'returns empty arry when given one' do
+        expect(service.execute).to eq([])
+      end
     end
   end
 end

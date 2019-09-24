@@ -3,7 +3,7 @@ describe Adapters::UserFileStore do
   subject(:adaptor) { described_class.new(key: key) }
 
   before do
-    stub_request(:post, requested_url)
+    stub_request(:post, requested_url).to_return(body: {url: 'foo', key: 'bar'}.to_json)
   end
 
   let(:url) { "https://the-url/#{SecureRandom.alphanumeric(10)}" }
@@ -22,6 +22,13 @@ describe Adapters::UserFileStore do
       'x-encrypted-user-id-and-token': key,
       'Expect': '',
       'User-Agent': 'Typhoeus - https://github.com/typhoeus/typhoeus'
+    })
+  end
+
+  it 'returns url and key of the file' do
+    expect(adaptor.get_presigned_url(url)).to eq({
+      url: 'foo',
+      key: 'bar'
     })
   end
 

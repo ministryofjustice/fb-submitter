@@ -35,16 +35,32 @@ describe 'Submits JSON given a JSON submission type', type: :request do
       "submissionDate": "1568199892316"
     }
   end
+
+  let(:expected_attachments) {
+    [
+      {
+        url: 'example.com/1',
+        key: 'somekey'
+      },{
+        url: 'example.com/2',
+        key: 'somekey2'
+      }
+    ]
+  }
+
   let(:expected_json_payload) do
     {
       "serviceSlug": service_slug,
       "submissionId": submission_id,
-      "submissionAnswers": submission_answers.except(:submissionId)
+      "submissionAnswers": submission_answers.except(:submissionId),
+       attachments: expected_attachments
     }.to_json
   end
-  let(:encryption_key) { "fb730a667840d79c" }
   let(:runner_callback_url) { 'https://formbuilder.com/runner_frontend_callback' }
   let(:json_destination_url) { 'https://example.com/json_destination_placeholder' }
+  let(:attachment_url) { 'https://some-url/1' }
+
+  let(:encryption_key) { "fb730a667840d79c" }
   let(:encrypted_user_id_and_token) { 'kdjh9s8db9s87dbosd7b0sd8b70s9d8bs98d7b9s8db' }
   let(:submission_details) do
     [
@@ -57,7 +73,13 @@ describe 'Submits JSON given a JSON submission type', type: :request do
           {
             'type' => 'output',
             'mimetype' => 'application/pdf',
-            'url': attachment_url,
+            'url' => 'https://some-url/1',
+            'filename' => 'form1'
+          },
+          {
+            'type' => 'output',
+            'mimetype' => 'application/pdf',
+            'url' => 'https://some-url/2',
             'filename' => 'form1'
           },
         ]
@@ -73,7 +95,6 @@ describe 'Submits JSON given a JSON submission type', type: :request do
     }.to_json
   end
 
-  let(:attachment_url) { 'https://some-url/1' }
 
   before do
     Delayed::Worker.delay_jobs = false
@@ -84,7 +105,8 @@ describe 'Submits JSON given a JSON submission type', type: :request do
 
     stub_request(:post, json_destination_url).to_return(status: 200, body: '')
 
-    stub_request(:post, "#{attachment_url}/public-file" ).to_return(status: 200, body: '')
+    stub_request(:post, "https://some-url/1/public-file" ).to_return(status: 200, body: expected_attachments[0].to_json)
+    stub_request(:post, "https://some-url/2/public-file" ).to_return(status: 200, body: expected_attachments[1].to_json)
   end
 
   after do

@@ -18,16 +18,12 @@ class ProcessSubmissionService
       if submission_detail.fetch(:type) == 'json'
         encryption_key = submission_detail.fetch(:encryption_key)
 
-        attachment_urls = submission_detail.fetch(:attachments).map do |attachment|
-          attachment.fetch(:url)
-        end
-
-        PublicAttachmentService.new(
-          user_file_store_gateway: Adapters::UserFileStore.new(key: token)
-        ).execute(attachment_urls)
-
         JsonWebhookService.new(
           runner_callback_adapter: Adapters::RunnerCallback.new(url: submission_detail.fetch(:data_url), token: token),
+          webhook_attachment_fetcher: PublicAttachmentService.new(
+            attachments: submission_detail.fetch(:attachments),
+            user_file_store_gateway: Adapters::UserFileStore.new(key: token)
+          ),
           webhook_destination_adapter: Adapters::JweWebhookDestination.new(url: submission_detail.fetch(:url), key: encryption_key)
         ).execute(service_slug: submission.service_slug)
       end

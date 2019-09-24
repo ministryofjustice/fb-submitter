@@ -1,11 +1,12 @@
 class PublicAttachmentService
-  def initialize(user_file_store_gateway:)
+  def initialize(user_file_store_gateway:, attachments:)
     @user_file_store_gateway = user_file_store_gateway
+    @attachments = attachments
   end
 
-  def execute(url_list)
-    url_list.map do |url|
-      @user_file_store_gateway.get_presigned_url(url)
+  def execute
+    @attachments.map do |attachment|
+      @user_file_store_gateway.get_presigned_url(attachment.fetch(:url))
     end
   end
 end
