@@ -19,7 +19,7 @@ live:
 
 .PHONY: build
 build: stop
-	$(DOCKER_COMPOSE) build --build-arg BUNDLE_FLAGS=''
+	$(DOCKER_COMPOSE) build
 
 .PHONY: serve
 serve: build

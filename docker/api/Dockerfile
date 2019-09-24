@@ -1,6 +1,6 @@
 FROM ruby:2.6.4-alpine3.9
 
-ARG UID
+ARG UID=1001
 
 RUN apk add build-base postgresql-contrib postgresql-dev bash libcurl
 
@@ -21,7 +21,7 @@ ADD https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem ./rds-comb
 
 RUN chown -R ${UID}:appgroup /app
 
-USER ${UID}
+USER UID
 
 ENV APP_PORT 3000
 EXPOSE $APP_PORT
