@@ -10,6 +10,9 @@ jobs:
       - run:
           name: test
           command: docker-compose run --rm app bundle exec rspec
+      - run:
+          name: lint
+          command: docker-compose run --rm app bundle exec rubocop
   build_and_deploy_to_test:
     working_directory: ~/circle/git/fb-submitter
     docker:
