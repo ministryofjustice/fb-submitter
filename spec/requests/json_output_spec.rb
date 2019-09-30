@@ -22,17 +22,17 @@ describe 'Submits JSON given a JSON submission type', type: :request do
   let(:submission_id) { '1e937616-dd0b-4bc3-8c67-40e4ffd54f78' }
   let(:submission_answers) do
     {
-      "full_name": "Mr Complainer",
-      "email_address": "test@test.com",
-      "building_street": "102 Petty France",
-      "building_street_line_2": "Westminster",
-      "town_city": "London",
-      "county": "London",
-      "postcode": "SW1H 9AJ",
-      "complaint_details": "I lost my case",
+      "full_name": 'Mr Complainer',
+      "email_address": 'test@test.com',
+      "building_street": '102 Petty France',
+      "building_street_line_2": 'Westminster',
+      "town_city": 'London',
+      "county": 'London',
+      "postcode": 'SW1H 9AJ',
+      "complaint_details": 'I lost my case',
       "complaint_location": "Westminster Magistrates'",
       "submissionId": submission_id,
-      "submissionDate": "1568199892316"
+      "submissionDate": '1568199892316'
     }
   end
 
@@ -66,7 +66,7 @@ describe 'Submits JSON given a JSON submission type', type: :request do
   let(:json_destination_url) { 'https://example.com/json_destination_placeholder' }
   let(:attachment_url) { 'https://some-url/1' }
 
-  let(:encryption_key) { "fb730a667840d79c" }
+  let(:encryption_key) { 'fb730a667840d79c' }
   let(:encrypted_user_id_and_token) { 'kdjh9s8db9s87dbosd7b0sd8b70s9d8bs98d7b9s8db' }
   let(:submission_details) do
     [
@@ -87,12 +87,12 @@ describe 'Submits JSON given a JSON submission type', type: :request do
             'mimetype' => 'application/pdf',
             'url' => 'https://some-url/2',
             'filename' => 'form2'
-          },
+          }
         ]
       }
     ]
   end
-  let(:headers) { {'Content-type' => 'application/json'} }
+  let(:headers) { { 'Content-type' => 'application/json' } }
   let(:params) do
     {
       service_slug: service_slug,
@@ -110,8 +110,8 @@ describe 'Submits JSON given a JSON submission type', type: :request do
 
     stub_request(:post, json_destination_url).to_return(status: 200, body: '')
 
-    stub_request(:post, "https://some-url/1/presigned-s3-url").to_return(status: 200, body: expected_attachments[0].to_json)
-    stub_request(:post, "https://some-url/2/presigned-s3-url").to_return(status: 200, body: expected_attachments[1].to_json)
+    stub_request(:post, 'https://some-url/1/presigned-s3-url').to_return(status: 200, body: expected_attachments[0].to_json)
+    stub_request(:post, 'https://some-url/2/presigned-s3-url').to_return(status: 200, body: expected_attachments[1].to_json)
   end
 
   after do
@@ -128,5 +128,4 @@ describe 'Submits JSON given a JSON submission type', type: :request do
     json_submission_payload = JWE.decrypt(WebMock.last_request.body, encryption_key)
     expect(json_submission_payload).to eq(expected_json_payload)
   end
-
 end

@@ -15,12 +15,10 @@ class MetricsController < ActionController::Base
     [
       { name: :delayed_jobs_pending,
         docstring: 'Number of pending jobs',
-        value: pending_job_count
-      },
+        value: pending_job_count },
       { name: :delayed_jobs_failed,
         docstring: 'Number of jobs failed',
-        value: failed_job_count
-      }
+        value: failed_job_count }
     ]
   end
 end

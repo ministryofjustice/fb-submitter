@@ -12,7 +12,7 @@ RSpec.describe RawMessage do
         filename: 'some-file-name.jpg',
         url: nil,
         mimetype: 'application/pdf',
-        path: file_fixture('hello_world.txt'),
+        path: file_fixture('hello_world.txt')
       )
     end
 
@@ -34,7 +34,7 @@ RSpec.describe RawMessage do
           filename: 'some-file-name',
           url: nil,
           mimetype: 'application/pdf',
-          path: file_fixture('hello_world.txt'),
+          path: file_fixture('hello_world.txt')
         )
       end
 

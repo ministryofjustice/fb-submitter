@@ -8,8 +8,8 @@ class ApplicationController < ActionController::API
   private
 
   def consider_all_requests_json
-    if request.env["CONTENT_TYPE"] == 'application/x-www-form-urlencoded'
-      request.env["CONTENT_TYPE"] = 'application/json'
+    if request.env['CONTENT_TYPE'] == 'application/x-www-form-urlencoded'
+      request.env['CONTENT_TYPE'] = 'application/json'
     end
   end
 

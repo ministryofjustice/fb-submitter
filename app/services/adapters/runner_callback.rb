@@ -1,6 +1,5 @@
 module Adapters
   class RunnerCallback
-
     class ClientRequestError < StandardError
     end
 
@@ -15,6 +14,7 @@ module Adapters
       unless response.success?
         raise ClientRequestError, "request for #{url} returned response status of: #{response.code}"
       end
+
       response.body
     end
 

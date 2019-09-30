@@ -22,7 +22,7 @@ describe EmailJob do
                                                        template_id: template_id,
                                                        personalisation: {
                                                          subject: email_subject,
-                                                         body: body,
+                                                         body: body
                                                        })
 
       subject.perform(message: message)

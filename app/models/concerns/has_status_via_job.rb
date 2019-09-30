@@ -10,7 +10,7 @@ module Concerns
         queued: 'queued',
         processing: 'processing'
       }.freeze
-      validates :status, inclusion: {in: STATUS.values}
+      validates :status, inclusion: { in: STATUS.values }
 
       def update_status(new_status)
         update_attributes(status: STATUS[new_status])

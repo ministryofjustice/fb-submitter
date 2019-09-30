@@ -41,7 +41,7 @@ describe 'UserData API', type: :request do
 
           describe 'the response' do
             it 'has status 200' do
-              expect(response).to have_http_status(200)
+              expect(response).to have_http_status(:ok)
             end
 
             it 'has json content_type' do
@@ -163,7 +163,7 @@ describe 'UserData API', type: :request do
                 post_request
               end
               it 'has status 201' do
-                expect(response).to have_http_status(201)
+                expect(response).to have_http_status(:created)
               end
 
               describe 'the body' do

@@ -1,7 +1,7 @@
 class RawMessage
   attr_accessor :from, :to, :subject, :body_parts, :attachments
 
-  def initialize( opts={} )
+  def initialize(opts={})
     symbol_params = opts.dup.symbolize_keys!
     @attachments  = symbol_params[:attachments]
     @body_parts   = symbol_params[:body_parts]
@@ -11,44 +11,44 @@ class RawMessage
   end
 
   def to_s
-    <<-END
-From: #{@from}
-To: #{@to}
-Subject: #{@subject}
-MIME-Version: 1.0
-Content-type: Multipart/Mixed; boundary="NextPart"
+    <<~END
+      From: #{@from}
+      To: #{@to}
+      Subject: #{@subject}
+      MIME-Version: 1.0
+      Content-type: Multipart/Mixed; boundary="NextPart"
 
---NextPart
-Content-type: Multipart/Alternative; boundary="AltPart"
+      --NextPart
+      Content-type: Multipart/Alternative; boundary="AltPart"
 
---AltPart
-Content-type: text/html; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+      --AltPart
+      Content-type: text/html; charset=utf-8
+      Content-Transfer-Encoding: quoted-printable
 
-#{[@body_parts['text/html']].pack('M')}
+      #{[@body_parts['text/html']].pack('M')}
 
---AltPart
-Content-type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+      --AltPart
+      Content-type: text/plain; charset=utf-8
+      Content-Transfer-Encoding: quoted-printable
 
-#{[@body_parts['text/plain']].pack('M')}
+      #{[@body_parts['text/plain']].pack('M')}
 
---NextPart
-#{@attachments.map{ |attachment| inline_attachment(attachment) }.join("\n\n--NextPart\n")}
+      --NextPart
+      #{@attachments.map{ |attachment| inline_attachment(attachment) }.join("\n\n--NextPart\n")}
 
-END
+    END
   end
 
   private
 
   def inline_attachment(attachment)
-    <<-END
-Content-Type: #{attachment.mimetype}
-Content-Disposition: attachment; filename="#{attachment.filename_with_extension}"
-Content-Transfer-Encoding: base64
+    <<~END
+      Content-Type: #{attachment.mimetype}
+      Content-Disposition: attachment; filename="#{attachment.filename_with_extension}"
+      Content-Transfer-Encoding: base64
 
-#{Base64.encode64(File.open(attachment.path, 'rb'){|file| file.read})}
+      #{Base64.encode64(File.open(attachment.path, 'rb'){ |file| file.read })}
 
-END
+    END
   end
 end

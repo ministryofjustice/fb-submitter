@@ -15,7 +15,7 @@ RSpec.describe SubmissionController, type: :controller do
   it 'starts a delayed job' do
     post :create, body: { something: 1 }.to_json
 
-    expect(response).to have_http_status(201)
+    expect(response).to have_http_status(:created)
     expect(Delayed::Job.all.count).to eq(1)
   end
 end

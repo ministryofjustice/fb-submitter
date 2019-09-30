@@ -23,7 +23,7 @@ RSpec.describe 'sms' do
                 type: :object,
                 required: false,
                 example: '{ "token": "token-goes-here" }'
-              },
+              }
             }
           }
         }

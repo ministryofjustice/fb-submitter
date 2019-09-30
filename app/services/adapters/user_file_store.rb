@@ -16,6 +16,7 @@ module Adapters
       unless response.success?
         raise ClientRequestError, "Request for #{signed_url} returned response status of: #{response&.code}"
       end
+
       json = JSON.parse(response.body).symbolize_keys!
       {
         url: json.fetch(:url),

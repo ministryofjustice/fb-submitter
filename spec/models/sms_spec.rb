@@ -10,13 +10,13 @@ RSpec.describe Sms do
 
       context 'when invalid' do
         it 'is not valid' do
-          subject.to = "1111"
+          subject.to = '1111'
           expect(subject).to_not be_valid
 
-          subject.to = "qwertyuiopa"
+          subject.to = 'qwertyuiopa'
           expect(subject).to_not be_valid
 
-          subject.to = "111111111111111111111111"
+          subject.to = '111111111111111111111111'
           expect(subject).to_not be_valid
         end
       end
@@ -25,31 +25,31 @@ RSpec.describe Sms do
         it 'is valid' do
           expect(subject).to be_valid
 
-          subject.to = "+4407123456789"
+          subject.to = '+4407123456789'
           expect(subject).to be_valid
 
-          subject.to = "4407123456789"
+          subject.to = '4407123456789'
           expect(subject).to be_valid
 
-          subject.to = "+447123456789"
+          subject.to = '+447123456789'
           expect(subject).to be_valid
 
-          subject.to = "447123456789"
+          subject.to = '447123456789'
           expect(subject).to be_valid
 
-          subject.to = "+447123456789"
+          subject.to = '+447123456789'
           expect(subject).to be_valid
 
-          subject.to = "447123456789"
+          subject.to = '447123456789'
           expect(subject).to be_valid
 
-          subject.to = "+44 0712 3456789"
+          subject.to = '+44 0712 3456789'
           expect(subject).to be_valid
 
-          subject.to = "01632 960 001"
+          subject.to = '01632 960 001'
           expect(subject).to be_valid
 
-          subject.to = "07700 900 982"
+          subject.to = '07700 900 982'
           expect(subject).to be_valid
         end
       end

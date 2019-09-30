@@ -8,13 +8,13 @@ module Adapters
     end
 
     def ensure_absolute_urls(urls=[])
-      urls.map{|u| ensure_absolute_url(u)}
+      urls.map{ |u| ensure_absolute_url(u) }
     end
 
     def ensure_absolute_url(url)
       uri = URI.parse(url)
       unless uri.absolute?
-        uri = resolve_uri_to_service( uri )
+        uri = resolve_uri_to_service(uri)
       end
       uri.to_s
     end

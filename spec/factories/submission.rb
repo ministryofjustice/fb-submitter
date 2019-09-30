@@ -7,8 +7,8 @@ FactoryBot.define do
     submission_details {
       {
         submissionId: SecureRandom.uuid,
-        name: "Mr Test"
-       }
+        name: 'Mr Test'
+      }
     }
     responses { {} }
 

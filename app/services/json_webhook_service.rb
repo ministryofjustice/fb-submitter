@@ -9,7 +9,7 @@ class JsonWebhookService
     webhook_destination_adapter.send_webhook(
       body: build_payload(
         service_slug: service_slug,
-        attachments:  webhook_attachment_fetcher.execute
+        attachments: webhook_attachment_fetcher.execute
       )
     )
   end

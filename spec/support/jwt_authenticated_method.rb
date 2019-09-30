@@ -16,7 +16,7 @@ RSpec.shared_examples 'a JWT-authenticated method' do |method, url, payload|
 
   context 'with no x-access-token header' do
     it 'has status 401' do
-      expect(response).to have_http_status(401)
+      expect(response).to have_http_status(:unauthorized)
     end
 
     describe 'the body' do
@@ -53,8 +53,8 @@ RSpec.shared_examples 'a JWT-authenticated method' do |method, url, payload|
       }
 
       it 'does not respond with an unauthorized or forbidden status' do
-        expect(response).to_not have_http_status(401)
-        expect(response).to_not have_http_status(403)
+        expect(response).to_not have_http_status(:unauthorized)
+        expect(response).to_not have_http_status(:forbidden)
       end
     end
 
@@ -68,7 +68,7 @@ RSpec.shared_examples 'a JWT-authenticated method' do |method, url, payload|
         }
 
         it 'has status 403' do
-          expect(response).to have_http_status(403)
+          expect(response).to have_http_status(:forbidden)
         end
 
         describe 'the body' do
@@ -111,5 +111,4 @@ RSpec.shared_examples 'a JWT-authenticated method' do |method, url, payload|
       end
     end
   end
-
 end

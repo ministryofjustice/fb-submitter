@@ -24,7 +24,7 @@ RSpec.describe 'email' do
                 type: :object,
                 required: false,
                 example: '{ "token": "token-goes-here" }'
-              },
+              }
             }
           }
         }

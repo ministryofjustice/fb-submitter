@@ -23,7 +23,6 @@ describe JsonWebhookService do
 
   let(:frontend_response) { submission.submission_details.to_json }
 
-
   let(:attachments) do
     [
       {

@@ -17,7 +17,7 @@ module Concerns
 
     private
 
-    # may raise any of:
+    # may raise any of:
     #   TokenInvalidError
     #   TokenNotPresentError
     #
@@ -33,10 +33,8 @@ module Concerns
           token,
           hmac_secret,
           true,
-          {
-            exp_leeway: leeway,
-            algorithm: 'HS256'
-          }
+          exp_leeway: leeway,
+          algorithm: 'HS256'
         )
 
         # NOTE: verify_iat used to be in the JWT gem, but was removed in v2.2
@@ -47,7 +45,7 @@ module Concerns
           raise Exceptions::TokenNotValidError.new
         end
 
-        Rails.logger.debug "token is valid"
+        Rails.logger.debug 'token is valid'
       rescue StandardError => e
         Rails.logger.debug("Couldn't parse that token - error #{e}")
         raise Exceptions::TokenNotValidError.new

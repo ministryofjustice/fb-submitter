@@ -8,7 +8,7 @@ describe EmailService do
   end
 
   describe '.sanitised_params' do
-    let(:opts) { {key: 'value', to: 'to@example.com'} }
+    let(:opts) { { key: 'value', to: 'to@example.com' } }
 
     describe 'return value' do
       let(:return_value) { described_class.sanitised_params(opts) }
@@ -57,8 +57,8 @@ describe EmailService do
   end
 
   describe '.send_mail' do
-    let(:opts) { {key: 'value', to: 'to@example.com'} }
-    let(:sanitised_params) { {key: 'sanitised value'} }
+    let(:opts) { { key: 'value', to: 'to@example.com' } }
+    let(:sanitised_params) { { key: 'sanitised value' } }
 
     before do
       allow(Adapters::AmazonSESAdapter).to receive(:send_mail).and_return('send response')

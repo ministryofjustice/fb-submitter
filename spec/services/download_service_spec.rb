@@ -3,7 +3,7 @@ require 'rails_helper'
 describe DownloadService do
   let(:url) { 'https://my.domain/some/path/file.ext' }
   let(:headers) { { 'x-encrypted-user-id-and-token' => 'sometoken' } }
-  let(:args) { {url: url, target_dir: '/my/target/dir', headers: headers} }
+  let(:args) { { url: url, target_dir: '/my/target/dir', headers: headers } }
   let(:mock_hydra) { double('hydra', run: 'run result', queue: 'queue result') }
   before do
     allow(Typhoeus::Hydra).to receive(:hydra).and_return(mock_hydra)
@@ -49,7 +49,7 @@ describe DownloadService do
     context 'given an array of urls' do
       let(:url1) { 'https://example.com/service/some-service/user/some-user/fingerprint' }
       let(:url2) { 'https://another.domain/some/otherfile.ext' }
-      let(:args) { {urls: [url1, url2], target_dir: path, headers: headers} }
+      let(:args) { { urls: [url1, url2], target_dir: path, headers: headers } }
       let(:mock_request_1) { double('request1') }
       let(:mock_request_2) { double('request2') }
 
@@ -83,8 +83,8 @@ describe DownloadService do
           Timecop.freeze(time) do
             allow(subject).to receive(:construct_request).and_call_original
 
-            expected_url1 = "https://example.com/service/some-service/user/some-user/fingerprint"
-            expected_url2 = "https://another.domain/some/otherfile.ext"
+            expected_url1 = 'https://example.com/service/some-service/user/some-user/fingerprint'
+            expected_url2 = 'https://another.domain/some/otherfile.ext'
             expected_headers = { 'x-encrypted-user-id-and-token' => 'sometoken' }
 
             expect(Typhoeus::Request).to receive(:new).with(expected_url1, followlocation: true, headers: expected_headers).and_return(double.as_null_object)
@@ -107,10 +107,10 @@ describe DownloadService do
       end
 
       it 'returns the urls mapped to file paths' do
-        expect(subject.download_in_parallel).to eq({
+        expect(subject.download_in_parallel).to eq(
           url1 => '/tmp/file1',
           url2 => '/tmp/file2'
-        })
+        )
       end
     end
   end

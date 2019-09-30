@@ -19,7 +19,7 @@ describe SmsJob do
       expect(mock_client).to receive(:send_sms).with(phone_number: to,
                                                      template_id: template_id,
                                                      personalisation: {
-                                                       body: body,
+                                                       body: body
                                                      })
 
       subject.perform(message: message)
