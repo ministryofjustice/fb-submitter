@@ -17,15 +17,6 @@ Lint/IneffectiveAccessModifier:
   Exclude:
     - 'app/services/adapters/amazon_ses_adapter.rb'
 
-# Offense count: 4
-# Cop supports --auto-correct.
-# Configuration parameters: IgnoreEmptyBlocks, AllowUnusedKeywordArguments.
-Lint/UnusedBlockArgument:
-  Exclude:
-    - 'app/controllers/concerns/error_handling.rb'
-    - 'app/controllers/concerns/jwt_authentication.rb'
-    - 'spec/requests/json_output_spec.rb'
-
 # Offense count: 1
 # Cop supports --auto-correct.
 # Configuration parameters: AllowUnusedKeywordArguments, IgnoreEmptyMethods.
@@ -103,11 +94,6 @@ RSpec/ExampleLength:
     - 'spec/models/email_spec.rb'
     - 'spec/services/adapters/user_file_store_spec.rb'
     - 'spec/services/download_service_spec.rb'
-    - 'spec/services/process_submission_service_spec.rb'
-
-# Offense count: 2
-RSpec/ExpectInHook:
-  Exclude:
     - 'spec/services/process_submission_service_spec.rb'
 
 # Offense count: 43

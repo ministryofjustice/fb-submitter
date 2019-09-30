@@ -167,7 +167,12 @@ describe ProcessSubmissionService do
       let(:submission_id) { submission.id }
 
       before do
-        expect(Submission).to receive(:find).with(submission_id).and_return(submission)
+        allow(Submission).to receive(:find).with(submission_id).and_return(submission)
+      end
+
+      it 'calls Submission find ' do
+        expect(Submission).to receive(:find).with(submission_id).once
+        subject.perform
       end
 
       it 'updates the Submission status to :processing' do

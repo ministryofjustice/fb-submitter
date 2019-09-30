@@ -13,7 +13,7 @@ module LastRequest
 end
 
 WebMock.extend(LastRequest)
-WebMock.after_request do |request_signature, response|
+WebMock.after_request do |request_signature, _response|
   WebMock.last_request = request_signature
 end
 

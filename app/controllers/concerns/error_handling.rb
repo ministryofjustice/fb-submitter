@@ -16,7 +16,7 @@ module Concerns
         render_json_error :internal_server_error, :internal_server_error, args
       end
 
-      rescue_from ActiveRecord::RecordNotFound do |e|
+      rescue_from ActiveRecord::RecordNotFound do |_e|
         render_json_error :not_found, :record_not_found
       end
     end

@@ -6,10 +6,10 @@ module Concerns
       before_action :verify_token!, unless: :disable_jwt?
 
       if ancestors.include?(Concerns::ErrorHandling)
-        rescue_from Exceptions::TokenNotPresentError do |e|
+        rescue_from Exceptions::TokenNotPresentError do |_e|
           render_json_error :unauthorized, :token_not_present
         end
-        rescue_from Exceptions::TokenNotValidError do |e|
+        rescue_from Exceptions::TokenNotValidError do |_e|
           render_json_error :forbidden, :token_not_valid
         end
       end
