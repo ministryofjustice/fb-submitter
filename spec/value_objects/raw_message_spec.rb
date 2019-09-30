@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe RawMessage do
   before do
-    allow_any_instance_of(File).to receive(:read).and_return('hello world')
+    allow(File).to receive(:read).and_return('hello world')
   end
 
   describe 'attachment extension from mime type' do

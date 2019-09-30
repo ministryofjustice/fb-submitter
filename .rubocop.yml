@@ -22,6 +22,9 @@ Style/SymbolArray:
 Metrics/LineLength:
   Enabled: false
 
+Style/Next:
+  Enabled: false
+
 Metrics/BlockLength:
   ExcludedMethods: ['describe', 'context', 'let']
 

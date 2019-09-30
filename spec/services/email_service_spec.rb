@@ -67,13 +67,13 @@ describe EmailService do
     end
 
     it 'sanitises the params' do
-      expect(described_class).to receive(:sanitised_params).with(opts).and_return(sanitised_params)
       described_class.send_mail(opts)
+      expect(described_class).to have_received(:sanitised_params).with(opts)
     end
 
     it 'tells the adapter to send_mail, passing the sanitised_params' do
-      expect(described_class.adapter).to receive(:send_mail).with(sanitised_params)
       described_class.send_mail(opts)
+      expect(described_class.adapter).to have_received(:send_mail).with(sanitised_params)
     end
   end
 end

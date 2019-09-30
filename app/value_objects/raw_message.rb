@@ -11,7 +11,7 @@ class RawMessage
   end
 
   def to_s
-    <<~END
+    <<~RAW_MESSAGE
       From: #{@from}
       To: #{@to}
       Subject: #{@subject}
@@ -36,19 +36,19 @@ class RawMessage
       --NextPart
       #{@attachments.map { |attachment| inline_attachment(attachment) }.join("\n\n--NextPart\n")}
 
-    END
+    RAW_MESSAGE
   end
 
   private
 
   def inline_attachment(attachment)
-    <<~END
+    <<~RAW_ATTACHMENT
       Content-Type: #{attachment.mimetype}
       Content-Disposition: attachment; filename="#{attachment.filename_with_extension}"
       Content-Transfer-Encoding: base64
 
       #{Base64.encode64(File.open(attachment.path, 'rb', &:read))}
 
-    END
+    RAW_ATTACHMENT
   end
 end
