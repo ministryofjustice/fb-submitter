@@ -33,12 +33,6 @@ Lint/UnusedMethodArgument:
   Exclude:
     - 'app/controllers/concerns/jwt_authentication.rb'
 
-# Offense count: 1
-# Configuration parameters: ContextCreatingMethods, MethodCreatingMethods.
-Lint/UselessAccessModifier:
-  Exclude:
-    - 'app/services/adapters/amazon_ses_adapter.rb'
-
 # Offense count: 3
 Lint/UselessAssignment:
   Exclude:
@@ -184,24 +178,9 @@ RSpec/NamedSubject:
 RSpec/NestedGroups:
   Max: 8
 
-# Offense count: 5
-RSpec/ScatteredLet:
-  Exclude:
-    - 'spec/services/webhook_attachment_service_spec.rb'
-
 # Offense count: 20
 RSpec/SubjectStub:
   Exclude:
-    - 'spec/services/download_service_spec.rb'
-    - 'spec/services/process_submission_service_spec.rb'
-
-# Offense count: 13
-# Configuration parameters: IgnoreNameless, IgnoreSymbolicNames.
-RSpec/VerifiedDoubles:
-  Exclude:
-    - 'spec/jobs/email_job_spec.rb'
-    - 'spec/jobs/sms_job_spec.rb'
-    - 'spec/services/adapters/jwe_webhook_destination_spec.rb'
     - 'spec/services/download_service_spec.rb'
     - 'spec/services/process_submission_service_spec.rb'
 

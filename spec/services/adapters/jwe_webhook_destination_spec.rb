@@ -17,6 +17,9 @@ describe Adapters::JweWebhookDestination do
     "http://www.example.com/#{SecureRandom.uuid}"
   end
 
+  let(:response) { instance_double(Typhoeus::Response) }
+  let(:request) { instance_double(Typhoeus::Request, run: response) }
+
   it 'makes a post to the given url' do
     stub_request(:post, expected_url).to_return(status: 200)
 
@@ -26,13 +29,13 @@ describe Adapters::JweWebhookDestination do
   end
 
   it 'sends JWE encrypted payload' do
-    response = double('response', success?: true)
+    allow(response).to receive(:success?).and_return(true)
 
     allow(Typhoeus::Request).to receive(:new) do |url, hash|
       expect(url).to eql(expected_url)
       expect(hash[:method]).to be(:post)
       expect(JSON.parse(JWE.decrypt(hash[:body], key)).symbolize_keys).to eql(payload)
-    end.and_return(double('request', run: response))
+    end.and_return(request)
 
     subject.send_webhook(body: payload)
   end

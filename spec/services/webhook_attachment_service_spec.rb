@@ -5,11 +5,10 @@ describe WebhookAttachmentService do
     allow(attachment_parser).to receive(:execute).and_return(attachments)
   end
 
-  let(:user_file_store_gateway) { instance_spy(Adapters::UserFileStore) }
-  let(:attachment_parser) { instance_spy(AttachmentParserService) }
-
   subject(:service) { described_class.new(attachment_parser: attachment_parser, user_file_store_gateway: user_file_store_gateway) }
 
+  let(:user_file_store_gateway) { instance_spy(Adapters::UserFileStore) }
+  let(:attachment_parser) { instance_spy(AttachmentParserService) }
   let(:attachment_1) { 'https://example.com/private_url_1' }
   let(:attachment_2) { 'https://example.com/private_url_2' }
 

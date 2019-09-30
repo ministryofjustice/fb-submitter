@@ -356,7 +356,7 @@ describe ProcessSubmissionService do
   end
 
   describe '#retrieve_mail_body_parts' do
-    let(:mail) { double('mail') }
+    let(:mail) { instance_double(EmailSubmissionDetail) }
 
     before do
       allow(subject).to receive(:download_body_parts).with(mail).and_return(mock_downloaded_files)
@@ -379,9 +379,10 @@ describe ProcessSubmissionService do
   end
 
   describe '#download_body_parts' do
-    let(:mail) { double('mail', body_parts: { 'text/plain' => 'url1', 'text/html' => 'url2' }) }
+    let(:mail) { instance_double(EmailSubmissionDetail) }
 
     before do
+      allow(mail).to receive(:body_parts).and_return('text/plain' => 'url1', 'text/html' => 'url2')
       allow(DownloadService).to receive(:download_in_parallel).with(
         urls: %w[url1 url2],
         headers: headers
@@ -403,14 +404,21 @@ describe ProcessSubmissionService do
 
   describe '#read_downloaded_body_parts' do
     context 'given a mail with body parts' do
-      let(:mail) { double('mail', body_parts: { 'text/plain' => 'url1', 'text/html' => 'url2' }) }
+      let(:mail) { instance_double(EmailSubmissionDetail) }
+
+      before do
+        allow(mail).to receive(:body_parts).and_return('text/plain' => 'url1', 'text/html' => 'url2')
+      end
 
       context 'and a map of urls to file paths' do
         let(:file_map) { { 'url1' => 'file1', 'url2' => 'file2' } }
-        let(:mock_file_1) { double('File1', read: 'file 1 content') }
-        let(:mock_file_2) { double('File2', read: 'file 2 content') }
+        let(:mock_file_1) { instance_double(File) }
+        let(:mock_file_2) { instance_double(File) }
 
         before do
+          allow(mock_file_1).to receive(:read).and_return('file 1 content')
+          allow(mock_file_2).to receive(:read).and_return('file 2 content')
+
           allow(File).to receive(:open).with('file1').and_yield(mock_file_1)
           allow(File).to receive(:open).with('file2').and_yield(mock_file_2)
         end

@@ -100,7 +100,7 @@ class ProcessSubmissionService
     # we need to send the body parts as strings
     body_part_content = {}
     mail.body_parts.each do |type, url|
-      body_part_content[type] = File.open(body_part_map[url]){|f| f.read}
+      body_part_content[type] = File.open(body_part_map[url]) { |f| f.read }
     end
     body_part_content
   end

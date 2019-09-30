@@ -4,10 +4,12 @@ describe DownloadService do
   let(:url) { 'https://my.domain/some/path/file.ext' }
   let(:headers) { { 'x-encrypted-user-id-and-token' => 'sometoken' } }
   let(:args) { { url: url, target_dir: '/my/target/dir', headers: headers } }
-  let(:mock_hydra) { double('hydra', run: 'run result', queue: 'queue result') }
+  let(:mock_hydra) { instance_double(Typhoeus::Hydra) }
 
   before do
     allow(Typhoeus::Hydra).to receive(:hydra).and_return(mock_hydra)
+    allow(mock_hydra).to receive(:run).and_return('run result')
+    allow(mock_hydra).to receive(:queue).and_return('queue result')
   end
 
   describe '#download_in_parallel' do
@@ -16,10 +18,11 @@ describe DownloadService do
     end
 
     let(:path) { '/the/file/path' }
-    let(:mock_request) { double('request', run: 'run result') }
+    let(:mock_request) { instance_double(Typhoeus::Request) }
 
     before do
       allow(subject).to receive(:construct_request).and_return(mock_request)
+      allow(mock_request).to receive(:run).and_return('run result')
       allow(subject).to receive(:file_path_for_download).and_return(path + '/file.ext')
     end
 
@@ -55,8 +58,8 @@ describe DownloadService do
       let(:url1) { 'https://example.com/service/some-service/user/some-user/fingerprint' }
       let(:url2) { 'https://another.domain/some/otherfile.ext' }
       let(:args) { { urls: [url1, url2], target_dir: path, headers: headers } }
-      let(:mock_request_1) { double('request1') }
-      let(:mock_request_2) { double('request2') }
+      let(:mock_request_1) { instance_double(Typhoeus::Request) }
+      let(:mock_request_2) { instance_double(Typhoeus::Request) }
 
       before do
         allow(subject).to receive(:file_path_for_download).with(url: url1, target_dir: path).and_return('/tmp/file1')

@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe EmailJob do
   describe '#perform' do
-    let(:mock_client) { double('client') }
+    let(:mock_client) { instance_double(Notifications::Client) }
     let(:to) { 'user@example.com' }
     let(:email_subject) { 'subject goes here' }
     let(:body) { 'saved form at https://example.com' }

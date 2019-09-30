@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe SmsJob do
   describe '#perform' do
-    let(:mock_client) { double('client') }
+    let(:mock_client) { instance_spy(Notifications::Client) }
     let(:to) { '07123456789' }
     let(:body) { 'Your code is 12345' }
     let(:message) do

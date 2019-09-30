@@ -12,8 +12,6 @@ module Adapters
       )
     end
 
-    private
-
     # eu-west-1 is the only european region to offer SES
     # see https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services/
     def self.client
