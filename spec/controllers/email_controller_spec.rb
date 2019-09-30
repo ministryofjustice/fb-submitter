@@ -68,9 +68,13 @@ describe EmailController do
         }
       end
 
-      it 'returns 400 with error message' do
+      it 'returns 400' do
         post :create, body: json_hash.to_json
         expect(response).to be_bad_request
+      end
+
+      it 'returns an with error message body' do
+        post :create, body: json_hash.to_json
         expect(JSON.parse(response.body)['name']).to eql('bad-request.invalid-parameters')
       end
     end
