@@ -25,6 +25,9 @@ Metrics/LineLength:
 Metrics/BlockLength:
   ExcludedMethods: ['describe', 'context', 'let']
 
+Layout/IndentFirstArrayElement:
+  EnforcedStyle: consistent
+
 Metrics/MethodLength:
   Enabled: true
   Exclude:

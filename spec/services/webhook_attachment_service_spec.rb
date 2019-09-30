@@ -1,5 +1,4 @@
 describe WebhookAttachmentService do
-
   before do
     allow(user_file_store_gateway).to receive(:get_presigned_url).with(attachment_1).and_return(user_file_store_gateway_return[0])
     allow(user_file_store_gateway).to receive(:get_presigned_url).with(attachment_2).and_return(user_file_store_gateway_return[1])
@@ -11,8 +10,8 @@ describe WebhookAttachmentService do
 
   subject(:service) { described_class.new(attachment_parser: attachment_parser, user_file_store_gateway: user_file_store_gateway) }
 
-  let(:attachment_1) { 'https://example.com/private_url_1'}
-  let(:attachment_2) { 'https://example.com/private_url_2'}
+  let(:attachment_1) { 'https://example.com/private_url_1' }
+  let(:attachment_2) { 'https://example.com/private_url_2' }
 
   let(:attachments) do
     [
