@@ -15,22 +15,24 @@ class ProcessSubmissionService
     submission.submission_details.each do |submission_detail|
       submission_detail = submission_detail.with_indifferent_access
 
-      next unless submission_detail.fetch(:type) == 'json'
+      if submission_detail.fetch(:type) == 'json'
+        encryption_key = submission_detail.fetch(:encryption_key)
 
-      encryption_key = submission_detail.fetch(:encryption_key)
-
-      JsonWebhookService.new(
-        runner_callback_adapter: Adapters::RunnerCallback.new(url: submission_detail.fetch(:data_url), token: token),
-        webhook_attachment_fetcher: WebhookAttachmentService.new(
-          attachments: submission_detail.fetch(:attachments),
-          user_file_store_gateway: Adapters::UserFileStore.new(key: token)
-        ),
-        webhook_destination_adapter: Adapters::JweWebhookDestination.new(url: submission_detail.fetch(:url), key: encryption_key)
-      ).execute(service_slug: submission.service_slug)
+        JsonWebhookService.new(
+          runner_callback_adapter: Adapters::RunnerCallback.new(url: submission_detail.fetch(:data_url), token: token),
+          webhook_attachment_fetcher: WebhookAttachmentService.new(
+            attachment_parser: AttachmentParserService.new(attachments: submission_detail.fetch(:attachments)),
+            user_file_store_gateway: Adapters::UserFileStore.new(key: token)
+          ),
+          webhook_destination_adapter: Adapters::JweWebhookDestination.new(url: submission_detail.fetch(:url), key: encryption_key)
+        ).execute(service_slug: submission.service_slug)
+      end
     end
 
     submission.detail_objects.to_a.each do |submission_detail|
-      send_email(submission_detail) if submission_detail.instance_of? EmailSubmissionDetail
+      if submission_detail.instance_of? EmailSubmissionDetail
+        send_email(submission_detail)
+      end
     end
 
     # explicit save! first, to save the responses
@@ -98,7 +100,7 @@ class ProcessSubmissionService
     # we need to send the body parts as strings
     body_part_content = {}
     mail.body_parts.each do |type, url|
-      body_part_content[type] = File.open(body_part_map[url], &:read)
+      body_part_content[type] = File.open(body_part_map[url]){|f| f.read}
     end
     body_part_content
   end

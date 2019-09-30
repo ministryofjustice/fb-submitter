@@ -14,6 +14,191 @@ Bundler/OrderedGems:
   Exclude:
     - 'Gemfile'
 
+# Offense count: 1
+# Cop supports --auto-correct.
+# Configuration parameters: AllowMultipleStyles, EnforcedHashRocketStyle, EnforcedColonStyle, EnforcedLastArgumentHashStyle.
+# SupportedHashRocketStyles: key, separator, table
+# SupportedColonStyles: key, separator, table
+# SupportedLastArgumentHashStyles: always_inspect, always_ignore, ignore_implicit, ignore_explicit
+Layout/AlignHash:
+  Exclude:
+    - 'app/services/json_webhook_service.rb'
+
+# Offense count: 2
+# Cop supports --auto-correct.
+Layout/ClosingHeredocIndentation:
+  Exclude:
+    - 'app/value_objects/raw_message.rb'
+
+# Offense count: 2
+# Cop supports --auto-correct.
+Layout/EmptyLineAfterGuardClause:
+  Exclude:
+    - 'app/services/adapters/runner_callback.rb'
+    - 'app/services/adapters/user_file_store.rb'
+
+# Offense count: 2
+# Cop supports --auto-correct.
+Layout/EmptyLines:
+  Exclude:
+    - 'config/environments/development.rb'
+    - 'spec/services/json_webhook_service_spec.rb'
+
+# Offense count: 4
+# Cop supports --auto-correct.
+# Configuration parameters: EnforcedStyle.
+# SupportedStyles: empty_lines, no_empty_lines
+Layout/EmptyLinesAroundBlockBody:
+  Exclude:
+    - 'spec/requests/json_output_spec.rb'
+    - 'spec/services/adapters/user_file_store_spec.rb'
+    - 'spec/services/webhook_attachment_service_spec.rb'
+    - 'spec/support/jwt_authenticated_method.rb'
+
+# Offense count: 1
+# Cop supports --auto-correct.
+# Configuration parameters: EnforcedStyle.
+# SupportedStyles: empty_lines, empty_lines_except_namespace, empty_lines_special, no_empty_lines, beginning_only, ending_only
+Layout/EmptyLinesAroundClassBody:
+  Exclude:
+    - 'app/services/adapters/runner_callback.rb'
+
+# Offense count: 1
+# Cop supports --auto-correct.
+# Configuration parameters: AllowForAlignment, AllowBeforeTrailingComments, ForceEqualSignAlignment.
+Layout/ExtraSpacing:
+  Exclude:
+    - 'config/environments/production.rb'
+
+# Offense count: 2
+# Cop supports --auto-correct.
+# Configuration parameters: IndentationWidth.
+# SupportedStyles: special_inside_parentheses, consistent, align_brackets
+Layout/IndentFirstArrayElement:
+  EnforcedStyle: consistent
+
+# Offense count: 13
+# Cop supports --auto-correct.
+# Configuration parameters: EnforcedStyle, IndentationWidth.
+# SupportedStyles: special_inside_parentheses, consistent, align_braces
+Layout/IndentFirstHashElement:
+  Exclude:
+    - 'app/services/adapters/amazon_ses_adapter.rb'
+    - 'spec/factories/submission.rb'
+    - 'spec/services/adapters/user_file_store_spec.rb'
+    - 'spec/services/download_service_spec.rb'
+    - 'spec/services/template_mapping_service_spec.rb'
+
+# Offense count: 2
+# Cop supports --auto-correct.
+# Configuration parameters: EnforcedStyle.
+# SupportedStyles: squiggly, active_support, powerpack, unindent
+Layout/IndentHeredoc:
+  Exclude:
+    - 'app/value_objects/raw_message.rb'
+
+# Offense count: 1
+# Cop supports --auto-correct.
+# Configuration parameters: AllowDoxygenCommentStyle.
+Layout/LeadingCommentSpace:
+  Exclude:
+    - 'app/controllers/concerns/jwt_authentication.rb'
+
+# Offense count: 2
+# Cop supports --auto-correct.
+# Configuration parameters: EnforcedStyle.
+# SupportedStyles: symmetrical, new_line, same_line
+Layout/MultilineHashBraceLayout:
+  Exclude:
+    - 'app/controllers/metrics_controller.rb'
+
+# Offense count: 5
+# Cop supports --auto-correct.
+# Configuration parameters: EnforcedStyle.
+# SupportedStyles: space, no_space
+Layout/SpaceAroundEqualsInParameterDefault:
+  Exclude:
+    - 'app/controllers/submission_controller.rb'
+    - 'app/services/adapters/service_token_cache_client.rb'
+    - 'app/services/adapters/service_url_resolver.rb'
+    - 'app/value_objects/raw_message.rb'
+
+# Offense count: 1
+# Cop supports --auto-correct.
+# Configuration parameters: AllowForAlignment.
+Layout/SpaceAroundOperators:
+  Exclude:
+    - 'config/environments/production.rb'
+
+# Offense count: 7
+# Cop supports --auto-correct.
+# Configuration parameters: EnforcedStyle, EnforcedStyleForEmptyBraces.
+# SupportedStyles: space, no_space
+# SupportedStylesForEmptyBraces: space, no_space
+Layout/SpaceBeforeBlockBraces:
+  Exclude:
+    - 'app/services/adapters/service_url_resolver.rb'
+    - 'app/services/process_submission_service.rb'
+    - 'app/value_objects/raw_message.rb'
+    - 'spec/services/adapters/jwe_webhook_destination_spec.rb'
+    - 'spec/services/adapters/service_url_resolver_spec.rb'
+    - 'spec/support/jwt_authenticated_method.rb'
+
+# Offense count: 4
+# Cop supports --auto-correct.
+# Configuration parameters: EnforcedStyle, EnforcedStyleForEmptyBrackets.
+# SupportedStyles: space, no_space, compact
+# SupportedStylesForEmptyBrackets: space, no_space
+Layout/SpaceInsideArrayLiteralBrackets:
+  Exclude:
+    - 'app/services/adapters/amazon_ses_adapter.rb'
+    - 'config/environments/production.rb'
+
+# Offense count: 9
+# Cop supports --auto-correct.
+# Configuration parameters: EnforcedStyle, EnforcedStyleForEmptyBraces, SpaceBeforeBlockParameters.
+# SupportedStyles: space, no_space
+# SupportedStylesForEmptyBraces: space, no_space
+Layout/SpaceInsideBlockBraces:
+  Exclude:
+    - 'app/services/adapters/service_url_resolver.rb'
+    - 'app/services/process_submission_service.rb'
+    - 'app/value_objects/email_submission_detail.rb'
+    - 'app/value_objects/raw_message.rb'
+    - 'spec/services/webhook_attachment_service_spec.rb'
+
+# Offense count: 16
+# Cop supports --auto-correct.
+# Configuration parameters: EnforcedStyle, EnforcedStyleForEmptyBraces.
+# SupportedStyles: space, no_space, compact
+# SupportedStylesForEmptyBraces: space, no_space
+Layout/SpaceInsideHashLiteralBraces:
+  Exclude:
+    - 'app/models/concerns/has_status_via_job.rb'
+    - 'spec/requests/json_output_spec.rb'
+    - 'spec/services/adapters/user_file_store_spec.rb'
+    - 'spec/services/download_service_spec.rb'
+    - 'spec/services/email_service_spec.rb'
+
+# Offense count: 12
+# Cop supports --auto-correct.
+# Configuration parameters: EnforcedStyle.
+# SupportedStyles: space, no_space
+Layout/SpaceInsideParens:
+  Exclude:
+    - 'app/services/adapters/amazon_ses_adapter.rb'
+    - 'app/services/adapters/service_url_resolver.rb'
+    - 'app/services/email_service.rb'
+    - 'app/value_objects/email_submission_detail.rb'
+    - 'app/value_objects/raw_message.rb'
+
+# Offense count: 1
+# Cop supports --auto-correct.
+# Configuration parameters: AllowInHeredoc.
+Layout/TrailingWhitespace:
+  Exclude:
+    - 'spec/models/submission_spec.rb'
+
 # Offense count: 2
 Lint/DuplicateMethods:
   Exclude:
@@ -97,6 +282,12 @@ RSpec/AnyInstance:
     - 'spec/support/jwt_authenticated_method.rb'
     - 'spec/value_objects/raw_message_spec.rb'
 
+# Offense count: 1
+# Cop supports --auto-correct.
+RSpec/BeEql:
+  Exclude:
+    - 'spec/services/adapters/jwe_webhook_destination_spec.rb'
+
 # Offense count: 17
 # Configuration parameters: Prefixes.
 # Prefixes: when, with, without
@@ -124,6 +315,30 @@ RSpec/EmptyExampleGroup:
     - 'spec/integration/sms_spec.rb'
     - 'spec/models/submission_spec.rb'
 
+# Offense count: 2
+# Cop supports --auto-correct.
+# Configuration parameters: AllowConsecutiveOneLiners.
+RSpec/EmptyLineAfterExample:
+  Exclude:
+    - 'spec/services/process_submission_service_spec.rb'
+
+# Offense count: 7
+# Cop supports --auto-correct.
+RSpec/EmptyLineAfterFinalLet:
+  Exclude:
+    - 'spec/services/download_service_spec.rb'
+    - 'spec/services/email_service_spec.rb'
+    - 'spec/services/process_submission_service_spec.rb'
+    - 'spec/support/json_only_api.rb'
+    - 'spec/support/jwt_authenticated_method.rb'
+
+# Offense count: 2
+# Cop supports --auto-correct.
+RSpec/EmptyLineAfterHook:
+  Exclude:
+    - 'spec/requests/submission_spec.rb'
+    - 'spec/services/process_submission_service_spec.rb'
+
 # Offense count: 12
 # Configuration parameters: Max.
 RSpec/ExampleLength:
@@ -142,6 +357,35 @@ RSpec/ExpectInHook:
   Exclude:
     - 'spec/services/json_webhook_service_spec.rb'
     - 'spec/services/process_submission_service_spec.rb'
+
+# Offense count: 11
+# Cop supports --auto-correct.
+# Configuration parameters: EnforcedStyle.
+# SupportedStyles: implicit, each, example
+RSpec/HookArgument:
+  Exclude:
+    - 'spec/controllers/email_controller_spec.rb'
+    - 'spec/controllers/sms_controller_spec.rb'
+    - 'spec/controllers/submission_controller_spec.rb'
+    - 'spec/integration/email_spec.rb'
+    - 'spec/integration/sms_spec.rb'
+    - 'spec/services/db_sweeper_spec.rb'
+    - 'spec/services/process_submission_service_spec.rb'
+    - 'spec/services/template_mapping_service_spec.rb'
+    - 'spec/value_objects/raw_message_spec.rb'
+
+# Offense count: 10
+# Cop supports --auto-correct.
+RSpec/LeadingSubject:
+  Exclude:
+    - 'spec/services/adapters/jwe_webhook_destination_spec.rb'
+    - 'spec/services/adapters/runner_callback_spec.rb'
+    - 'spec/services/adapters/service_url_resolver_spec.rb'
+    - 'spec/services/download_service_spec.rb'
+    - 'spec/services/json_webhook_service_spec.rb'
+    - 'spec/services/process_submission_service_spec.rb'
+    - 'spec/services/webhook_attachment_service_spec.rb'
+    - 'spec/value_objects/raw_message_spec.rb'
 
 # Offense count: 43
 # Configuration parameters: EnforcedStyle.
@@ -186,6 +430,20 @@ RSpec/NamedSubject:
 RSpec/NestedGroups:
   Max: 8
 
+# Offense count: 17
+# Cop supports --auto-correct.
+# Configuration parameters: EnforcedStyle.
+# SupportedStyles: not_to, to_not
+RSpec/NotToNot:
+  Exclude:
+    - 'spec/models/email_spec.rb'
+    - 'spec/models/sms_spec.rb'
+    - 'spec/requests/submission_spec.rb'
+    - 'spec/services/db_sweeper_spec.rb'
+    - 'spec/services/download_service_spec.rb'
+    - 'spec/support/json_only_api.rb'
+    - 'spec/support/jwt_authenticated_method.rb'
+
 # Offense count: 13
 RSpec/ScatteredLet:
   Exclude:
@@ -209,6 +467,70 @@ RSpec/VerifiedDoubles:
     - 'spec/services/download_service_spec.rb'
     - 'spec/services/process_submission_service_spec.rb'
 
+# Offense count: 7
+# Cop supports --auto-correct.
+# Configuration parameters: EnforcedStyle.
+# SupportedStyles: numeric, symbolic
+Rails/HttpStatus:
+  Exclude:
+    - 'spec/controllers/submission_controller_spec.rb'
+    - 'spec/requests/submission_spec.rb'
+    - 'spec/support/jwt_authenticated_method.rb'
+
+# Offense count: 1
+# Configuration parameters: AllowedChars.
+Style/AsciiComments:
+  Exclude:
+    - 'app/controllers/concerns/jwt_authentication.rb'
+
+# Offense count: 1
+# Cop supports --auto-correct.
+Style/BlockComments:
+  Exclude:
+    - 'spec/spec_helper.rb'
+
+# Offense count: 10
+# Cop supports --auto-correct.
+# Configuration parameters: EnforcedStyle, ProceduralMethods, FunctionalMethods, IgnoredMethods, AllowBracesOnProceduralOneLiners.
+# SupportedStyles: line_count_based, semantic, braces_for_chaining, always_braces
+# ProceduralMethods: benchmark, bm, bmbm, create, each_with_object, measure, new, realtime, tap, with_object
+# FunctionalMethods: let, let!, subject, watch
+# IgnoredMethods: lambda, proc, it
+Style/BlockDelimiters:
+  Exclude:
+    - 'spec/factories/submission.rb'
+    - 'spec/requests/json_output_spec.rb'
+    - 'spec/services/adapters/jwe_webhook_destination_spec.rb'
+    - 'spec/services/adapters/user_file_store_spec.rb'
+    - 'spec/support/json_only_api.rb'
+    - 'spec/support/jwt_authenticated_method.rb'
+
+# Offense count: 6
+# Cop supports --auto-correct.
+# Configuration parameters: EnforcedStyle.
+# SupportedStyles: braces, no_braces, context_dependent
+Style/BracesAroundHashParameters:
+  Exclude:
+    - 'app/controllers/concerns/jwt_authentication.rb'
+    - 'app/services/adapters/amazon_ses_adapter.rb'
+    - 'spec/services/adapters/user_file_store_spec.rb'
+    - 'spec/services/download_service_spec.rb'
+    - 'spec/services/template_mapping_service_spec.rb'
+
+# Offense count: 1
+# Cop supports --auto-correct.
+Style/ExpandPathArguments:
+  Exclude:
+    - 'spec/rails_helper.rb'
+
+# Offense count: 1
+# Cop supports --auto-correct.
+# Configuration parameters: EnforcedStyle.
+# SupportedStyles: each, for
+Style/For:
+  Exclude:
+    - 'spec/services/email_service_spec.rb'
+
 # Offense count: 4
 # Configuration parameters: MinBodyLength.
 Style/GuardClause:
@@ -218,3 +540,114 @@ Style/GuardClause:
     - 'app/controllers/sms_controller.rb'
     - 'app/services/adapters/jwe_webhook_destination.rb'
 
+# Offense count: 5
+# Cop supports --auto-correct.
+# Configuration parameters: EnforcedStyle, UseHashRocketsWithSymbolValues, PreferHashRocketsForNonAlnumEndingSymbols.
+# SupportedStyles: ruby19, hash_rockets, no_mixed_keys, ruby19_no_mixed_keys
+Style/HashSyntax:
+  Exclude:
+    - 'db/migrate/20190722192254_create_delayed_jobs.rb'
+    - 'spec/services/adapters/jwe_webhook_destination_spec.rb'
+
+# Offense count: 11
+# Cop supports --auto-correct.
+Style/IfUnlessModifier:
+  Exclude:
+    - 'app/controllers/application_controller.rb'
+    - 'app/controllers/concerns/error_handling.rb'
+    - 'app/controllers/email_controller.rb'
+    - 'app/controllers/sms_controller.rb'
+    - 'app/services/adapters/jwe_webhook_destination.rb'
+    - 'app/services/adapters/runner_callback.rb'
+    - 'app/services/adapters/service_url_resolver.rb'
+    - 'app/services/adapters/user_file_store.rb'
+    - 'app/services/download_service.rb'
+    - 'app/services/process_submission_service.rb'
+
+# Offense count: 1
+# Cop supports --auto-correct.
+# Configuration parameters: EnforcedStyle.
+# SupportedStyles: literals, strict
+Style/MutableConstant:
+  Exclude:
+    - 'config/initializers/service_environments.rb'
+
+# Offense count: 1
+# Cop supports --auto-correct.
+# Configuration parameters: EnforcedStyle, MinBodyLength.
+# SupportedStyles: skip_modifier_ifs, always
+Style/Next:
+  Exclude:
+    - 'app/services/process_submission_service.rb'
+
+# Offense count: 5
+# Cop supports --auto-correct.
+# Configuration parameters: EnforcedStyle.
+# SupportedStyles: compact, exploded
+Style/RaiseArgs:
+  Exclude:
+    - 'app/controllers/concerns/jwt_authentication.rb'
+    - 'app/services/template_mapping_service.rb'
+
+# Offense count: 1
+# Cop supports --auto-correct.
+Style/RedundantBegin:
+  Exclude:
+    - 'app/services/service_token_service.rb'
+
+# Offense count: 58
+# Cop supports --auto-correct.
+# Configuration parameters: EnforcedStyle, ConsistentQuotesInMultiline.
+# SupportedStyles: single_quotes, double_quotes
+Style/StringLiterals:
+  Exclude:
+    - 'Gemfile'
+    - 'app/controllers/application_controller.rb'
+    - 'app/controllers/concerns/jwt_authentication.rb'
+    - 'app/services/db_sweeper.rb'
+    - 'config/application.rb'
+    - 'config/environments/production.rb'
+    - 'config/puma.rb'
+    - 'spec/factories/submission.rb'
+    - 'spec/models/email_spec.rb'
+    - 'spec/models/sms_spec.rb'
+    - 'spec/rails_helper.rb'
+    - 'spec/requests/json_output_spec.rb'
+    - 'spec/services/download_service_spec.rb'
+    - 'spec/services/template_mapping_service_spec.rb'
+
+# Offense count: 2
+# Cop supports --auto-correct.
+# Configuration parameters: IgnoredMethods.
+# IgnoredMethods: respond_to, define_method
+Style/SymbolProc:
+  Exclude:
+    - 'app/services/process_submission_service.rb'
+    - 'app/value_objects/raw_message.rb'
+
+# Offense count: 2
+# Cop supports --auto-correct.
+# Configuration parameters: EnforcedStyleForMultiline.
+# SupportedStylesForMultiline: comma, consistent_comma, no_comma
+Style/TrailingCommaInArguments:
+  Exclude:
+    - 'spec/value_objects/raw_message_spec.rb'
+
+# Offense count: 1
+# Cop supports --auto-correct.
+# Configuration parameters: EnforcedStyleForMultiline.
+# SupportedStylesForMultiline: comma, consistent_comma, no_comma
+Style/TrailingCommaInArrayLiteral:
+  Exclude:
+    - 'spec/requests/json_output_spec.rb'
+
+# Offense count: 4
+# Cop supports --auto-correct.
+# Configuration parameters: EnforcedStyleForMultiline.
+# SupportedStylesForMultiline: comma, consistent_comma, no_comma
+Style/TrailingCommaInHashLiteral:
+  Exclude:
+    - 'spec/integration/email_spec.rb'
+    - 'spec/integration/sms_spec.rb'
+    - 'spec/jobs/email_job_spec.rb'
+    - 'spec/jobs/sms_job_spec.rb'
