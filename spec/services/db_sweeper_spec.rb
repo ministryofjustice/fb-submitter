@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe DbSweeper do
   describe '#call' do
     context 'when there are submissions over 28 days old' do
-      before :each do
+      before do
         create(:submission, created_at: 30.days.ago)
         create(:submission, created_at: 5.days.ago)
       end
@@ -16,14 +16,14 @@ RSpec.describe DbSweeper do
     end
 
     context 'when there are no submissions over 28 days old' do
-      before :each do
+      before do
         create(:submission, created_at: 5.days.ago)
       end
 
       it 'leaves records intact' do
         expect do
           subject.call
-        end.to_not change(Submission, :count)
+        end.not_to change(Submission, :count)
       end
     end
   end

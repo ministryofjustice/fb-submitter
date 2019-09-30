@@ -4,7 +4,7 @@ module Adapters
   class ServiceTokenCacheClient
     attr_accessor :root_url
 
-    def initialize(params={})
+    def initialize(params = {})
       @root_url = params[:root_url] || ENV['SERVICE_TOKEN_CACHE_ROOT_URL']
     end
 

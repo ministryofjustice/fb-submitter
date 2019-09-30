@@ -2,6 +2,10 @@ require 'rails_helper'
 require 'webmock/rspec'
 
 describe Adapters::RunnerCallback do
+  subject do
+    described_class.new(url: expected_url, token: 'some-token')
+  end
+
   let(:response) do
     { id: SecureRandom.uuid }.to_json
   end
@@ -12,10 +16,6 @@ describe Adapters::RunnerCallback do
 
   let(:expected_headers) do
     { 'x-encrypted-user-id-and-token' => 'some-token' }
-  end
-
-  subject do
-    described_class.new(url: expected_url, token: 'some-token')
   end
 
   it 'returns the submission json when given a url' do

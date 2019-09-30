@@ -2,20 +2,18 @@ module Adapters
   class ServiceUrlResolver
     attr_accessor :service_slug, :environment_slug
 
-    def initialize(params={})
+    def initialize(params = {})
       @service_slug = params[:service_slug]
       @environment_slug = params[:environment_slug] || ENV['FB_ENVIRONMENT_SLUG']
     end
 
-    def ensure_absolute_urls(urls=[])
-      urls.map{ |u| ensure_absolute_url(u) }
+    def ensure_absolute_urls(urls = [])
+      urls.map { |u| ensure_absolute_url(u) }
     end
 
     def ensure_absolute_url(url)
       uri = URI.parse(url)
-      unless uri.absolute?
-        uri = resolve_uri_to_service(uri)
-      end
+      uri = resolve_uri_to_service(uri) unless uri.absolute?
       uri.to_s
     end
 

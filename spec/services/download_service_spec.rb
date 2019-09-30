@@ -5,17 +5,18 @@ describe DownloadService do
   let(:headers) { { 'x-encrypted-user-id-and-token' => 'sometoken' } }
   let(:args) { { url: url, target_dir: '/my/target/dir', headers: headers } }
   let(:mock_hydra) { double('hydra', run: 'run result', queue: 'queue result') }
+
   before do
     allow(Typhoeus::Hydra).to receive(:hydra).and_return(mock_hydra)
   end
 
   describe '#download_in_parallel' do
-    let(:path) { '/the/file/path' }
-    let(:mock_request) { double('request', run: 'run result') }
-
     subject do
       described_class.new(urls: [url])
     end
+
+    let(:path) { '/the/file/path' }
+    let(:mock_request) { double('request', run: 'run result') }
 
     before do
       allow(subject).to receive(:construct_request).and_return(mock_request)
@@ -34,28 +35,28 @@ describe DownloadService do
     end
 
     context 'when a target_dir is given' do
-      let(:target_dir) { '/my/tmp/dir' }
-
       subject do
         described_class.new(urls: [url], target_dir: target_dir)
       end
 
+      let(:target_dir) { '/my/tmp/dir' }
+
       it 'does not make a temp dir' do
-        expect(Dir).to_not receive(:mktmpdir)
+        expect(Dir).not_to receive(:mktmpdir)
         subject.download_in_parallel
       end
     end
 
     context 'given an array of urls' do
+      subject do
+        described_class.new(args)
+      end
+
       let(:url1) { 'https://example.com/service/some-service/user/some-user/fingerprint' }
       let(:url2) { 'https://another.domain/some/otherfile.ext' }
       let(:args) { { urls: [url1, url2], target_dir: path, headers: headers } }
       let(:mock_request_1) { double('request1') }
       let(:mock_request_2) { double('request2') }
-
-      subject do
-        described_class.new(args)
-      end
 
       before do
         allow(subject).to receive(:file_path_for_download).with(url: url1, target_dir: path).and_return('/tmp/file1')

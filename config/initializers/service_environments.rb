@@ -20,6 +20,6 @@ ALL_ENVS = {
     protocol: 'http://',
     url_root: 'apps.cloud-platform-live-0.k8s.integration.dsd.io'
   }
-}
+}.freeze
 
 Rails.configuration.x.service_environments = ALL_ENVS

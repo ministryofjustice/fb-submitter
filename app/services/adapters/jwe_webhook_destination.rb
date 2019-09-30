@@ -15,9 +15,7 @@ module Adapters
         body: encrypted_body(body)
       ).run
 
-      unless response.success?
-        raise ClientRequestError, "request for #{url} returned response status of: #{response.code}"
-      end
+      raise ClientRequestError, "request for #{url} returned response status of: #{response.code}" unless response.success?
     end
 
     private

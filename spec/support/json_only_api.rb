@@ -1,10 +1,11 @@
 RSpec.shared_context 'a JSON-only API' do |method_name, url|
   describe 'a json request' do
-    let(:headers) {
+    let(:headers) do
       {
         'Content-type' => 'application/json'
       }
-    }
+    end
+
     before do
       send(method_name, url, headers: headers)
     end
@@ -14,7 +15,7 @@ RSpec.shared_context 'a JSON-only API' do |method_name, url|
     end
 
     it 'does not respond_with :unacceptable' do
-      expect(response.status).to_not eq(:unacceptable)
+      expect(response.status).not_to eq(:unacceptable)
     end
   end
 end

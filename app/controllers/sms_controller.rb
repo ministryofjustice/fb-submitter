@@ -15,9 +15,7 @@ class SmsController < ApplicationController
   def create
     return render_errors unless sms_validator.valid?
 
-    if job_class.perform_later(message: message_params)
-      return render json: {}, status: :created
-    end
+    return render json: {}, status: :created if job_class.perform_later(message: message_params)
   end
 
   private

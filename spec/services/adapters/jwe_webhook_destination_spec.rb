@@ -3,6 +3,10 @@ require 'webmock/rspec'
 require 'jwe'
 
 describe Adapters::JweWebhookDestination do
+  subject do
+    described_class.new(url: expected_url, key: key)
+  end
+
   let(:payload) do
     { id: SecureRandom.uuid }
   end
@@ -11,10 +15,6 @@ describe Adapters::JweWebhookDestination do
 
   let(:expected_url) do
     "http://www.example.com/#{SecureRandom.uuid}"
-  end
-
-  subject do
-    described_class.new(url: expected_url, key: key)
   end
 
   it 'makes a post to the given url' do
@@ -26,13 +26,13 @@ describe Adapters::JweWebhookDestination do
   end
 
   it 'sends JWE encrypted payload' do
-    response = double('response', :success? => true)
+    response = double('response', success?: true)
 
     allow(Typhoeus::Request).to receive(:new) do |url, hash|
       expect(url).to eql(expected_url)
-      expect(hash[:method]).to eql(:post)
+      expect(hash[:method]).to be(:post)
       expect(JSON.parse(JWE.decrypt(hash[:body], key)).symbolize_keys).to eql(payload)
-    end.and_return(double('request', :run => response))
+    end.and_return(double('request', run: response))
 
     subject.send_webhook(body: payload)
   end
@@ -40,8 +40,8 @@ describe Adapters::JweWebhookDestination do
   it 'throws exception if not 200 response' do
     stub_request(:post, expected_url).to_return(status: 500)
 
-    expect{
+    expect do
       subject.send_webhook(body: payload)
-    }.to raise_error(Adapters::JweWebhookDestination::ClientRequestError)
+    end.to raise_error(Adapters::JweWebhookDestination::ClientRequestError)
   end
 end

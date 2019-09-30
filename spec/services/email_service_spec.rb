@@ -12,12 +12,13 @@ describe EmailService do
 
     describe 'return value' do
       let(:return_value) { described_class.sanitised_params(opts) }
+
       it 'is a hash' do
         expect(return_value).to be_a(Hash)
       end
 
       it 'has all the keys from the given opts' do
-        for key in opts.keys
+        opts.keys.each do |key|
           expect(return_value.keys).to include(key)
         end
       end

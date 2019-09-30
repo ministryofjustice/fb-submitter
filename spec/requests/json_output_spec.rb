@@ -36,7 +36,7 @@ describe 'Submits JSON given a JSON submission type', type: :request do
     }
   end
 
-  let(:expected_attachments) {
+  let(:expected_attachments) do
     [
       {
         url: 'example.com/1',
@@ -52,7 +52,7 @@ describe 'Submits JSON given a JSON submission type', type: :request do
         filename: 'form2'
       }
     ]
-  }
+  end
 
   let(:expected_json_payload) do
     {

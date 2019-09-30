@@ -50,7 +50,7 @@ describe 'UserData API', type: :request do
 
             describe 'the response body' do
               it 'is valid JSON' do
-                expect { JSON.parse(response.body) }.to_not raise_error
+                expect { JSON.parse(response.body) }.not_to raise_error
               end
 
               it 'is the requested submission rendered as json' do
@@ -162,13 +162,14 @@ describe 'UserData API', type: :request do
               before do
                 post_request
               end
+
               it 'has status 201' do
                 expect(response).to have_http_status(:created)
               end
 
               describe 'the body' do
                 it 'is a valid JSON packet' do
-                  expect { JSON.parse(body) }.to_not raise_error
+                  expect { JSON.parse(body) }.not_to raise_error
                 end
 
                 it 'is the new Submission record, serialised to JSON' do

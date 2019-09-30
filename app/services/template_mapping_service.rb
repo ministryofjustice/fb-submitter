@@ -13,7 +13,7 @@ class TemplateMappingService
 
     def self.template_id_for_name(name)
       ALL.fetch(name) do
-        raise MissingTemplate.new
+        raise MissingTemplate
       end
     end
   end
@@ -27,7 +27,7 @@ class TemplateMappingService
 
     def self.template_id_for_name(name)
       ALL.fetch(name) do
-        raise MissingTemplate.new
+        raise MissingTemplate
       end
     end
   end

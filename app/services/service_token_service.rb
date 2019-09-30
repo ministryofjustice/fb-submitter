@@ -1,10 +1,8 @@
 class ServiceTokenService
   def self.get(service_slug)
-    begin
-      client.get(service_slug)
-    rescue StandardError => e
-      Rails.logger.warn "error getting service_slug #{service_slug} - #{e}"
-    end
+    client.get(service_slug)
+  rescue StandardError => e
+    Rails.logger.warn "error getting service_slug #{service_slug} - #{e}"
   end
 
   def self.client

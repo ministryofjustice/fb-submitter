@@ -37,9 +37,9 @@ describe Adapters::UserFileStore do
     end
 
     it 'throws an exception' do
-      expect {
+      expect do
         adaptor.get_presigned_url(url)
-      }.to raise_error(Adapters::UserFileStore::ClientRequestError).with_message("Request for #{requested_url} returned response status of: 400")
+      end.to raise_error(Adapters::UserFileStore::ClientRequestError).with_message("Request for #{requested_url} returned response status of: 400")
     end
   end
 end

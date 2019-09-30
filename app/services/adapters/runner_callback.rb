@@ -11,9 +11,7 @@ module Adapters
     def fetch_full_submission
       response = Typhoeus.get(url, headers: headers)
 
-      unless response.success?
-        raise ClientRequestError, "request for #{url} returned response status of: #{response.code}"
-      end
+      raise ClientRequestError, "request for #{url} returned response status of: #{response.code}" unless response.success?
 
       response.body
     end

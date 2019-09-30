@@ -4,7 +4,7 @@ module Adapters
     # ENV['AWS_ACCESS_KEY_ID'] and ENV['AWS_SECRET_ACCESS_KEY']
     def self.send_mail(opts = {})
       client.send_raw_email(
-        destinations: [ opts[:to] ],
+        destinations: [opts[:to]],
         raw_message: {
           data: opts[:raw_message].to_s
         },

@@ -1,7 +1,7 @@
 class RawMessage
   attr_accessor :from, :to, :subject, :body_parts, :attachments
 
-  def initialize(opts={})
+  def initialize(opts = {})
     symbol_params = opts.dup.symbolize_keys!
     @attachments  = symbol_params[:attachments]
     @body_parts   = symbol_params[:body_parts]
@@ -34,7 +34,7 @@ class RawMessage
       #{[@body_parts['text/plain']].pack('M')}
 
       --NextPart
-      #{@attachments.map{ |attachment| inline_attachment(attachment) }.join("\n\n--NextPart\n")}
+      #{@attachments.map { |attachment| inline_attachment(attachment) }.join("\n\n--NextPart\n")}
 
     END
   end
@@ -47,7 +47,7 @@ class RawMessage
       Content-Disposition: attachment; filename="#{attachment.filename_with_extension}"
       Content-Transfer-Encoding: base64
 
-      #{Base64.encode64(File.open(attachment.path, 'rb'){ |file| file.read })}
+      #{Base64.encode64(File.open(attachment.path, 'rb', &:read))}
 
     END
   end

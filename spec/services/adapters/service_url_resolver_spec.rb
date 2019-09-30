@@ -1,14 +1,14 @@
 require 'rails_helper'
 
 describe Adapters::ServiceUrlResolver do
+  subject { described_class.new(service_slug: service_slug, environment_slug: environment_slug) }
+
   let(:service_slug) { 'my-service' }
   let(:environment_slug) { 'dev' }
 
-  subject { described_class.new(service_slug: service_slug, environment_slug: environment_slug) }
-
   describe '#resolve_uri_to_service' do
     context 'given a URI' do
-      let(:uri){ URI.parse('/a/relative/path') }
+      let(:uri) { URI.parse('/a/relative/path') }
 
       it 'resolves correctly' do
         expect(subject.resolve_uri_to_service(uri).to_s).to eql('http://my-service.formbuilder-services-dev:3000/a/relative/path')

@@ -1,12 +1,12 @@
 describe WebhookAttachmentService do
+  subject(:service) { described_class.new(attachments: attachments, user_file_store_gateway: user_file_store_gateway) }
+
   before do
     allow(user_file_store_gateway).to receive(:get_presigned_url).with(attachment_1).and_return(expected_attachments[0])
     allow(user_file_store_gateway).to receive(:get_presigned_url).with(attachment_2).and_return(expected_attachments[1])
   end
 
   let(:user_file_store_gateway) { instance_spy(Adapters::UserFileStore) }
-
-  subject(:service) { described_class.new(attachments: attachments, user_file_store_gateway: user_file_store_gateway) }
 
   let(:attachment_1) { 'https://example.com/private_url_1' }
   let(:attachment_2) { 'https://example.com/private_url_2' }

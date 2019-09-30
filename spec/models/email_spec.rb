@@ -11,16 +11,16 @@ RSpec.describe Email do
       context 'when invalid' do
         it 'is not valid' do
           subject.to = '1111'
-          expect(subject).to_not be_valid
+          expect(subject).not_to be_valid
 
           subject.to = '@example.com'
-          expect(subject).to_not be_valid
+          expect(subject).not_to be_valid
 
           subject.to = 'user@example'
-          expect(subject).to_not be_valid
+          expect(subject).not_to be_valid
 
           subject.to = 'example.com'
-          expect(subject).to_not be_valid
+          expect(subject).not_to be_valid
         end
       end
 

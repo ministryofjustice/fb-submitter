@@ -1,7 +1,7 @@
 require 'swagger_helper'
 
 RSpec.describe 'sms' do
-  before :each do
+  before do
     allow_any_instance_of(ApplicationController).to receive(:disable_jwt?).and_return(true)
   end
 

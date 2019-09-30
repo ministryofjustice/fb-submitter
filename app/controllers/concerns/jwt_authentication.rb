@@ -25,7 +25,7 @@ module Concerns
                       args: params,
                       leeway: ENV['MAX_IAT_SKEW_SECONDS'])
 
-      raise Exceptions::TokenNotPresentError.new unless token.present?
+      raise Exceptions::TokenNotPresentError unless token.present?
 
       begin
         hmac_secret = get_service_token(params[:service_slug])
@@ -42,13 +42,13 @@ module Concerns
         iat_skew = payload['iat'].to_i - Time.current.to_i
         if iat_skew.abs > leeway.to_i
           Rails.logger.debug("iat skew is #{iat_skew}, max is #{leeway} - INVALID")
-          raise Exceptions::TokenNotValidError.new
+          raise Exceptions::TokenNotValidError
         end
 
         Rails.logger.debug 'token is valid'
       rescue StandardError => e
         Rails.logger.debug("Couldn't parse that token - error #{e}")
-        raise Exceptions::TokenNotValidError.new
+        raise Exceptions::TokenNotValidError
       end
     end
 

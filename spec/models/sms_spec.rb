@@ -11,13 +11,13 @@ RSpec.describe Sms do
       context 'when invalid' do
         it 'is not valid' do
           subject.to = '1111'
-          expect(subject).to_not be_valid
+          expect(subject).not_to be_valid
 
           subject.to = 'qwertyuiopa'
-          expect(subject).to_not be_valid
+          expect(subject).not_to be_valid
 
           subject.to = '111111111111111111111111'
-          expect(subject).to_not be_valid
+          expect(subject).not_to be_valid
         end
       end
 

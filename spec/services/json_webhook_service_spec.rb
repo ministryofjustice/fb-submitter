@@ -1,6 +1,14 @@
 require 'rails_helper'
 
 describe JsonWebhookService do
+  subject do
+    described_class.new(
+      runner_callback_adapter: runner_callback_adapter,
+      webhook_attachment_fetcher: webhook_attachment_fetcher,
+      webhook_destination_adapter: webhook_destination_adapter
+    )
+  end
+
   let(:submission) { create(:submission) }
   let(:runner_callback_adapter) do
     instance_double(Adapters::RunnerCallback)
@@ -11,14 +19,6 @@ describe JsonWebhookService do
 
   let(:webhook_attachment_fetcher) do
     instance_double(WebhookAttachmentService)
-  end
-
-  subject do
-    described_class.new(
-      runner_callback_adapter: runner_callback_adapter,
-      webhook_attachment_fetcher: webhook_attachment_fetcher,
-      webhook_destination_adapter: webhook_destination_adapter
-    )
   end
 
   let(:frontend_response) { submission.submission_details.to_json }

@@ -19,7 +19,7 @@ class SubmissionController < ApplicationController
 
   private
 
-  def submission_params(opts=params)
+  def submission_params(opts = params)
     # we must use slice(..).permit! rather than permitting individual params, as
     # submission_details is an arbitrary hash, which AC Strong Params *really*
     # doesn't like

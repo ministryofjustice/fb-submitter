@@ -41,9 +41,7 @@ class DownloadService
   def construct_request(url:, file_path:, headers: {})
     request = Typhoeus::Request.new(url, followlocation: true, headers: headers)
     request.on_headers do |response|
-      if response.code != 200
-        raise "Request failed (#{response.code}: #{response.return_code} #{request.url})"
-      end
+      raise "Request failed (#{response.code}: #{response.return_code} #{request.url})" if response.code != 200
     end
     open_file = File.open(file_path, 'wb')
     # writing a chunk at a time is way more efficient for large files
@@ -53,9 +51,7 @@ class DownloadService
     end
     request.on_complete do |response|
       open_file.close
-      if response.code != 200
-        raise "Request failed (#{response.code}: #{response.return_code} #{request.url})"
-      end
+      raise "Request failed (#{response.code}: #{response.return_code} #{request.url})" if response.code != 200
       # Note that response.body is "", cause it's been cleared as we go
     end
     request

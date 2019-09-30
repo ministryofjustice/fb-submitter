@@ -13,9 +13,7 @@ module Adapters
         headers: { 'x-encrypted-user-id-and-token': @key },
         method: :post
       ).run
-      unless response.success?
-        raise ClientRequestError, "Request for #{signed_url} returned response status of: #{response&.code}"
-      end
+      raise ClientRequestError, "Request for #{signed_url} returned response status of: #{response&.code}" unless response.success?
 
       json = JSON.parse(response.body).symbolize_keys!
       {

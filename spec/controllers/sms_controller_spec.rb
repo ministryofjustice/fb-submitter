@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe SmsController do
-  before :each do
+  before do
     request.env['CONTENT_TYPE'] = 'application/json'
     allow_any_instance_of(ApplicationController).to receive(:verify_token!)
   end
