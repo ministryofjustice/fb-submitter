@@ -1,11 +1,11 @@
 describe WebhookAttachmentService do
+  subject(:service) { described_class.new(attachment_parser: attachment_parser, user_file_store_gateway: user_file_store_gateway) }
+
   before do
     allow(user_file_store_gateway).to receive(:get_presigned_url).with(attachment_1).and_return(user_file_store_gateway_return[0])
     allow(user_file_store_gateway).to receive(:get_presigned_url).with(attachment_2).and_return(user_file_store_gateway_return[1])
     allow(attachment_parser).to receive(:execute).and_return(attachments)
   end
-
-  subject(:service) { described_class.new(attachment_parser: attachment_parser, user_file_store_gateway: user_file_store_gateway) }
 
   let(:user_file_store_gateway) { instance_spy(Adapters::UserFileStore) }
   let(:attachment_parser) { instance_spy(AttachmentParserService) }
@@ -71,8 +71,6 @@ describe WebhookAttachmentService do
       before do
         allow(attachment_parser).to receive(:execute).and_return([])
       end
-
-      subject(:service) { described_class.new(attachment_parser: attachment_parser, user_file_store_gateway: user_file_store_gateway) }
 
       it 'returns empty array when given one' do
         expect(service.execute).to eq([])

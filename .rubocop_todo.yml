@@ -36,7 +36,6 @@ Lint/UnusedMethodArgument:
 # Offense count: 3
 Lint/UselessAssignment:
   Exclude:
-    - 'app/controllers/concerns/jwt_authentication.rb'
     - 'app/jobs/email_job.rb'
     - 'app/jobs/sms_job.rb'
 
@@ -54,14 +53,6 @@ Metrics/BlockLength:
 # Configuration parameters: CountComments, ExcludedMethods.
 Metrics/MethodLength:
   Max: 24
-
-# Offense count: 2
-# Configuration parameters: ExpectMatchingDefinition, Regex, IgnoreExecutableScripts, AllowedAcronyms.
-# AllowedAcronyms: CLI, DSL, ACL, API, ASCII, CPU, CSS, DNS, EOF, GUID, HTML, HTTP, HTTPS, ID, IP, JSON, LHS, QPS, RAM, RHS, RPC, SLA, SMTP, SQL, SSH, TCP, TLS, TTL, UDP, UI, UID, UUID, URI, URL, UTF8, VM, XML, XMPP, XSRF, XSS
-Naming/FileName:
-  Exclude:
-    - 'config/initializers/rswag-api.rb'
-    - 'config/initializers/rswag-ui.rb'
 
 # Offense count: 2
 # Configuration parameters: Blacklist.
@@ -96,18 +87,11 @@ RSpec/ContextWording:
     - 'spec/support/json_only_api.rb'
     - 'spec/support/jwt_authenticated_method.rb'
 
-# Offense count: 2
-RSpec/DescribeClass:
-  Exclude:
-    - 'spec/integration/email_spec.rb'
-    - 'spec/integration/sms_spec.rb'
-
 # Offense count: 3
 # Configuration parameters: CustomIncludeMethods.
 RSpec/EmptyExampleGroup:
   Exclude:
     - 'spec/integration/email_spec.rb'
-    - 'spec/integration/sms_spec.rb'
     - 'spec/models/submission_spec.rb'
 
 # Offense count: 12
@@ -117,8 +101,6 @@ RSpec/ExampleLength:
     - 'spec/jobs/email_job_spec.rb'
     - 'spec/jobs/sms_job_spec.rb'
     - 'spec/models/email_spec.rb'
-    - 'spec/models/sms_spec.rb'
-    - 'spec/services/adapters/jwe_webhook_destination_spec.rb'
     - 'spec/services/adapters/user_file_store_spec.rb'
     - 'spec/services/download_service_spec.rb'
     - 'spec/services/process_submission_service_spec.rb'
@@ -126,14 +108,7 @@ RSpec/ExampleLength:
 # Offense count: 2
 RSpec/ExpectInHook:
   Exclude:
-    - 'spec/services/json_webhook_service_spec.rb'
     - 'spec/services/process_submission_service_spec.rb'
-
-# Offense count: 2
-# Cop supports --auto-correct.
-RSpec/LeadingSubject:
-  Exclude:
-    - 'spec/services/webhook_attachment_service_spec.rb'
 
 # Offense count: 43
 # Configuration parameters: EnforcedStyle.
@@ -144,7 +119,6 @@ RSpec/MessageSpies:
     - 'spec/jobs/sms_job_spec.rb'
     - 'spec/services/download_service_spec.rb'
     - 'spec/services/email_service_spec.rb'
-    - 'spec/services/json_webhook_service_spec.rb'
     - 'spec/services/process_submission_service_spec.rb'
 
 # Offense count: 1
@@ -155,7 +129,7 @@ RSpec/MultipleDescribes:
 # Offense count: 25
 # Configuration parameters: AggregateFailuresByDefault.
 RSpec/MultipleExpectations:
-  Max: 10
+  Max: 4
 
 # Offense count: 105
 # Configuration parameters: IgnoreSharedExamples.
@@ -164,13 +138,10 @@ RSpec/NamedSubject:
     - 'spec/jobs/email_job_spec.rb'
     - 'spec/jobs/sms_job_spec.rb'
     - 'spec/models/email_spec.rb'
-    - 'spec/models/sms_spec.rb'
-    - 'spec/services/adapters/jwe_webhook_destination_spec.rb'
     - 'spec/services/adapters/runner_callback_spec.rb'
     - 'spec/services/adapters/service_url_resolver_spec.rb'
     - 'spec/services/db_sweeper_spec.rb'
     - 'spec/services/download_service_spec.rb'
-    - 'spec/services/json_webhook_service_spec.rb'
     - 'spec/services/process_submission_service_spec.rb'
     - 'spec/value_objects/raw_message_spec.rb'
 
@@ -183,12 +154,6 @@ RSpec/SubjectStub:
   Exclude:
     - 'spec/services/download_service_spec.rb'
     - 'spec/services/process_submission_service_spec.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/IfUnlessModifier:
-  Exclude:
-    - 'app/services/process_submission_service.rb'
 
 # Offense count: 1
 # Cop supports --auto-correct.

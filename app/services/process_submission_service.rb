@@ -30,9 +30,7 @@ class ProcessSubmissionService
     end
 
     submission.detail_objects.to_a.each do |submission_detail|
-      if submission_detail.instance_of? EmailSubmissionDetail
-        send_email(submission_detail)
-      end
+      send_email(submission_detail) if submission_detail.instance_of? EmailSubmissionDetail
     end
 
     # explicit save! first, to save the responses

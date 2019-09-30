@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe JsonWebhookService do
-  subject do
+  subject(:service) do
     described_class.new(
       runner_callback_adapter: runner_callback_adapter,
       webhook_attachment_fetcher: webhook_attachment_fetcher,
@@ -10,16 +10,10 @@ describe JsonWebhookService do
   end
 
   let(:submission) { create(:submission) }
-  let(:runner_callback_adapter) do
-    instance_double(Adapters::RunnerCallback)
-  end
-  let(:webhook_destination_adapter) do
-    instance_double(Adapters::JweWebhookDestination)
-  end
 
-  let(:webhook_attachment_fetcher) do
-    instance_double(WebhookAttachmentService)
-  end
+  let(:runner_callback_adapter) { instance_spy(Adapters::RunnerCallback) }
+  let(:webhook_destination_adapter) { instance_spy(Adapters::JweWebhookDestination) }
+  let(:webhook_attachment_fetcher) { instance_spy(WebhookAttachmentService) }
 
   let(:frontend_response) { submission.submission_details.to_json }
 
@@ -48,19 +42,24 @@ describe JsonWebhookService do
   before do
     allow(webhook_destination_adapter).to receive(:send_webhook)
     allow(webhook_attachment_fetcher).to receive(:execute).and_return(attachments)
-    expect(runner_callback_adapter).to receive(:fetch_full_submission).and_return(frontend_response)
+    allow(runner_callback_adapter).to receive(:fetch_full_submission).and_return(frontend_response)
   end
 
   it 'modifies and sends the submission to the destination' do
-    expect(webhook_destination_adapter).to receive(:send_webhook)
+    service.execute(service_slug: submission.service_slug)
+
+    expect(webhook_destination_adapter).to have_received(:send_webhook)
       .with(body: json_payload)
       .once
+  end
 
-    subject.execute(service_slug: submission.service_slug)
+  it 'calls fetch_full_submission' do
+    service.execute(service_slug: submission.service_slug)
+    expect(runner_callback_adapter).to have_received(:fetch_full_submission)
   end
 
   it 'calls the webhook_attachment_fetcher' do
-    expect(webhook_attachment_fetcher).to receive(:execute).once
-    subject.execute(service_slug: submission.service_slug)
+    service.execute(service_slug: submission.service_slug)
+    expect(webhook_attachment_fetcher).to have_received(:execute).once
   end
 end

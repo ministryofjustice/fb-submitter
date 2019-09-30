@@ -29,7 +29,7 @@ module Concerns
 
       begin
         hmac_secret = get_service_token(params[:service_slug])
-        payload, header = JWT.decode(
+        payload, _header = JWT.decode(
           token,
           hmac_secret,
           true,
