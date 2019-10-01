@@ -7,7 +7,7 @@ describe Adapters::ServiceUrlResolver do
   let(:environment_slug) { 'dev' }
 
   describe '#resolve_uri_to_service' do
-    context 'given a URI' do
+    context 'with a URI' do
       let(:uri) { URI.parse('/a/relative/path') }
 
       it 'resolves correctly' do
@@ -17,7 +17,7 @@ describe Adapters::ServiceUrlResolver do
   end
 
   describe '#ensure_absolute_url' do
-    context 'given an absolute URL' do
+    context 'with an absolute URL' do
       let(:url) { 'https://www.example.com/' }
 
       it 'returns the given URL unmodified' do
@@ -25,7 +25,7 @@ describe Adapters::ServiceUrlResolver do
       end
     end
 
-    context 'given a relative URL' do
+    context 'with a relative URL' do
       let(:url) { '/a/relative/url' }
 
       it 'returns the resolved URL' do

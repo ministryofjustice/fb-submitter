@@ -99,7 +99,7 @@ describe ProcessSubmissionService do
       allow(subject).to receive(:retrieve_mail_body_parts).and_return(body_part_content)
     end
 
-    context 'given a mix of email and json submissions' do
+    context 'with a mix of email and json submissions' do
       let(:runner_callback_url) { 'https://example.com/runner_frontend_callback' }
       let(:json_destination_url) { 'https://example.com/json_destination_placeholder' }
 
@@ -163,7 +163,7 @@ describe ProcessSubmissionService do
       end
     end
 
-    context 'given a valid submission_id' do
+    context 'with a valid submission_id' do
       let(:submission_id) { submission.id }
 
       before do
@@ -305,7 +305,7 @@ describe ProcessSubmissionService do
   end
 
   describe '#unique_attachment_urls' do
-    context 'given a submission with multiple detail objects, each with attachments' do
+    context 'with a submission with multiple detail objects, each with attachments' do
       let(:submission_detail_1) do
         {
           'type' => 'email',
@@ -408,14 +408,14 @@ describe ProcessSubmissionService do
   end
 
   describe '#read_downloaded_body_parts' do
-    context 'given a mail with body parts' do
+    context 'when a mail with body parts' do
       let(:mail) { instance_double(EmailSubmissionDetail) }
 
       before do
         allow(mail).to receive(:body_parts).and_return('text/plain' => 'url1', 'text/html' => 'url2')
       end
 
-      context 'and a map of urls to file paths' do
+      context 'with a map of urls to file paths' do
         let(:file_map) { { 'url1' => 'file1', 'url2' => 'file2' } }
         let(:mock_file_1) { instance_double(File) }
         let(:mock_file_2) { instance_double(File) }

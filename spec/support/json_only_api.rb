@@ -1,4 +1,4 @@
-RSpec.shared_context 'a JSON-only API' do |method_name, url|
+RSpec.shared_context 'when a JSON-only API' do |method_name, url|
   describe 'a json request' do
     let(:headers) do
       {

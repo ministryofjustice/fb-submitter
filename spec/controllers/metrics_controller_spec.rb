@@ -6,7 +6,7 @@ RSpec.describe MetricsController do
 
     let(:job) { Delayed::Job.create! }
 
-    context 'given a pending job' do
+    context 'with a pending job' do
       before do
         job.update(attempts: 0)
         get :show, format: 'text'
@@ -20,7 +20,7 @@ delayed_jobs_pending 1'
       end
     end
 
-    context 'given a failed job' do
+    context 'when a failed job' do
       before do
         job.update(attempts: 1)
         get :show, format: 'text'

@@ -46,7 +46,7 @@ RSpec.shared_examples 'a JWT-authenticated method' do |method, url, payload|
     let(:service_token) { 'ServiceToken' }
     let(:algorithm) { 'HS256' }
 
-    context 'which is valid' do
+    context 'when valid' do
       let(:iat) { Time.current.to_i }
       let(:token) do
         JWT.encode payload.merge(iat: iat), service_token, algorithm
@@ -58,10 +58,10 @@ RSpec.shared_examples 'a JWT-authenticated method' do |method, url, payload|
       end
     end
 
-    context 'which is not valid' do
+    context 'when not valid' do
       let(:token) { 'invalid token' }
 
-      context 'as the timestamp is older than MAX_IAT_SKEW_SECONDS' do
+      context 'when the timestamp is older than MAX_IAT_SKEW_SECONDS' do
         let(:iat) { Time.current.to_i - (ENV['MAX_IAT_SKEW_SECONDS'].to_i + 1) }
         let(:token) do
           JWT.encode payload.merge(iat: iat), service_token, algorithm
@@ -86,7 +86,7 @@ RSpec.shared_examples 'a JWT-authenticated method' do |method, url, payload|
         end
       end
 
-      context 'as the timestamp is > MAX_IAT_SKEW_SECONDS seconds in the future' do
+      context 'when timestamp is > MAX_IAT_SKEW_SECONDS seconds in the future' do
         let(:iat) { Time.current.to_i + (ENV['MAX_IAT_SKEW_SECONDS'].to_i + 1) }
         let(:token) do
           JWT.encode payload, service_token, algorithm

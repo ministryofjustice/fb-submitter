@@ -52,19 +52,6 @@ RSpec/AnyInstance:
     - 'spec/requests/submission_spec.rb'
     - 'spec/support/jwt_authenticated_method.rb'
 
-# Offense count: 17
-# Configuration parameters: Prefixes.
-# Prefixes: when, with, without
-RSpec/ContextWording:
-  Exclude:
-    - 'spec/controllers/metrics_controller_spec.rb'
-    - 'spec/requests/submission_spec.rb'
-    - 'spec/services/adapters/service_url_resolver_spec.rb'
-    - 'spec/services/download_service_spec.rb'
-    - 'spec/services/process_submission_service_spec.rb'
-    - 'spec/support/json_only_api.rb'
-    - 'spec/support/jwt_authenticated_method.rb'
-
 # Offense count: 4
 # Configuration parameters: Max.
 RSpec/ExampleLength:

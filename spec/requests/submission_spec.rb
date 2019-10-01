@@ -78,7 +78,7 @@ describe 'UserData API', type: :request do
           allow_any_instance_of(ApplicationController).to receive(:verify_token!)
         end
 
-        context 'and a valid email JSON body' do
+        context 'with a valid email JSON body' do
           let(:encrypted_user_id_and_token) { 'kdjh9s8db9s87dbosd7b0sd8b70s9d8bs98d7b9s8db' }
           let(:submission_details) do
             [

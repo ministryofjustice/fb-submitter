@@ -50,7 +50,7 @@ describe DownloadService do
       end
     end
 
-    context 'given an array of urls' do
+    context 'with an array of urls' do
       subject do
         described_class.new(args)
       end
