@@ -28,6 +28,9 @@ Metrics/LineLength:
 Style/Next:
   Enabled: false
 
+Style/SymbolProc:
+  Enabled: false
+
 Metrics/BlockLength:
   ExcludedMethods: ['describe', 'context', 'let']
 

@@ -106,11 +106,3 @@ RSpec/SubjectStub:
   Exclude:
     - 'spec/services/download_service_spec.rb'
     - 'spec/services/process_submission_service_spec.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: IgnoredMethods.
-# IgnoredMethods: respond_to, define_method
-Style/SymbolProc:
-  Exclude:
-    - 'app/services/process_submission_service.rb'
