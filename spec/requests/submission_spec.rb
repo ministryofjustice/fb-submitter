@@ -19,8 +19,8 @@ describe 'UserData API', type: :request do
         get url, headers: headers
       end
 
-      it_behaves_like 'a JSON-only API', :get, '/submission/abcdef'
-      it_behaves_like 'a JWT-authenticated method', :get, '/submission/abcdef', {}
+      include_context 'when a JSON-only API', :get, '/submission/abcdef'
+      include_context 'a JWT-authenticated method', :get, '/submission/abcdef', {}
 
       context 'with a valid token' do
         before do
@@ -70,8 +70,8 @@ describe 'UserData API', type: :request do
         post url, params: params.to_json, headers: headers
       end
 
-      it_behaves_like 'a JSON-only API', :post, '/submission'
-      it_behaves_like 'a JWT-authenticated method', :post, '/submission', {}
+      include_context 'when a JSON-only API', :post, '/submission'
+      include_context 'a JWT-authenticated method', :post, '/submission', {}
 
       context 'with a valid token' do
         before do
