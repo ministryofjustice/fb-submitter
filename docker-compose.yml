@@ -15,6 +15,7 @@ services:
       dockerfile: ./docker/api/Dockerfile
       args:
         UID: "${UID}"
+        BUNDLE_ARGS: ''
     user: "${UID}:${UID}"
     environment:
       DATABASE_URL: "postgres://postgres:password@db/submitter_local"
