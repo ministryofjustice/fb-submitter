@@ -28,7 +28,7 @@ end
 group :development do
   gem 'guard-rspec', require: false
   gem 'guard-shell'
-  gem 'listen', '>= 3.0.5', '< 3.2'
+  gem 'listen', '>= 3.0.5', '< 3.3'
   gem 'rswag-api'
   gem 'rswag-ui'
 end
