@@ -9,6 +9,8 @@ RUN addgroup -g ${UID} -S appgroup && \
 
 WORKDIR /app
 
+RUN chown appuser:appgroup /app
+
 ADD https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem ./rds-combined-ca-bundle.pem
 
 COPY --chown=appuser:appgroup Gemfile Gemfile.lock .ruby-version ./
