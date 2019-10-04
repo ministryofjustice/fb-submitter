@@ -11,6 +11,8 @@ WORKDIR /app
 
 RUN chown appuser:appgroup /app
 
+ADD --chown=appuser:appgroup https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem ./rds-combined-ca-bundle.pem
+
 COPY --chown=appuser:appgroup Gemfile Gemfile.lock .ruby-version ./
 
 RUN gem install bundler
@@ -19,8 +21,6 @@ ARG BUNDLE_ARGS='--without test development'
 RUN bundle install --no-cache ${BUNDLE_ARGS}
 
 COPY --chown=appuser:appgroup . .
-
-ADD https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem ./rds-combined-ca-bundle.pem
 
 ENV APP_PORT 3000
 EXPOSE $APP_PORT
