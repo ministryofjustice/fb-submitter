@@ -146,7 +146,7 @@ class ProcessSubmissionService
       service_slug: service_slug
     ).execute
 
-    Adapters::PdfGenerator.new(url: ENV.fetch('PDF_GENERATOR_ROOT_URL'), token: token)
+    Adapters::PdfGenerator.new(root_url: ENV.fetch('PDF_GENERATOR_ROOT_URL'), token: token)
   end
 end
 # rubocop:enable all

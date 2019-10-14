@@ -183,7 +183,7 @@ describe ProcessSubmissionService do
       before do
         stub_request(:get, runner_callback_url).with(headers: headers).to_return(status: 200, body: '{"foo": "bar"}')
         stub_request(:post, json_destination_url).with(headers: headers).to_return(status: 200)
-        stub_request(:post, 'http://pdf-generator.com/')
+        stub_request(:post, 'http://pdf-generator.com/v1/pdfs')
           .with(body: pdf_submission.fetch(:submission).to_json, headers: headers).to_return(status: 200)
 
         stub_request(:get, 'http://fake_service_token_cache_root_url/service/service-slug').to_return(status: 200, body: { token: service_slug_secret }.to_json)

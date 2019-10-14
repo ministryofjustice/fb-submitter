@@ -3,7 +3,7 @@ require 'webmock/rspec'
 
 describe Adapters::PdfGenerator do
   subject(:adapter) do
-    described_class.new(url: expected_url, token: 'some-token')
+    described_class.new(root_url: root_url, token: 'some-token')
   end
 
   let(:submission) do
@@ -17,8 +17,12 @@ describe Adapters::PdfGenerator do
     'a-lot-of-pdf-contents'
   end
 
+  let(:root_url) do
+    "http://www.pdf-generator.com/"
+  end
+
   let(:expected_url) do
-    "http://www.pdf-generator.com/#{SecureRandom.uuid}"
+    "http://www.pdf-generator.com/v1/pdfs"
   end
 
   let(:expected_headers) do
