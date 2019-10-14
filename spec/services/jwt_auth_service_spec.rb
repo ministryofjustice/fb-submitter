@@ -19,12 +19,12 @@ RSpec.describe JwtAuthService do
 
   it 'returns valid token' do
     expect do
-      JWT.decode(service.execute, shared_secret, verify = true, algorithm: 'HS256')
+      JWT.decode(service.execute, shared_secret, verify = true, algorithm: 'HS256') # rubocop:disable Lint/UselessAssignment
     end.not_to raise_error
   end
 
   it 'returns a token with iss header as the given service slug' do
-    _data, headers = JWT.decode(service.execute, shared_secret, verify = false, algorithm: 'HS256')
+    _data, headers = JWT.decode(service.execute, shared_secret, verify = false, algorithm: 'HS256') # rubocop:disable Lint/UselessAssignment
     expect(headers.symbolize_keys).to eq(
       alg: 'HS256',
       iss: service_slug
