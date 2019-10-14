@@ -18,11 +18,11 @@ describe Adapters::PdfGenerator do
   end
 
   let(:root_url) do
-    "http://www.pdf-generator.com/"
+    'http://www.pdf-generator.com/'
   end
 
   let(:expected_url) do
-    "http://www.pdf-generator.com/v1/pdfs"
+    'http://www.pdf-generator.com/v1/pdfs'
   end
 
   let(:expected_headers) do
