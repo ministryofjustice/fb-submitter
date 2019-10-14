@@ -34,7 +34,7 @@ class ProcessSubmissionService
       send_email(submission_detail) if submission_detail.instance_of? EmailSubmissionDetail
     end
 
-    generate_pdf(submission, token)
+    generate_pdf(submission)
 
     # explicit save! first, to save the responses
     submission.save!
@@ -134,15 +134,19 @@ class ProcessSubmissionService
     submission_details.filter { |detail| detail.fetch('type') == 'pdf' }
   end
 
-  def generate_pdf(submission, token)
-    pdf_gateway = Adapters::PdfGenerator.new(
-      url: ENV.fetch('PDF_GENERATOR_ROOT_URL'),
-      token: token
-    )
-
+  def generate_pdf(submission)
     pdf_details(submission.submission_details).each do |pdf_detail|
-      GeneratePdf.new(pdf_generator_gateway: pdf_gateway).execute(pdf_detail.with_indifferent_access)
+      GeneratePdf.new(pdf_generator_gateway: pdf_gateway(submission.service_slug)).execute(pdf_detail.with_indifferent_access)
     end
+  end
+
+  def pdf_gateway(service_slug)
+    token = JwtAuthService.new(
+      service_token_cache: Adapters::ServiceTokenCacheClient.new(root_url: ENV.fetch('SERVICE_TOKEN_CACHE_ROOT_URL')),
+      service_slug: service_slug
+    ).execute
+
+    Adapters::PdfGenerator.new(url: ENV.fetch('PDF_GENERATOR_ROOT_URL'), token: token)
   end
 end
 # rubocop:enable all

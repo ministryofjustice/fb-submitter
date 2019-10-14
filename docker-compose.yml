@@ -31,6 +31,7 @@ services:
       NOTIFY_SMS_RETURN_SETUP_MOBILE: '54dcaad7-4967-431d-8606-72b0b80b5c6a'
       FB_ENVIRONMENT_SLUG: 'test'
       SECRET_KEY_BASE: 'xxxyyy'
+      SERVICE_TOKEN_CACHE_ROOT_URL: "http://fake_service_token_cache_root_url/"
       PDF_GENERATOR_ROOT_URL: 'http://pdf-generator.com'
     links:
       - db

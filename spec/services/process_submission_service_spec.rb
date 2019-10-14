@@ -166,7 +166,8 @@ describe ProcessSubmissionService do
             json_submission,
             json_submission,
             pdf_submission
-          ], status: 'queued'
+          ], status: 'queued',
+          service_slug: 'service-slug'
         )
       end
 
@@ -177,11 +178,15 @@ describe ProcessSubmissionService do
         }
       end
 
+      let(:service_slug_secret) { SecureRandom.alphanumeric(10) }
+
       before do
         stub_request(:get, runner_callback_url).with(headers: headers).to_return(status: 200, body: '{"foo": "bar"}')
         stub_request(:post, json_destination_url).with(headers: headers).to_return(status: 200)
         stub_request(:post, 'http://pdf-generator.com/')
           .with(body: pdf_submission.fetch(:submission).to_json, headers: headers).to_return(status: 200)
+
+        stub_request(:get, 'http://fake_service_token_cache_root_url/service/service-slug').to_return(status: 200, body: { token: service_slug_secret }.to_json)
       end
 
       it 'dispatches 1 email for each submission email attachment' do
@@ -380,14 +385,14 @@ describe ProcessSubmissionService do
 
       let(:submission) do
         Submission.create!(submission_details: [submission_detail_1, submission_detail_2],
-                           status: 'queued')
+                           status: 'queued', service_slug: 'test-service-slug')
       end
 
       it 'returns a single array of unique urls' do
         expect(subject.send(:unique_attachment_urls)).to eq(
-          ['http://.formbuilder-services-test:3000/api/submitter/pdf/default/guid1.pdf',
-           'http://.formbuilder-services-test:3000/api/submitter/pdf/default/guid2.pdf',
-           'http://.formbuilder-services-test:3000/api/submitter/pdf/default/guid3.pdf']
+          ['http://test-service-slug.formbuilder-services-test:3000/api/submitter/pdf/default/guid1.pdf',
+           'http://test-service-slug.formbuilder-services-test:3000/api/submitter/pdf/default/guid2.pdf',
+           'http://test-service-slug.formbuilder-services-test:3000/api/submitter/pdf/default/guid3.pdf']
         )
       end
     end
