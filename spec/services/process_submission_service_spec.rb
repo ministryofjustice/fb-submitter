@@ -41,6 +41,12 @@ describe ProcessSubmissionService do
         'mimetype' => 'application/pdf',
         'url' => '/api/submitter/pdf/default/guid2.pdf',
         'filename' => 'form2'
+      },
+      {
+        'type' => 'filestore',
+        'mimetype' => 'image/png',
+        'url' => 'http://fb-user-filestore-api-svc-test-dev.formbuilder-platform-test-dev//service/ioj/user/a239313d-4d2d-4a16-b5ef-69d6e8e53e86/28d-dae59621acecd4b1596dd0e96968c6cec3fae7927613a12c357e7a62e11877d8',
+        'filename' => 'image2.png'
       }
     ]
   end
@@ -116,7 +122,11 @@ describe ProcessSubmissionService do
     end
 
     let(:urls) do
-      ['http://service-slug.formbuilder-services-test:3000/api/submitter/pdf/default/guid1.pdf', 'http://service-slug.formbuilder-services-test:3000/api/submitter/pdf/default/guid2.pdf']
+      [
+        'http://fb-user-filestore-api-svc-test-dev.formbuilder-platform-test-dev//service/ioj/user/a239313d-4d2d-4a16-b5ef-69d6e8e53e86/28d-dae59621acecd4b1596dd0e96968c6cec3fae7927613a12c357e7a62e11877d8',
+        'http://service-slug.formbuilder-services-test:3000/api/submitter/pdf/default/guid1.pdf',
+        'http://service-slug.formbuilder-services-test:3000/api/submitter/pdf/default/guid2.pdf'
+      ]
     end
 
     let(:mock_send_response) { { 'key' => 'send response' } }
@@ -190,7 +200,7 @@ describe ProcessSubmissionService do
       end
 
       it 'dispatches 1 email for each submission email attachment' do
-        expect(EmailService).to receive(:send_mail).exactly(5).times
+        expect(EmailService).to receive(:send_mail).exactly(7).times
         subject.perform
       end
 
@@ -248,7 +258,7 @@ describe ProcessSubmissionService do
 
         it 'adds the response to the submission responses' do
           subject.perform
-          expect(submission.responses).to eq([mock_send_response, mock_send_response])
+          expect(submission.responses).to eq([mock_send_response, mock_send_response, mock_send_response])
         end
 
         it 'saves the submission' do
@@ -330,7 +340,7 @@ describe ProcessSubmissionService do
       end
 
       it 'sends multiple emails' do
-        expect(EmailService).to receive(:send_mail).twice
+        expect(EmailService).to receive(:send_mail).exactly(3).times
 
         subject.perform
       end
@@ -472,51 +482,6 @@ describe ProcessSubmissionService do
             'text/plain' => 'file 1 content', 'text/html' => 'file 2 content'
           )
         end
-      end
-    end
-  end
-
-  describe '#perform' do
-    context 'with filestore attachments' do
-      let(:submission) do
-        Submission.new(
-          encrypted_user_id_and_token: 'encrypted_user_id_and_token',
-          status: 'queued',
-          submission_details: [submission_detail],
-          service_slug: 'service-slug'
-        )
-      end
-
-      let(:submission_detail) do
-        {
-          'from' => 'some.one@example.com',
-          'to' => 'destination@example.com',
-          'subject' => 'mail subject',
-          'type' => 'email',
-          'body_parts' => {
-            'text/html' => 'https://tools.ietf.org/html/rfc2324',
-            'text/plain' => 'https://tools.ietf.org/rfc/rfc2324.txt'
-          },
-          'attachments' => [
-            {
-              'type' => 'output',
-              'mimetype' => 'application/pdf',
-              'url' => '/api/submitter/pdf/default/guid1.pdf',
-              'filename' => 'form1'
-            },
-            {
-              'type' => 'filestore',
-              'mimetype' => 'image/png',
-              'url' => 'http://fb-user-filestore-api-svc-test-dev.formbuilder-platform-test-dev//service/ioj/user/a239313d-4d2d-4a16-b5ef-69d6e8e53e86/28d-dae59621acecd4b1596dd0e96968c6cec3fae7927613a12c357e7a62e11877d8',
-              'filename' => 'image2.png'
-            }
-          ]
-        }
-      end
-
-      before do
-        allow(Submission).to receive(:find).and_return(submission)
-        allow(submission).to receive(:id).and_return('id-of-submission')
       end
     end
   end
