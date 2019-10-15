@@ -230,21 +230,16 @@ describe ProcessSubmissionService do
         subject.perform
       end
 
-      it 'gets the detail_objects from the Submission' do
-        expect(submission).to receive(:detail_objects).at_least(:once).and_call_original
-        subject.perform
-      end
-
       describe 'for each detail object' do
-        let(:detail_object) { submission.detail_objects.first }
+        let(:email_details) { submission.submission_details.first.with_indifferent_access }
 
         it 'asks the EmailService to send an email' do
           allow(subject).to receive(:attachments).and_return(processed_attachments)
 
           expect(EmailService).to receive(:send_mail).with(
-            from: detail_object.from,
-            to: detail_object.to,
-            subject: detail_object.subject,
+            from: email_details.fetch(:from),
+            to: email_details.fetch(:to),
+            subject: email_details.fetch(:subject),
             body_parts: body_part_content,
             attachments: processed_attachments
           ).and_return(mock_send_response)
@@ -522,66 +517,6 @@ describe ProcessSubmissionService do
       before do
         allow(Submission).to receive(:find).and_return(submission)
         allow(submission).to receive(:id).and_return('id-of-submission')
-      end
-
-      it 'converts output urls to absolute urls' do
-        url = submission.detail_objects.dig(0).attachments.dig(0, 'url')
-        expect(url).to start_with('http')
-      end
-
-      it 'attaches filestore attachments' do
-        expect(DownloadService).to receive(:download_in_parallel)
-          .with(headers: {
-                  'x-encrypted-user-id-and-token' => 'encrypted_user_id_and_token'
-                }, urls: [
-                  'http://fb-user-filestore-api-svc-test-dev.formbuilder-platform-test-dev//service/ioj/user/a239313d-4d2d-4a16-b5ef-69d6e8e53e86/28d-dae59621acecd4b1596dd0e96968c6cec3fae7927613a12c357e7a62e11877d8',
-                  'http://service-slug.formbuilder-services-test:3000/api/submitter/pdf/default/guid1.pdf'
-                ]).and_return(
-                  'http://fb-user-filestore-api-svc-test-dev.formbuilder-platform-test-dev//service/ioj/user/a239313d-4d2d-4a16-b5ef-69d6e8e53e86/28d-dae59621acecd4b1596dd0e96968c6cec3fae7927613a12c357e7a62e11877d8' => '/tmp/filestore.png',
-                  'http://service-slug.formbuilder-services-test:3000/api/submitter/pdf/default/guid1.pdf' => '/tmp/output.pdf'
-                )
-
-        # only testing file attachments here
-        allow(subject).to receive(:retrieve_mail_body_parts).and_return([])
-
-        expected_attachments = [
-          Attachment.new(
-            path: '/tmp/output.pdf',
-            type: 'output',
-            mimetype: 'application/pdf',
-            url: 'http://service-slug.formbuilder-services-test:3000/api/submitter/pdf/default/guid1.pdf',
-            filename: 'form1'
-          ),
-          Attachment.new(
-            path: '/tmp/filestore.png',
-            type: 'filestore',
-            mimetype: 'image/png',
-            url: 'http://fb-user-filestore-api-svc-test-dev.formbuilder-platform-test-dev//service/ioj/user/a239313d-4d2d-4a16-b5ef-69d6e8e53e86/28d-dae59621acecd4b1596dd0e96968c6cec3fae7927613a12c357e7a62e11877d8',
-            filename: 'image2.png'
-          )
-        ]
-
-        subject.send(:attachments, submission.detail_objects[0]).each_with_index do |a, i|
-          %i[type filename url mimetype path].each do |k|
-            expect(a.send(k)).to eql(expected_attachments[i].send(k))
-          end
-        end
-
-        allow(subject).to receive(:attachments).and_return(expected_attachments)
-
-        expect(EmailService).to receive(:send_mail).with(attachments: [expected_attachments[0]],
-                                                         body_parts: [],
-                                                         from: 'some.one@example.com',
-                                                         subject: 'mail subject {id-of-submission} [1/2]',
-                                                         to: 'destination@example.com')
-
-        expect(EmailService).to receive(:send_mail).with(attachments: [expected_attachments[1]],
-                                                         body_parts: [],
-                                                         from: 'some.one@example.com',
-                                                         subject: 'mail subject {id-of-submission} [2/2]',
-                                                         to: 'destination@example.com')
-
-        subject.perform
       end
     end
   end
