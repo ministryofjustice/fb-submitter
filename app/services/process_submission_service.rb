@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# rubocop:disable all
+# rubocop:disable Metrics/ClassLength
 class ProcessSubmissionService
   attr_reader :submission_id
 
@@ -12,21 +12,13 @@ class ProcessSubmissionService
     submission.update_status(:processing)
     submission.responses = []
 
-    token = submission.encrypted_user_id_and_token
     submission.submission_details.each do |submission_detail|
       submission_detail = submission_detail.with_indifferent_access
 
       if submission_detail.fetch(:type) == 'json'
-        encryption_key = submission_detail.fetch(:encryption_key)
-
-        JsonWebhookService.new(
-          runner_callback_adapter: Adapters::RunnerCallback.new(url: submission_detail.fetch(:data_url), token: token),
-          webhook_attachment_fetcher: WebhookAttachmentService.new(
-            attachment_parser: AttachmentParserService.new(attachments: submission_detail.fetch(:attachments)),
-            user_file_store_gateway: Adapters::UserFileStore.new(key: token)
-          ),
-          webhook_destination_adapter: Adapters::JweWebhookDestination.new(url: submission_detail.fetch(:url), key: encryption_key)
-        ).execute(service_slug: submission.service_slug)
+        send_webhook(submission_detail, submission.encrypted_user_id_and_token)
+      elsif submission_detail.fetch(:type) == 'pdf'
+        send_confirmation_email(submission_detail, submission_id)
       end
     end
 
@@ -34,17 +26,23 @@ class ProcessSubmissionService
       send_email(submission_detail) if submission_detail.instance_of? EmailSubmissionDetail
     end
 
-    pdf_details(submission.submission_details).each do |pdf_detail|
-      send_confirmation_email(pdf_detail, submission_id)
-    end
-
     # explicit save! first, to save the responses
     submission.save!
-
     submission.complete!
   end
 
   private
+
+  def send_webhook(submission_detail, token)
+    JsonWebhookService.new(
+      runner_callback_adapter: Adapters::RunnerCallback.new(url: submission_detail.fetch(:data_url), token: token),
+      webhook_attachment_fetcher: WebhookAttachmentService.new(
+        attachment_parser: AttachmentParserService.new(attachments: submission_detail.fetch(:attachments)),
+        user_file_store_gateway: Adapters::UserFileStore.new(key: token)
+      ),
+      webhook_destination_adapter: Adapters::JweWebhookDestination.new(url: submission_detail.fetch(:url), key: submission_detail.fetch(:encryption_key))
+    ).execute(service_slug: submission.service_slug)
+  end
 
   def send_email(mail)
     if number_of_attachments(mail) <= 1
@@ -168,4 +166,4 @@ class ProcessSubmissionService
     Adapters::PdfApi.new(root_url: ENV.fetch('PDF_GENERATOR_ROOT_URL'), token: token)
   end
 end
-# rubocop:enable all
+# rubocop:enable Metrics/ClassLength
