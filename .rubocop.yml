@@ -31,6 +31,10 @@ Style/Next:
 Style/SymbolProc:
   Enabled: false
 
+Style/ConditionalAssignment:
+  EnforcedStyle: assign_inside_condition
+  IncludeTernaryExpressions: false
+
 Metrics/BlockLength:
   ExcludedMethods: ['describe', 'context', 'let']
 

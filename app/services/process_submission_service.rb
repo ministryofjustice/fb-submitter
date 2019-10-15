@@ -1,7 +1,4 @@
-# frozen_string_literal: true
-
-# rubocop:disable all
-class ProcessSubmissionService
+class ProcessSubmissionService # rubocop:disable Metrics/ClassLength
   attr_reader :submission_id
 
   def initialize(submission_id:)
@@ -116,7 +113,7 @@ class ProcessSubmissionService
   def attachments(mail)
     array = mail.attachments.map do |object|
       if object['pdf_data']
-        object['path'] = generate_pdf({submission: object['pdf_data']}, @submission_id)
+        object['path'] = generate_pdf({ submission: object['pdf_data'] }, @submission_id)
       else
         object['path'] = url_file_map[object['url']]
       end
@@ -155,4 +152,3 @@ class ProcessSubmissionService
     Adapters::PdfApi.new(root_url: ENV.fetch('PDF_GENERATOR_ROOT_URL'), token: token)
   end
 end
-# rubocop:enable all
