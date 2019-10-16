@@ -80,7 +80,7 @@ describe 'UserData API', type: :request do
 
       # PDF Generator stubs
       stub_request(:get, 'http://fake_service_token_cache_root_url/service/my-service').to_return(status: 200, body: { token: '123' }.to_json)
-      stub_request(:post, 'http://pdf-generator.com/v1/pdfs').with(body: '{"question_1":"answer 1","question_2":"answer 2"}').to_return(status: 200, body: 'pdf binary goes here')
+      stub_request(:post, 'http://pdf-generator.com/v1/pdfs').with(body: '{"question_1":"answer 1","question_2":"answer 2"}').to_return(status: 200, body: pdf_file_content)
     end
 
     after do
@@ -90,6 +90,8 @@ describe 'UserData API', type: :request do
     let(:stub_aws) do
       Aws::SES::Client.new(region: 'eu-west-1', stub_responses: true)
     end
+
+    let(:pdf_file_content) { 'pdf binary goes here' }
 
     describe 'to /submission' do
       let(:url) { '/submission' }
@@ -190,7 +192,7 @@ describe 'UserData API', type: :request do
             it 'email contains downloaded attachment' do
               post_request
 
-              file_ccontent = Base64.encode64('pdf binary goes here')
+              file_ccontent = Base64.encode64(pdf_file_content)
               expect(raw_messages.join).to include(file_ccontent)
             end
 

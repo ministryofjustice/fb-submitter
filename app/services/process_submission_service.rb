@@ -115,7 +115,7 @@ class ProcessSubmissionService # rubocop:disable Metrics/ClassLength
 
     attachments.each_with_index do |value, index|
       if value[:pdf_data]
-        attachment_objects[index].file = generate_pdf({submission: value[:pdf_data]}, @submission_id)
+        attachment_objects[index].file = generate_pdf({ submission: value[:pdf_data] }, @submission_id)
       else
         attachment_objects[index].path = download_attachments[attachment_objects[index].url]
       end
@@ -123,9 +123,8 @@ class ProcessSubmissionService # rubocop:disable Metrics/ClassLength
     attachment_objects
   end
 
-
   def download_attachments
-    @url_file_map ||= DownloadService.download_in_parallel(
+    @download_attachments ||= DownloadService.download_in_parallel(
       urls: unique_attachment_urls,
       headers: headers
     )
