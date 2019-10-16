@@ -113,10 +113,7 @@ class ProcessSubmissionService
   end
 
   def attachments(mail)
-    @generated_attachments ||= generate_attachments(mail.attachments.map(&:with_indifferent_access))
-  end
-
-  def generate_attachments(attachments)
+    attachments = mail.attachments.map(&:with_indifferent_access)
     attachment_objects = AttachmentParserService.new(attachments: attachments).execute
 
     attachments.each_with_index do |value, index|
@@ -128,6 +125,7 @@ class ProcessSubmissionService
     end
     attachment_objects
   end
+
 
   def download_attachments
     @url_file_map ||= DownloadService.download_in_parallel(
