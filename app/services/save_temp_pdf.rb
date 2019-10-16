@@ -12,7 +12,7 @@ class SaveTempPdf
     tmp_pdf.write(pdf_contents)
     tmp_pdf.rewind
 
-    tmp_pdf.path
+    tmp_pdf
   end
 
   private

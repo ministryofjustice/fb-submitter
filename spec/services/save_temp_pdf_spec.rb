@@ -14,8 +14,8 @@ RSpec.describe SaveTempPdf do
 
   let(:result) { pdf_attachments_service.execute(file_name: '123') }
 
-  it 'returns the temporary file locations of the downloaded pdfs' do
-    expect(result).to match(%r{/tmp\/123(.*).pdf})
+  it 'returns the temporary file ' do
+    expect(result).to be_a(Tempfile)
   end
 
   it 'writes the contents of the PDF to the temporary file' do

@@ -112,22 +112,24 @@ class ProcessSubmissionService
     { 'x-encrypted-user-id-and-token' => submission.encrypted_user_id_and_token }
   end
 
-  # returns an array of Attachment objects
   def attachments(mail)
-    array = mail.attachments.map do |object|
-      if object['pdf_data']
-        object['path'] = generate_pdf({submission: object['pdf_data']}, @submission_id)
-      else
-        object['path'] = url_file_map[object['url']]
-      end
-
-      object
-    end
-
-    array.compact.map { |o| Attachment.new(o.symbolize_keys) }
+    @generated_attachments ||= generate_attachments(mail.attachments.map(&:with_indifferent_access))
   end
 
-  def url_file_map
+  def generate_attachments(attachments)
+    attachment_objects = AttachmentParserService.new(attachments: attachments).execute
+
+    attachments.each_with_index do |value, index|
+      if value[:pdf_data]
+        attachment_objects[index].file = generate_pdf({submission: value[:pdf_data]}, @submission_id)
+      else
+        attachment_objects[index].path = download_attachments[attachment_objects[index].url]
+      end
+    end
+    attachment_objects
+  end
+
+  def download_attachments
     @url_file_map ||= DownloadService.download_in_parallel(
       urls: unique_attachment_urls,
       headers: headers
