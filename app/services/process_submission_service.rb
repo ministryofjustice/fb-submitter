@@ -1,7 +1,4 @@
-# frozen_string_literal: true
-
-# rubocop:disable all
-class ProcessSubmissionService
+class ProcessSubmissionService # rubocop:disable Metrics/ClassLength
   attr_reader :submission_id
 
   def initialize(submission_id:)
@@ -155,4 +152,3 @@ class ProcessSubmissionService
     Adapters::PdfApi.new(root_url: ENV.fetch('PDF_GENERATOR_ROOT_URL'), token: token)
   end
 end
-# rubocop:enable all
