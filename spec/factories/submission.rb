@@ -3,7 +3,6 @@ FactoryBot.define do
     status { Submission::STATUS[:queued] }
     service_slug { 'my-service' }
     encrypted_user_id_and_token { 'foo' }
-    submission_type { nil }
     submission_details do
       {
         submissionId: SecureRandom.uuid,
