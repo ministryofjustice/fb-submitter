@@ -45,9 +45,6 @@ describe ProcessSubmissionService do
         'to' => 'destination@example.com',
         'subject' => 'mail subject',
         'type' => 'email',
-        'body_parts' => {
-          'text/plain' => 'https://tools.ietf.org/rfc/rfc2324.txt'
-        },
         'attachments' => attachments
       }
     end
