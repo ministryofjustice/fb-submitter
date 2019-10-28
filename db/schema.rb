@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_22_132455) do
+ActiveRecord::Schema.define(version: 2019_10_28_124057) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -39,6 +39,7 @@ ActiveRecord::Schema.define(version: 2019_10_22_132455) do
     t.datetime "updated_at", null: false
     t.datetime "completed_at"
     t.json "responses"
+    t.json "payload"
   end
 
 end

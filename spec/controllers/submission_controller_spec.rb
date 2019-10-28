@@ -12,6 +12,13 @@ RSpec.describe SubmissionController, type: :controller do
     expect(Submission.all.count).to eq(1)
   end
 
+  it 'saves the payload into the submission' do
+    payload = { actions: 1, submission: { else: 1 }, attachments: [1, 2] }
+    post :create, body: payload.to_json
+
+    expect(Submission.first.payload).to eq(payload.deep_stringify_keys)
+  end
+
   it 'creates a delayed job' do
     post :create, body: { something: 1 }.to_json
     expect(Delayed::Job.all.count).to eq(1)
