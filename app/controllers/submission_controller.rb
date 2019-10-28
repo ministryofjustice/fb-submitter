@@ -1,6 +1,6 @@
 class SubmissionController < ApplicationController
   def create
-    @submission = Submission.create(
+    @submission = Submission.create!(
       submission_params.merge(
         status: Submission::STATUS[:queued],
         payload: payload
