@@ -141,7 +141,10 @@ describe 'UserData API', type: :request do
             {
               service_slug: service_slug,
               encrypted_user_id_and_token: encrypted_user_id_and_token,
-              submission_details: submission_details
+              submission_details: submission_details,
+              actions: [], # TODO: not yet used for email
+              submission: {},  # TODO: not yet used for email
+              attachments: []  # TODO: not yet used for email
             }
           end
 

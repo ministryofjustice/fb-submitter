@@ -1,28 +1,31 @@
-class ProcessSubmissionService # rubocop:disable Metrics/ClassLength
+class ProcessSubmissionService # rubocop:disable  Metrics/ClassLength
   attr_reader :submission_id
 
   def initialize(submission_id:)
     @submission_id = submission_id
   end
 
-  def perform
+  # rubocop:disable Metrics/MethodLength
+  def perform # rubocop:disable Metrics/AbcSize
     submission.update_status(:processing)
     submission.responses = []
 
-    token = submission.encrypted_user_id_and_token
-    submission.submission_details.each do |submission_detail|
-      submission_detail = submission_detail.with_indifferent_access
-
-      if submission_detail.fetch(:type) == 'json'
-        encryption_key = submission_detail.fetch(:encryption_key)
-
+    payload_service = SubmissionPayloadService.new(submission.payload)
+    payload_service.actions.each do |action|
+      case action.fetch(:type)
+      when 'json'
         JsonWebhookService.new(
           webhook_attachment_fetcher: WebhookAttachmentService.new(
-            attachment_parser: AttachmentParserService.new(attachments: submission_detail.fetch(:attachments)),
-            user_file_store_gateway: Adapters::UserFileStore.new(key: token)
+            attachment_parser: AttachmentParserService.new(attachments: payload_service.attachments),
+            user_file_store_gateway: Adapters::UserFileStore.new(key: submission.encrypted_user_id_and_token)
           ),
-          webhook_destination_adapter: Adapters::JweWebhookDestination.new(url: submission_detail.fetch(:url), key: encryption_key)
-        ).execute(user_answers: submission_detail.fetch(:user_answers), service_slug: submission.service_slug)
+          webhook_destination_adapter: Adapters::JweWebhookDestination.new(
+            url: action.fetch(:url),
+            key: action.fetch(:encryption_key)
+          )
+        ).execute(submission: payload_service.submission, service_slug: submission.service_slug)
+      else
+        Rails.logger.warn "Unknown action type '#{action.fetch(:type)}' for submission id #{submission.id}"
       end
     end
 
@@ -32,7 +35,6 @@ class ProcessSubmissionService # rubocop:disable Metrics/ClassLength
 
     # explicit save! first, to save the responses
     submission.save!
-
     submission.complete!
   end
 
@@ -71,6 +73,7 @@ class ProcessSubmissionService # rubocop:disable Metrics/ClassLength
       end
     end
   end
+  # rubocop:enable Metrics/MethodLength
 
   def number_of_attachments(mail)
     attachments(mail).size

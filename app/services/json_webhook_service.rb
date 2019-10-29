@@ -4,10 +4,10 @@ class JsonWebhookService
     @webhook_destination_adapter = webhook_destination_adapter
   end
 
-  def execute(user_answers:, service_slug:)
+  def execute(submission:, service_slug:)
     webhook_destination_adapter.send_webhook(
       body: build_payload(
-        user_answers: user_answers,
+        submission: submission,
         service_slug: service_slug,
         attachments: webhook_attachment_fetcher.execute
       )
@@ -18,11 +18,11 @@ class JsonWebhookService
 
   attr_reader :webhook_destination_adapter, :webhook_attachment_fetcher
 
-  def build_payload(service_slug:, attachments:, user_answers:)
+  def build_payload(service_slug:, attachments:, submission:)
     {
       "serviceSlug": service_slug,
-      "submissionId": user_answers['submissionId'],
-      "submissionAnswers": user_answers.except('submissionId'),
+      "submissionId": submission.fetch('submission_id', nil),
+      "submissionAnswers": submission.except('submissionId'),
       "attachments": attachments
     }.to_json
   end

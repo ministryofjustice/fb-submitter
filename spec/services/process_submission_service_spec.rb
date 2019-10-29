@@ -9,7 +9,15 @@ describe ProcessSubmissionService do
   end
 
   let(:submission) do
-    create(:submission, :json)
+    create(:submission, :json, submission: submission_answers)
+  end
+
+  let(:submission_answers) do
+    {
+      'submission_id' => '8f5dd756-df07-40e7-afc7-682cdf490264',
+      'pdf_heading' => 'Complain about a court or tribunal',
+      'sections' => []
+    }
   end
 
   let(:mock_downloaded_files) do
@@ -115,13 +123,18 @@ describe ProcessSubmissionService do
       end
 
       let(:submission) do
-        create(:submission, submission_details: [
-          email_submission,
-          email_submission,
-          json_submission,
-          json_submission,
-          json_submission
-        ])
+        create(:submission,
+               submission_details: [
+                 email_submission,
+                 email_submission
+               ],
+               submission: submission_answers,
+               actions: [
+                 json_submission,
+                 json_submission,
+                 json_submission
+               ],
+               attachments: attachments)
       end
 
       let(:headers) do
@@ -133,8 +146,35 @@ describe ProcessSubmissionService do
 
       let(:service_slug_secret) { SecureRandom.alphanumeric(10) }
 
+      let(:presigned_url_responce) do
+        {
+          url: 'example.com/public_url_1',
+          encryption_key: 'somekey_1',
+          encryption_iv: 'somekey_iv_1'
+        }.to_json
+      end
+
+      let(:presigned_url_responce_2) do
+        {
+          url: 'example.com/public_url_2',
+          encryption_key: 'somekey_1',
+          encryption_iv: 'somekey_iv_1'
+        }.to_json
+      end
+
       before do
         stub_request(:post, json_destination_url).with(headers: headers).to_return(status: 200)
+        stub_request(:post, 'http://fb-user-filestore-api-svc-test-dev.formbuilder-platform-test-dev/service/ioj/user/a239313d-4d2d-4a16-b5ef-69d6e8e53e86/28d-dae59621acecd4b1596dd0e96968c6cec3fae7927613a12c357e7a62e11877d8/presigned-s3-url')
+          .to_return(status: 200, body: presigned_url_responce)
+        stub_request(:post, 'http://fb-user-filestore-api-svc-test-dev.formbuilder-platform-test-dev/service/ioj/user/a239313d-4d2d-4a16-b5ef-69d6e8e53e86/28d-dwdwdw/presigned-s3-url')
+          .to_return(status: 200, body: presigned_url_responce_2)
+      end
+
+      it 'downloads attachments' do
+        subject.perform
+        # TODO: each attachment should only be downloaded once
+        expect(WebMock).to have_requested(:post, 'http://fb-user-filestore-api-svc-test-dev.formbuilder-platform-test-dev/service/ioj/user/a239313d-4d2d-4a16-b5ef-69d6e8e53e86/28d-dae59621acecd4b1596dd0e96968c6cec3fae7927613a12c357e7a62e11877d8/presigned-s3-url').times(3)
+        expect(WebMock).to have_requested(:post, 'http://fb-user-filestore-api-svc-test-dev.formbuilder-platform-test-dev/service/ioj/user/a239313d-4d2d-4a16-b5ef-69d6e8e53e86/28d-dwdwdw/presigned-s3-url').times(3)
       end
 
       it 'dispatches 1 email for each submission email attachment' do
@@ -230,9 +270,9 @@ describe ProcessSubmissionService do
       end
 
       let(:submission) do
-        create(:submission, submission_details: [
-          submission_detail
-        ])
+        create(:submission,
+               submission_details: [submission_detail],
+               submission: submission_answers)
       end
 
       it 'sends one email' do
@@ -314,7 +354,7 @@ describe ProcessSubmissionService do
       end
 
       let(:submission) do
-        create(:submission, submission_details: [submission_detail_1, submission_detail_2], service_slug: 'test-service-slug')
+        create(:submission, submission_details: [submission_detail_1, submission_detail_2], submission: submission_answers, service_slug: 'test-service-slug')
       end
 
       it 'returns a single array of unique urls' do
@@ -330,6 +370,7 @@ describe ProcessSubmissionService do
   context 'with PDF payload' do
     before do
       create(:submission,
+             submission: submission_answers,
              encrypted_user_id_and_token: 'encrypted_user_id_and_token',
              submission_details: [
                {

@@ -20,19 +20,49 @@ end
 describe 'Submits JSON given a JSON submission type', type: :request do
   let(:service_slug) { 'my-service' }
   let(:submission_id) { '1e937616-dd0b-4bc3-8c67-40e4ffd54f78' }
-  let(:submission_answers) do
+
+  let(:expected_submission_answers) do
     {
-      "full_name": 'Mr Complainer',
-      "email_address": 'test@test.com',
-      "building_street": '102 Petty France',
-      "building_street_line_2": 'Westminster',
-      "town_city": 'London',
-      "county": 'London',
-      "postcode": 'SW1H 9AJ',
-      "complaint_details": 'I lost my case',
-      "complaint_location": "Westminster Magistrates'",
-      "submissionId": submission_id,
-      "submissionDate": '1568199892316'
+      'first_name' => 'Bob',
+      'last_name' => 'Smith',
+      'has-email' => 'Yes',
+      'email_address' => 'bob.smith@digital.justice.gov.uk',
+      'complaint_details' => 'Some complaint details',
+      'has-complaint-documents' => 'No'
+    }
+  end
+
+  let(:submission) do
+    {
+      'submission_id' => submission_id,
+      'pdf_heading' => 'Complain about a court or tribunal',
+      'sections' =>
+        [
+          { 'heading' => 'Your name', 'summary_heading' => '', 'questions' => [] },
+          { 'heading' => '',
+            'summary_heading' => '',
+            'questions' =>
+              [
+                { 'label' => 'First name', 'answer' => 'Bob', 'key' => 'first_name' },
+                { 'label' => 'Last name', 'answer' => 'Smith', 'key' => 'last_name' }
+              ] },
+          { 'heading' => '',
+            'summary_heading' => '',
+            'questions' =>
+              [{ 'label' => 'Can we contact you about your complaint by email?',
+                 'answer' => 'Yes',
+                 'key' => 'has-email' },
+               { 'label' => 'Your email address',
+                 'answer' => 'bob.smith@digital.justice.gov.uk',
+                 'key' => 'email_address' },
+               { 'label' => 'Your complaint',
+                 'answer' => 'Some complaint details',
+                 'key' => 'complaint_details' },
+               { 'label' =>
+                   'Would you like to send any documents as part of your complaint?',
+                 'answer' => 'No',
+                 'key' => 'has-complaint-documents' }] }
+        ]
     }
   end
 
@@ -58,7 +88,7 @@ describe 'Submits JSON given a JSON submission type', type: :request do
     {
       "serviceSlug": service_slug,
       "submissionId": submission_id,
-      "submissionAnswers": submission_answers.except(:submissionId),
+      "submissionAnswers": submission.except(:submissionId),
       attachments: expected_attachments
     }.to_json
   end
@@ -68,37 +98,42 @@ describe 'Submits JSON given a JSON submission type', type: :request do
 
   let(:encryption_key) { 'fb730a667840d79c' }
   let(:encrypted_user_id_and_token) { 'kdjh9s8db9s87dbosd7b0sd8b70s9d8bs98d7b9s8db' }
-  let(:submission_details) do
+  let(:actions) do
     [
       {
         'type' => 'json',
         'url': json_destination_url,
         'data_url': 'deprecated field',
-        'encryption_key': encryption_key,
-        'user_answers': submission_answers,
-        'attachments': [
-          {
-            'type' => 'output',
-            'mimetype' => 'application/pdf',
-            'url' => 'https://some-url/1',
-            'filename' => 'form1'
-          },
-          {
-            'type' => 'output',
-            'mimetype' => 'application/pdf',
-            'url' => 'https://some-url/2',
-            'filename' => 'form2'
-          }
-        ]
+        'encryption_key': encryption_key
       }
     ]
   end
+
+  let(:attachments) do
+    [
+      {
+        'type' => 'output',
+        'mimetype' => 'application/pdf',
+        'url' => 'https://some-url/1',
+        'filename' => 'form1'
+      },
+      {
+        'type' => 'output',
+        'mimetype' => 'application/pdf',
+        'url' => 'https://some-url/2',
+        'filename' => 'form2'
+      }
+    ]
+  end
+
   let(:headers) { { 'Content-type' => 'application/json' } }
   let(:params) do
     {
       service_slug: service_slug,
       encrypted_user_id_and_token: encrypted_user_id_and_token,
-      submission_details: submission_details
+      attachments: attachments,
+      actions: actions,
+      submission: submission
     }.to_json
   end
 

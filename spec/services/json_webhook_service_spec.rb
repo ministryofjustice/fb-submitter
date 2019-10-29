@@ -65,7 +65,7 @@ describe JsonWebhookService do
   end
 
   it 'modifies and sends the submission to the destination' do
-    service.execute(user_answers: user_answers, service_slug: submission.service_slug)
+    service.execute(submission: user_answers, service_slug: submission.service_slug)
 
     expect(webhook_destination_adapter).to have_received(:send_webhook)
       .with(body: json_payload)
@@ -73,11 +73,11 @@ describe JsonWebhookService do
   end
 
   it 'calls fetch_full_submission' do
-    service.execute(user_answers: user_answers, service_slug: submission.service_slug)
+    service.execute(submission: user_answers, service_slug: submission.service_slug)
   end
 
   it 'calls the webhook_attachment_fetcher' do
-    service.execute(user_answers: user_answers, service_slug: submission.service_slug)
+    service.execute(submission: user_answers, service_slug: submission.service_slug)
     expect(webhook_attachment_fetcher).to have_received(:execute).once
   end
 end

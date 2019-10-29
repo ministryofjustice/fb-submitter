@@ -4,7 +4,13 @@ FactoryBot.define do
     service_slug { 'service-slug' }
     encrypted_user_id_and_token { 'some token' }
 
-    payload { { actions: [], submission: {}, attachments: [] } }
+    transient do
+      actions { [] }
+      attachments { [] }
+      submission { {} }
+    end
+
+    payload { { actions: actions, submission: submission, attachments: attachments } }
 
     trait :json do
       submission_details do
