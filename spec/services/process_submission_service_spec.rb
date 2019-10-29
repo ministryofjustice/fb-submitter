@@ -146,7 +146,7 @@ describe ProcessSubmissionService do
 
       let(:service_slug_secret) { SecureRandom.alphanumeric(10) }
 
-      let(:presigned_url_responce) do
+      let(:presigned_url_response) do
         {
           url: 'example.com/public_url_1',
           encryption_key: 'somekey_1',
@@ -154,7 +154,7 @@ describe ProcessSubmissionService do
         }.to_json
       end
 
-      let(:presigned_url_responce_2) do
+      let(:presigned_url_response_2) do
         {
           url: 'example.com/public_url_2',
           encryption_key: 'somekey_1',
@@ -165,9 +165,9 @@ describe ProcessSubmissionService do
       before do
         stub_request(:post, json_destination_url).with(headers: headers).to_return(status: 200)
         stub_request(:post, 'http://fb-user-filestore-api-svc-test-dev.formbuilder-platform-test-dev/service/ioj/user/a239313d-4d2d-4a16-b5ef-69d6e8e53e86/28d-dae59621acecd4b1596dd0e96968c6cec3fae7927613a12c357e7a62e11877d8/presigned-s3-url')
-          .to_return(status: 200, body: presigned_url_responce)
+          .to_return(status: 200, body: presigned_url_response)
         stub_request(:post, 'http://fb-user-filestore-api-svc-test-dev.formbuilder-platform-test-dev/service/ioj/user/a239313d-4d2d-4a16-b5ef-69d6e8e53e86/28d-dwdwdw/presigned-s3-url')
-          .to_return(status: 200, body: presigned_url_responce_2)
+          .to_return(status: 200, body: presigned_url_response_2)
       end
 
       it 'downloads attachments' do
