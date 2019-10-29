@@ -367,6 +367,20 @@ describe ProcessSubmissionService do
     end
   end
 
+  context 'with unknown type' do
+    let(:submission) do
+      create(:submission,
+        actions: [
+         { 'type' => 'what is this type?' }
+        ]
+      )
+    end
+
+    it 'ignores it' do
+      subject.perform
+    end
+  end
+
   context 'with PDF payload' do
     before do
       create(:submission,
