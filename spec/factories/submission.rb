@@ -1,13 +1,14 @@
 FactoryBot.define do
+  submission_id = SecureRandom.uuid
+
   factory :submission do
     status { Submission::STATUS[:queued] }
     service_slug { 'service-slug' }
     encrypted_user_id_and_token { 'some token' }
-
     transient do
       actions { [] }
       attachments { [] }
-      submission { {} }
+      submission { { 'submission_id' => submission_id } }
     end
 
     payload { { actions: actions, submission: submission, attachments: attachments } }
@@ -20,7 +21,7 @@ FactoryBot.define do
             url: 'https://my-custom-endpoint/ap/v1/foo',
             encryption_key: 'jdwjdwjwdhwhdh73',
             data_url: 'this-url-should-no-longer-be-called-or-used',
-            submissionId: SecureRandom.uuid,
+            submissionId: submission_id,
             user_answers: {
               first_name: 'bob',
               last_name: 'madly',

@@ -88,7 +88,7 @@ describe 'Submits JSON given a JSON submission type', type: :request do
     {
       "serviceSlug": service_slug,
       "submissionId": submission_id,
-      "submissionAnswers": submission.except(:submissionId),
+      "submissionAnswers": expected_submission_answers,
       attachments: expected_attachments
     }.to_json
   end
