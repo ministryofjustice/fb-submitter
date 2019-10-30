@@ -1,7 +1,7 @@
 class Attachment
   attr_accessor :type, :filename, :url, :mimetype, :path
 
-  def initialize(type:, filename:, url:, mimetype:, path:)
+  def initialize(type: nil, filename:, url: nil, mimetype:, path: nil)
     @type = type
     @filename = filename
     @url = url

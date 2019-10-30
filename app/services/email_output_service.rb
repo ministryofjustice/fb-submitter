@@ -1,6 +1,6 @@
 class EmailOutputService
-  def initialize(email_service:)
-    @email_service = email_service
+  def initialize(emailer:)
+    @emailer = emailer
   end
 
   def execute(submission_id:, action:, attachments:, pdf_attachment:)
@@ -46,7 +46,7 @@ class EmailOutputService
   end
 
   def send_single_email(subject:, action:, attachments: [])
-    email_service.send_mail(
+    emailer.send_mail(
       from: action.fetch(:from),
       to: action.fetch(:to),
       subject: subject,
@@ -65,5 +65,5 @@ class EmailOutputService
     }
   end
 
-  attr_reader :email_service
+  attr_reader :emailer
 end

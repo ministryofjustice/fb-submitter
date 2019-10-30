@@ -133,10 +133,23 @@ describe NewDownloadService do
         downloader.download_in_parallel
       end
 
-      it 'returns the urls mapped to file paths' do
+      it 'returns an array of objects with all file info plus local paths' do
         expect(downloader.download_in_parallel).to eq(
-          url1 => '/tmp/file1',
-          url2 => '/tmp/file2'
+          [
+            {
+              filename: 'evidence_one.pdf',
+              mimetype: 'application/pdf',
+              tmp_path: '/tmp/file1',
+              url: url1
+            },
+            {
+              filename: 'evidence_two.pdf',
+              mimetype: 'application/pdf',
+              tmp_path: '/tmp/file2',
+              url: url2
+
+            }
+          ]
         )
       end
     end

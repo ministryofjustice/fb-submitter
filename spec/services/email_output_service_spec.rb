@@ -3,7 +3,7 @@ require_relative '../../app/services/email_service'
 require_relative '../../app/value_objects/attachment'
 
 describe EmailOutputService do
-  subject(:service) { described_class.new(email_service: email_service_mock) }
+  subject(:service) { described_class.new(emailer: email_service_mock) }
 
   let(:email_service_mock) { class_double(EmailService) }
 

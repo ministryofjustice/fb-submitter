@@ -1,14 +1,14 @@
 require 'active_support/core_ext/hash'
 
 class SubmissionPayloadService
-  attr_reader :attachments, :actions, :submission, :submission_id
+  attr_reader :attachments, :actions, :submission, :submission_id, :payload
 
   def initialize(payload)
-    payload = payload.with_indifferent_access
-    @attachments = payload.fetch(:attachments)
-    @actions = payload.fetch(:actions)
-    @submission = payload.fetch(:submission)
-    @submission_id = payload.fetch(:submission).fetch('submission_id')
+    @payload = payload.with_indifferent_access
+    @attachments = @payload.fetch(:attachments)
+    @actions = @payload.fetch(:actions)
+    @submission = @payload.fetch(:submission)
+    @submission_id = @payload.fetch(:submission).fetch('submission_id')
   end
 
   def user_answers_map
