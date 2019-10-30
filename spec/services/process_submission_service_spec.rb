@@ -370,10 +370,9 @@ describe ProcessSubmissionService do
   context 'with unknown type' do
     let(:submission) do
       create(:submission,
-        actions: [
-         { 'type' => 'what is this type?' }
-        ]
-      )
+             actions: [
+               { 'type' => 'what is this type?' }
+             ])
     end
 
     it 'ignores it' do
