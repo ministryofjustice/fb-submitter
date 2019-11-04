@@ -58,6 +58,7 @@ RSpec/ExampleLength:
   Exclude:
     - 'spec/services/adapters/user_file_store_spec.rb'
     - 'spec/services/download_service_spec.rb'
+    - 'spec/services/new_download_service_spec.rb'
     - 'spec/services/process_submission_service_spec.rb'
 
 # Offense count: 30
@@ -66,6 +67,7 @@ RSpec/ExampleLength:
 RSpec/MessageSpies:
   Exclude:
     - 'spec/services/download_service_spec.rb'
+    - 'spec/services/new_download_service_spec.rb'
     - 'spec/services/process_submission_service_spec.rb'
 
 # Offense count: 11
@@ -92,4 +94,5 @@ RSpec/NestedGroups:
 RSpec/SubjectStub:
   Exclude:
     - 'spec/services/download_service_spec.rb'
+    - 'spec/services/new_download_service_spec.rb'
     - 'spec/services/process_submission_service_spec.rb'
