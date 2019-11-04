@@ -30,13 +30,6 @@ class NewDownloadService
     { 'x-encrypted-user-id-and-token' => token }
   end
 
-  def download(url:, target_dir: nil, headers: {})
-    path = file_path_for_download(url: url, target_dir: target_dir)
-    request = construct_request(url: url, file_path: path, headers: headers)
-    request.run
-    path
-  end
-
   def construct_request(url:, file_path:, headers: {})
     request = Typhoeus::Request.new(url, followlocation: true, headers: headers)
     request.on_headers do |response|

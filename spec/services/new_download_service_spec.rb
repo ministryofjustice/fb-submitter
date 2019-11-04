@@ -15,13 +15,13 @@ describe NewDownloadService do
   end
   let(:target_dir) { '/my/target/dir' }
 
-  before do
-    allow(Typhoeus::Hydra).to receive(:hydra).and_return(mock_hydra)
-    allow(mock_hydra).to receive(:run).and_return('run result')
-    allow(mock_hydra).to receive(:queue).and_return('queue result')
-  end
-
   describe '#download_in_parallel' do
+    before do
+      allow(Typhoeus::Hydra).to receive(:hydra).and_return(mock_hydra)
+      allow(mock_hydra).to receive(:run).and_return('run result')
+      allow(mock_hydra).to receive(:queue).and_return('queue result')
+    end
+
     subject do
       described_class.new(attachments: attachments, target_dir: target_dir, token: token)
     end
@@ -140,6 +140,44 @@ describe NewDownloadService do
         expect(subject.download_in_parallel).to eq(
           url1 => '/tmp/file1',
           url2 => '/tmp/file2'
+        )
+      end
+    end
+  end
+
+  context 'when the network request is unsuccessful' do
+    subject do
+      described_class.new(attachments: attachments, target_dir: target_dir, token: token)
+    end
+    let(:mock_request) { instance_double(Typhoeus::Request, url: "some_url") }
+    let(:good_response) { double(code: 200, return_code: 200) }
+    let(:bad_response) { double(code: 500, return_code: 500) }
+
+    context 'when failure is on headers' do
+      before do
+        allow(Typhoeus::Request).to receive(:new).and_return(mock_request)
+        allow(mock_request).to receive(:on_headers).and_yield(bad_response)
+      end
+
+      it 'raises the correct error' do
+        expect { subject.download_in_parallel }.to raise_error(
+          RuntimeError, "Request failed (500: 500 some_url)"
+        )
+      end
+    end
+
+    context 'when failure is on complete' do
+      before do
+        allow(File).to receive(:open).and_return(double(write: true, close: true))
+        allow(Typhoeus::Request).to receive(:new).and_return(mock_request)
+        allow(mock_request).to receive(:on_headers).and_yield(good_response)
+        allow(mock_request).to receive(:on_body).and_yield("")
+        allow(mock_request).to receive(:on_complete).and_yield(bad_response)
+      end
+
+      it 'raises the correct error' do
+        expect { subject.download_in_parallel }.to raise_error(
+          RuntimeError, "Request failed (500: 500 some_url)"
         )
       end
     end
