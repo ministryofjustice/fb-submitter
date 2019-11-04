@@ -1,8 +1,7 @@
 class ProcessSubmissionService # rubocop:disable  Metrics/ClassLength
-  attr_reader :submission_id
-
-  def initialize(submission_id:)
-    @submission_id = submission_id
+  def initialize(id:)
+    @submission = Submission.find(id)
+    @payload_service = SubmissionPayloadService.new(@submission.payload)
   end
 
   # rubocop:disable Metrics/MethodLength
@@ -10,7 +9,6 @@ class ProcessSubmissionService # rubocop:disable  Metrics/ClassLength
     submission.update_status(:processing)
     submission.responses = []
 
-    payload_service = SubmissionPayloadService.new(submission.payload)
     payload_service.actions.each do |action|
       case action.fetch(:type)
       when 'json'
@@ -40,6 +38,8 @@ class ProcessSubmissionService # rubocop:disable  Metrics/ClassLength
 
   private
 
+  attr_reader :submission, :payload_service
+
   def email_body_parts(email)
     {
       'text/plain' => email.email_body
@@ -64,7 +64,7 @@ class ProcessSubmissionService # rubocop:disable  Metrics/ClassLength
         response = EmailService.send_mail(
           from: mail.from,
           to: mail.to,
-          subject: "#{mail.subject} {#{submission_id}} [#{n + 1}/#{number_of_attachments(mail)}]",
+          subject: "#{mail.subject} {#{payload_service.submission_id}} [#{n + 1}/#{number_of_attachments(mail)}]",
           body_parts: email_body,
           attachments: [a]
         )
@@ -87,10 +87,6 @@ class ProcessSubmissionService # rubocop:disable  Metrics/ClassLength
     urls.compact.sort.uniq
   end
 
-  def submission
-    @submission ||= Submission.find(submission_id)
-  end
-
   def headers
     { 'x-encrypted-user-id-and-token' => submission.encrypted_user_id_and_token }
   end
@@ -101,7 +97,7 @@ class ProcessSubmissionService # rubocop:disable  Metrics/ClassLength
 
     attachments.each_with_index do |value, index|
       if value[:pdf_data]
-        attachment_objects[index].file = generate_pdf({ submission: value[:pdf_data] }, @submission_id)
+        attachment_objects[index].file = generate_pdf({ submission: value[:pdf_data] }, payload_service.submission_id)
       else
         attachment_objects[index].path = download_attachments[attachment_objects[index].url]
       end

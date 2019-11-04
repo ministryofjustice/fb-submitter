@@ -5,7 +5,7 @@ require 'webmock/rspec'
 
 describe ProcessSubmissionService do
   subject do
-    described_class.new(submission_id: submission.id)
+    described_class.new(id: submission.id)
   end
 
   let(:submission) do
