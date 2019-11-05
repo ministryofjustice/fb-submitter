@@ -49,7 +49,7 @@ RSpec.describe SubmissionPayloadService do
     {
       'first_name' => 'Bob',
       'last_name' => 'Smith',
-      'not_answered_question' => '',
+      'not_answered_question' => nil,
       'has-email' => 'Yes',
       'email_address' => 'bob.smith@digital.justice.gov.uk',
       'complaint_details' => 'Some complaint details',
