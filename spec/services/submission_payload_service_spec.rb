@@ -36,6 +36,8 @@ RSpec.describe SubmissionPayloadService do
                   { 'label' => 'Your complaint',
                     'answer' => 'Some complaint details',
                     'key' => 'complaint_details' },
+                  { 'label' => 'not answered question',
+                    'key' => 'not_answered_question' },
                   { 'label' =>
                       'Would you like to send any documents as part of your complaint?',
                     'answer' => 'No',
@@ -47,6 +49,7 @@ RSpec.describe SubmissionPayloadService do
     {
       'first_name' => 'Bob',
       'last_name' => 'Smith',
+      'not_answered_question' => '',
       'has-email' => 'Yes',
       'email_address' => 'bob.smith@digital.justice.gov.uk',
       'complaint_details' => 'Some complaint details',
@@ -71,7 +74,7 @@ RSpec.describe SubmissionPayloadService do
   let(:expected_submission) do
     {
       'pdf_heading' => 'Complain about a court or tribunal',
-      'sections' => [{ 'heading' => 'Your name', 'questions' => [], 'summary_heading' => '' }, { 'heading' => '', 'questions' => [{ 'answer' => 'Bob', 'key' => 'first_name', 'label' => 'First name' }, { 'answer' => 'Smith', 'key' => 'last_name', 'label' => 'Last name' }], 'summary_heading' => '' }, { 'heading' => '', 'questions' => [{ 'answer' => 'Yes', 'key' => 'has-email', 'label' => 'Can we contact you about your complaint by email?' }, { 'answer' => 'bob.smith@digital.justice.gov.uk', 'key' => 'email_address', 'label' => 'Your email address' }, { 'answer' => 'Some complaint details', 'key' => 'complaint_details', 'label' => 'Your complaint' }, { 'answer' => 'No', 'key' => 'has-complaint-documents', 'label' => 'Would you like to send any documents as part of your complaint?' }], 'summary_heading' => '' }],
+      'sections' => [{ 'heading' => 'Your name', 'questions' => [], 'summary_heading' => '' }, { 'heading' => '', 'questions' => [{ 'answer' => 'Bob', 'key' => 'first_name', 'label' => 'First name' }, { 'answer' => 'Smith', 'key' => 'last_name', 'label' => 'Last name' }], 'summary_heading' => '' }, { 'heading' => '', 'questions' => [{ 'answer' => 'Yes', 'key' => 'has-email', 'label' => 'Can we contact you about your complaint by email?' }, { 'answer' => 'bob.smith@digital.justice.gov.uk', 'key' => 'email_address', 'label' => 'Your email address' }, { 'answer' => 'Some complaint details', 'key' => 'complaint_details', 'label' => 'Your complaint' }, { 'label' => 'not answered question', 'key' => 'not_answered_question' }, { 'answer' => 'No', 'key' => 'has-complaint-documents', 'label' => 'Would you like to send any documents as part of your complaint?' }], 'summary_heading' => '' }],
       'submission_id' => '8f5dd756-df07-40e7-afc7-682cdf490264'
     }
   end

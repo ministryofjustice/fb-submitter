@@ -15,7 +15,7 @@ class SubmissionPayloadService
     questions = {}
     submission.fetch('sections', []).each do |section|
       section.fetch('questions').each do |question|
-        questions[question.fetch('key')] = question.fetch('answer')
+        questions[question.fetch('key')] = question.fetch('answer', '')
       end
     end
     questions
