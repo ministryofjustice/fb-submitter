@@ -27,7 +27,7 @@ class ProcessSubmissionService # rubocop:disable  Metrics/ClassLength
         attachments = generate_attachments(payload_service.attachments, submission.encrypted_user_id_and_token)
 
         EmailOutputService.new(
-          emailer: EmailService.new
+          emailer: EmailService
         ).execute(submission_id: payload_service.submission_id, action: action, attachments: attachments, pdf_attachment: pdf)
       else
         Rails.logger.warn "Unknown action type '#{action.fetch(:type)}' for submission id #{submission.id}"
