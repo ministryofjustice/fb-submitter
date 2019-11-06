@@ -20,7 +20,7 @@ describe 'UserData API', type: :request do
 
       # PDF Generator stubs
       stub_request(:get, 'http://fake_service_token_cache_root_url/service/my-service').to_return(status: 200, body: { token: '123' }.to_json)
-      stub_request(:post, 'http://pdf-generator.com/v1/pdfs').with(body: '{"question_1":"answer 1","question_2":"answer 2"}').to_return(status: 200, body: pdf_file_content)
+      stub_request(:post, 'http://pdf-generator.com/v1/pdfs').to_return(status: 200, body: pdf_file_content)
     end
 
     after do
@@ -37,47 +37,74 @@ describe 'UserData API', type: :request do
 
       context 'with a valid email JSON body' do
         let(:encrypted_user_id_and_token) { 'kdjh9s8db9s87dbosd7b0sd8b70s9d8bs98d7b9s8db' }
-        let(:submission_details) do
+        let(:attachments) do
+          [
+            {
+              type: 'filestore',
+              mimetype: 'image/png',
+              url: 'http://fb-user-filestore-api-svc-test-dev.formbuilder-platform-test-dev/service/ioj/user/a239313d-4d2d-4a16-b5ef-69d6e8e53e86/28d-dae59621acecd4b1596dd0e96968c6cec3fae7927613a12c357e7a62e11877d8',
+              filename: 'doge'
+            },
+            {
+              type: 'filestore',
+              mimetype: 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+              url: 'http://fb-user-filestore-api-svc-test-dev.formbuilder-platform-test-dev/service/ioj/user/a239313d-4d2d-4a16-b5ef-69d6e8e53e86/28d-aaa59621acecd4b1596dd0e96968c6cec3fae7927613a12c357e7a62e1187aaa',
+              filename: 'word'
+            }
+          ]
+        end
+        let(:actions) do
           [
             {
               type: 'email',
+              recipientType: 'team',
               from: 'from@example.com',
               to: 'destination@example.com',
+              subject: 'Complain about a court or tribunal submission',
               email_body: 'this is the body of the email',
-              attachments: [
-                {
-                  type: 'output',
-                  mimetype: 'application/pdf',
-                  filename: 'form',
-                  pdf_data: {
-                    question_1: 'answer 1',
-                    question_2: 'answer 2'
-                  }
-                },
-                {
-                  type: 'filestore',
-                  mimetype: 'image/png',
-                  url: 'http://fb-user-filestore-api-svc-test-dev.formbuilder-platform-test-dev/service/ioj/user/a239313d-4d2d-4a16-b5ef-69d6e8e53e86/28d-dae59621acecd4b1596dd0e96968c6cec3fae7927613a12c357e7a62e11877d8',
-                  filename: 'doge'
-                },
-                {
-                  type: 'filestore',
-                  mimetype: 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-                  url: 'http://fb-user-filestore-api-svc-test-dev.formbuilder-platform-test-dev/service/ioj/user/a239313d-4d2d-4a16-b5ef-69d6e8e53e86/28d-aaa59621acecd4b1596dd0e96968c6cec3fae7927613a12c357e7a62e1187aaa',
-                  filename: 'word'
-                }
-              ]
+              include_attachments: true,
+              include_pdf: true
             }
           ]
+        end
+        let(:submission_id) { 'a239313d-4d2d-4a16-b5ef-69d6e8e53e86' }
+        let(:submission) do
+          {
+            'submission_id' => submission_id,
+            "pdf_heading" => "Application against a refusal of criminal legal aid on interests of justice grounds",
+            "pdf_subheading"=>"IOJ",
+            "sections"=>[
+              {
+                "heading" => "Defendant’s details",
+                "summary_heading"=>"",
+                "questions"=>[]
+              },
+              {
+                "heading"=>"",
+                "summary_heading"=>"",
+                "questions"=>[
+                  {
+                    "label"=>"Full name",
+                    "answer"=>"john doe",
+                    "key"=>"fullname"
+                  },
+                  {
+                    "label"=>"Date of birth",
+                    "answer"=>"1 January 1990",
+                    "key"=>"dob"
+                  }
+                ]
+              }
+            ]
+          }
         end
         let(:params) do
           {
             service_slug: service_slug,
             encrypted_user_id_and_token: encrypted_user_id_and_token,
-            submission_details: submission_details,
-            actions: [], # TODO: not yet used for email
-            submission: { 'submission_id' => SecureRandom.uuid }, # TODO: not yet used for email
-            attachments: [] # TODO: not yet used for email
+            actions: actions,
+            submission: submission,
+            attachments: attachments
           }
         end
 
