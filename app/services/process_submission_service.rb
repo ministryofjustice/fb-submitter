@@ -73,6 +73,14 @@ class ProcessSubmissionService
     ).execute
   end
 
+  def submission
+    @submission ||= Submission.find(submission_id)
+  end
+
+  def payload_service
+    @payload_service ||= SubmissionPayloadService.new(submission.payload)
+  end
+
   def disable_jwt?
     Rails.env.development?
   end
