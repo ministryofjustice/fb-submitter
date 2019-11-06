@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe NewDownloadService do
+describe DownloadService do
   let(:url) { 'https://my.domain/some/path/file.ext' }
   let(:token) { 'sometoken' }
   let(:headers) { { 'x-encrypted-user-id-and-token' => token } }

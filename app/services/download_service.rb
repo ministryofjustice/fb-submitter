@@ -1,4 +1,4 @@
-class NewDownloadService
+class DownloadService
   attr_reader :attachments, :target_dir, :token
 
   def initialize(attachments:, target_dir: nil, token:)

@@ -40,7 +40,7 @@ class ProcessSubmissionService # rubocop:disable  Metrics/ClassLength
   attr_reader :submission, :payload_service
 
   def generate_attachments(attachments_payload, token)
-    tmp_file_map = NewDownloadService.new(
+    tmp_file_map = DownloadService.new(
       attachments: attachments_payload,
       target_dir: nil,
       token: token
