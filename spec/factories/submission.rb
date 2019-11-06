@@ -8,141 +8,141 @@ FactoryBot.define do
     transient do
       actions { [] }
       attachments { [] }
-      submission {
+      submission do
         {
           'submission_id' => submission_id,
-          "pdf_heading" => "Application against a refusal of criminal legal aid on interests of justice grounds",
-          "pdf_subheading"=>"IOJ",
-          "sections"=>[
+          'pdf_heading' => 'Application against a refusal of criminal legal aid on interests of justice grounds',
+          'pdf_subheading' => 'IOJ',
+          'sections' => [
             {
-              "heading"=>"Case details",
-              "summary_heading"=>"",
-              "questions"=>[]
+              'heading' => 'Case details',
+              'summary_heading' => '',
+              'questions' => []
             },
             {
-              "heading"=>"",
-              "summary_heading"=>"",
-              "questions"=>[
+              'heading' => '',
+              'summary_heading' => '',
+              'questions' => [
                 {
-                  "label"=>"Unique submission number (USN)",
-                  "answer"=>"1234567",
-                  "key"=>"usn"
+                  'label' => 'Unique submission number (USN)',
+                  'answer' => '1234567',
+                  'key' => 'usn'
                 }
               ]
             },
             {
-              "heading"=>"MAAT number",
-              "summary_heading"=>"",
-              "questions"=>[]
+              'heading' => 'MAAT number',
+              'summary_heading' => '',
+              'questions' => []
             },
             {
-              "heading"=>"",
-              "summary_heading"=>"",
-              "questions"=>[
+              'heading' => '',
+              'summary_heading' => '',
+              'questions' => [
                 {
-                  "label"=>"MAAT number",
-                  "answer"=>"6123456",
-                  "key"=>"maat[1]"
+                  'label' => 'MAAT number',
+                  'answer' => '6123456',
+                  'key' => 'maat[1]'
                 }
               ]
             },
             {
-              "heading" => "Defendant’s details",
-              "summary_heading"=>"",
-              "questions"=>[]
+              'heading' => 'Defendant’s details',
+              'summary_heading' => '',
+              'questions' => []
             },
             {
-              "heading"=>"",
-              "summary_heading"=>"",
-              "questions"=>[
+              'heading' => '',
+              'summary_heading' => '',
+              'questions' => [
                 {
-                  "label"=>"Full name",
-                  "answer"=>"john doe",
-                  "key"=>"fullname"
+                  'label' => 'Full name',
+                  'answer' => 'john doe',
+                  'key' => 'fullname'
                 },
                 {
-                  "label"=>"Date of birth",
-                  "answer"=>"1 January 1990",
-                  "key"=>"dob"
+                  'label' => 'Date of birth',
+                  'answer' => '1 January 1990',
+                  'key' => 'dob'
                 }
               ]
             },
             {
-              "heading"=>"Solicitor’s details",
-              "summary_heading"=>"",
-              "questions"=>[]
+              'heading' => 'Solicitor’s details',
+              'summary_heading' => '',
+              'questions' => []
             },
             {
-              "heading"=>"",
-              "summary_heading"=>"",
-              "questions"=>[
+              'heading' => '',
+              'summary_heading' => '',
+              'questions' => [
                 {
-                  "label"=>"Full name",
-                  "answer"=>"Mr Solicitor",
-                  "key"=>"solicitor_fullname"
+                  'label' => 'Full name',
+                  'answer' => 'Mr Solicitor',
+                  'key' => 'solicitor_fullname'
                 },
                 {
-                  "label"=>"Firm",
-                  "answer"=>"Pearson",
-                  "key"=>"firm"
+                  'label' => 'Firm',
+                  'answer' => 'Pearson',
+                  'key' => 'firm'
                 },
                 {
-                  "label"=>"Email address",
-                  "answer"=>"info@solicitor.co.uk",
-                  "key"=>"solicitor_email"
+                  'label' => 'Email address',
+                  'answer' => 'info@solicitor.co.uk',
+                  'key' => 'solicitor_email'
                 },
                 {
-                  "label"=>"Legal aid provider account number",
-                  "answer"=>"1A234B",
-                  "key"=>"lapan"
+                  'label' => 'Legal aid provider account number',
+                  'answer' => '1A234B',
+                  'key' => 'lapan'
                 }
               ]
             },
             {
-              "heading"=>"Offence",
-              "summary_heading"=>"",
-              "questions"=>[]
+              'heading' => 'Offence',
+              'summary_heading' => '',
+              'questions' => []
             },
             {
-              "heading"=>"",
-              "summary_heading"=>"",
-              "questions"=>[
+              'heading' => '',
+              'summary_heading' => '',
+              'questions' => [
                 {
-                  "label"=>"Offence type",
-                  "answer"=>"Grand theft auto",
-                  "key"=>"offence[1].type"
+                  'label' => 'Offence type',
+                  'answer' => 'Grand theft auto',
+                  'key' => 'offence[1].type'
                 },
                 {
-                  "label"=>"Date of offence",
-                  "answer"=>"1 January 1990",
-                  "key"=>"offence[1].date"
+                  'label' => 'Date of offence',
+                  'answer' => '1 January 1990',
+                  'key' => 'offence[1].date'
                 },
                 {
-                  "label"=>"Reasons for appeal",
-                  "answer"=>"A genuine reason",
-                  "key"=>"offence[1].reasons"
+                  'label' => 'Reasons for appeal',
+                  'answer' => 'A genuine reason',
+                  'key' => 'offence[1].reasons'
                 }
               ]
             },
             {
-              "heading"=>"",
-              "summary_heading"=>"",
-              "questions"=>[]
+              'heading' => '',
+              'summary_heading' => '',
+              'questions' => []
             },
             {
-              "heading"=>"",
-              "summary_heading"=>"",
-              "questions"=>[
+              'heading' => '',
+              'summary_heading' => '',
+              'questions' => [
                 {
-                  "label"=>"Attach any documentation that supports your appeal",
-                  "answer"=>"an-image.jpg",
-                  "key"=>"documentation"
+                  'label' => 'Attach any documentation that supports your appeal',
+                  'answer' => 'an-image.jpg',
+                  'key' => 'documentation'
                 }
               ]
             }
           ]
         }
-      }
+      end
     end
 
     payload { { actions: actions, submission: submission, attachments: attachments } }

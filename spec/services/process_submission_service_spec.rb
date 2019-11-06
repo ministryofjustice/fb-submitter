@@ -4,12 +4,12 @@ require 'rails_helper'
 require 'webmock/rspec'
 
 describe ProcessSubmissionService do
-  subject(:service) { ProcessSubmissionService.new(submission_id: submission.id) }
+  subject(:service) { described_class.new(submission_id: submission.id) }
 
   before do
     # Stub service token cache API call
-    stub_request(:get, "http://fake_service_token_cache_root_url/service/service-slug")
-      .to_return(status: 200, body: {token: "123"}.to_json, headers: {})
+    stub_request(:get, 'http://fake_service_token_cache_root_url/service/service-slug')
+      .to_return(status: 200, body: { token: '123' }.to_json, headers: {})
   end
 
   context 'when sending an email submission' do
@@ -31,10 +31,10 @@ describe ProcessSubmissionService do
     let(:attachments) do
       [
         {
-          "url"=>"http://fb-user-filestore-api-svc-test-dev.formbuilder-platform-test-dev//service/phil-ioj/user/1/123",
-          "mimetype"=>"image/jpeg",
-          "filename"=>"an-image.jpg",
-          "type"=>"filestore"
+          'url' => 'http://fb-user-filestore-api-svc-test-dev.formbuilder-platform-test-dev//service/phil-ioj/user/1/123',
+          'mimetype' => 'image/jpeg',
+          'filename' => 'an-image.jpg',
+          'type' => 'filestore'
         }
       ]
     end
@@ -43,16 +43,17 @@ describe ProcessSubmissionService do
 
     before do
       # Stub PDF API call
-      stub_request(:post, "http://pdf-generator.com/v1/pdfs")
+      stub_request(:post, 'http://pdf-generator.com/v1/pdfs')
         .to_return(status: 200, body: "hello world\n", headers: {})
       # Stub filestore API call
-      stub_request(:get, "http://fb-user-filestore-api-svc-test-dev.formbuilder-platform-test-dev//service/phil-ioj/user/1/123")
-        .to_return(status: 200, body: "image", headers: {})
+      stub_request(:get, 'http://fb-user-filestore-api-svc-test-dev.formbuilder-platform-test-dev//service/phil-ioj/user/1/123')
+        .to_return(status: 200, body: 'image', headers: {})
       allow(EmailOutputService).to receive(:new).and_return(submission_service_spy)
     end
 
     context 'with one attachment' do
       let(:submission) { create(:submission, :email, actions: actions, attachments: attachments) }
+
       before do
         service.perform
       end
@@ -89,20 +90,21 @@ describe ProcessSubmissionService do
       let(:attachments) do
         [
           {
-            "url"=>"http://fb-user-filestore-api-svc-test-dev.formbuilder-platform-test-dev//service/phil-ioj/user/1/123",
-            "mimetype"=>"image/jpeg",
-            "filename"=>"an-image.jpg",
-            "type"=>"filestore"
+            'url' => 'http://fb-user-filestore-api-svc-test-dev.formbuilder-platform-test-dev//service/phil-ioj/user/1/123',
+            'mimetype' => 'image/jpeg',
+            'filename' => 'an-image.jpg',
+            'type' => 'filestore'
           },
           {
-            "url"=>"http://fb-user-filestore-api-svc-test-dev.formbuilder-platform-test-dev//service/phil-ioj/user/1/123",
-            "mimetype"=>"image/jpeg",
-            "filename"=>"a-second-image.jpg",
-            "type"=>"filestore"
+            'url' => 'http://fb-user-filestore-api-svc-test-dev.formbuilder-platform-test-dev//service/phil-ioj/user/1/123',
+            'mimetype' => 'image/jpeg',
+            'filename' => 'a-second-image.jpg',
+            'type' => 'filestore'
           }
         ]
       end
       let(:submission) { create(:submission, :email, actions: actions, attachments: attachments) }
+
       before do
         service.perform
       end

@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe SubmissionController, type: :controller do
   let(:payload) do
-    { actions: 1, submission: { submission_id: "123", else: 1 }, attachments: [1, 2] }
+    { actions: 1, submission: { submission_id: '123', else: 1 }, attachments: [1, 2] }
   end
 
   before do

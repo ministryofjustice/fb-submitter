@@ -1,4 +1,4 @@
-class ProcessSubmissionService # rubocop:disable  Metrics/ClassLength
+class ProcessSubmissionService
   attr_reader :submission_id
 
   def initialize(submission_id:)
@@ -34,6 +34,7 @@ class ProcessSubmissionService # rubocop:disable  Metrics/ClassLength
       end
     end
   end
+  # rubocop:enable Metrics/MethodLength
 
   private
 

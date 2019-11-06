@@ -71,27 +71,27 @@ describe 'UserData API', type: :request do
         let(:submission) do
           {
             'submission_id' => submission_id,
-            "pdf_heading" => "Application against a refusal of criminal legal aid on interests of justice grounds",
-            "pdf_subheading"=>"IOJ",
-            "sections"=>[
+            'pdf_heading' => 'Application against a refusal of criminal legal aid on interests of justice grounds',
+            'pdf_subheading' => 'IOJ',
+            'sections' => [
               {
-                "heading" => "Defendant’s details",
-                "summary_heading"=>"",
-                "questions"=>[]
+                'heading' => 'Defendant’s details',
+                'summary_heading' => '',
+                'questions' => []
               },
               {
-                "heading"=>"",
-                "summary_heading"=>"",
-                "questions"=>[
+                'heading' => '',
+                'summary_heading' => '',
+                'questions' => [
                   {
-                    "label"=>"Full name",
-                    "answer"=>"john doe",
-                    "key"=>"fullname"
+                    'label' => 'Full name',
+                    'answer' => 'john doe',
+                    'key' => 'fullname'
                   },
                   {
-                    "label"=>"Date of birth",
-                    "answer"=>"1 January 1990",
-                    "key"=>"dob"
+                    'label' => 'Date of birth',
+                    'answer' => '1 January 1990',
+                    'key' => 'dob'
                   }
                 ]
               }
