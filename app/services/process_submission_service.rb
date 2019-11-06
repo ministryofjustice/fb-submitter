@@ -3,8 +3,6 @@ class ProcessSubmissionService
 
   def initialize(submission_id:)
     @submission_id = submission_id
-    @submission = Submission.find(submission_id)
-    @payload_service = SubmissionPayloadService.new(submission.payload)
   end
 
   # rubocop:disable Metrics/MethodLength
@@ -37,8 +35,6 @@ class ProcessSubmissionService
   # rubocop:enable Metrics/MethodLength
 
   private
-
-  attr_reader :submission, :payload_service
 
   def generate_attachments(attachments_payload, token)
     tmp_file_map = DownloadService.new(
@@ -86,6 +82,14 @@ class ProcessSubmissionService
       ),
       service_slug: service_slug
     ).execute
+  end
+
+  def submission
+    @submission ||= Submission.find(submission_id)
+  end
+
+  def payload_service
+    @payload_service ||= SubmissionPayloadService.new(submission.payload)
   end
 
   def disable_jwt?
