@@ -2,69 +2,10 @@ require 'rails_helper'
 require 'webmock/rspec'
 
 describe 'UserData API', type: :request do
-  let(:headers) do
-    {
-      'Content-type' => 'application/json'
-    }
-  end
-  let(:service_slug) { 'my-service' }
-  # NOTE: this must be a valid UUID, otherwise ActiveRecord silently
-  # ignores it in an initializer
-  let(:user_identifier) { SecureRandom.uuid }
-
-  describe 'a GET request' do
-    describe 'to /submission/:id' do
-      let(:submission_id) { 'abcdef' }
-      let(:url) { "/submission/#{submission_id}" }
-      let(:get_request) do
-        get url, headers: headers
-      end
-
-      include_context 'when a JSON-only API', :get, '/submission/abcdef'
-      include_context 'a JWT-authenticated method', :get, '/submission/abcdef', {}
-
-      context 'with a valid token' do
-        before do
-          allow_any_instance_of(ApplicationController).to receive(:verify_token!)
-          get_request
-        end
-
-        context 'when the id exists' do
-          let(:submission) do
-            Submission.create!(
-              status: 'queued',
-              encrypted_user_id_and_token: '123456789',
-              service_slug: 'my-service',
-              submission_details: %w[some details]
-            )
-          end
-          let(:submission_id) { submission.id }
-
-          describe 'the response' do
-            it 'has status 200' do
-              expect(response).to have_http_status(:ok)
-            end
-
-            it 'has json content_type' do
-              expect(response.content_type).to eq('application/json')
-            end
-
-            describe 'the response body' do
-              it 'is valid JSON' do
-                expect { JSON.parse(response.body) }.not_to raise_error
-              end
-
-              it 'is the requested submission rendered as json' do
-                expect(response.body).to eq(submission.to_json)
-              end
-            end
-          end
-        end
-      end
-    end
-  end
-
   describe 'a POST request' do
+    let(:headers) { { 'Content-type' => 'application/json' } }
+    let(:service_slug) { 'my-service' }
+
     before do
       Delayed::Worker.delay_jobs = false
 

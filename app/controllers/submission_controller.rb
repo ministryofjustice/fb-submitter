@@ -14,11 +14,6 @@ class SubmissionController < ApplicationController
     render status: :created
   end
 
-  def show
-    @submission = Submission.find(params[:id])
-    render json: @submission, status: :ok
-  end
-
   private
 
   def submission_params
