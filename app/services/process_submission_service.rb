@@ -37,33 +37,18 @@ class ProcessSubmissionService
   private
 
   def generate_attachments(attachments_payload, token)
-    tmp_file_map = DownloadService.new(
+    DownloadService.new(
       attachments: attachments_payload,
       target_dir: nil,
       token: token
     ).download_in_parallel
-    attachments = []
-
-    tmp_file_map.each do |attachment_info|
-      attachment = Attachment.new(filename: attachment_info[:filename], mimetype: attachment_info[:mimetype])
-      attachment.path = attachment_info[:tmp_path]
-      attachments << attachment
-    end
-
-    attachments
   end
 
-  def generate_pdf(pdf_detail, submission_id)
-    tmp_file = SaveTempPdf.new(
-      generate_pdf_content_service: GeneratePdfContent.new(
-        pdf_api_gateway: pdf_gateway(submission.service_slug),
-        payload: pdf_detail
-      ),
-      tmp_file_gateway: Tempfile
-    ).execute(file_name: submission_id)
-    attachment = Attachment.new(filename: "#{payload_service.submission_id}-answers.pdf", mimetype: 'application/pdf')
-    attachment.file = tmp_file
-    attachment
+  def generate_pdf(pdf_detail, _submission_id)
+    GeneratePdfContent.new(
+      pdf_api_gateway: pdf_gateway(submission.service_slug),
+      payload: pdf_detail
+    ).execute
   end
 
   def pdf_gateway(service_slug)

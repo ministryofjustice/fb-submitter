@@ -133,21 +133,36 @@ describe DownloadService do
         downloader.download_in_parallel
       end
 
-      it 'returns an array of objects with all file info plus local paths' do
-        expect(downloader.download_in_parallel).to eq(
+      it 'returns an array of Attachment objects with all file info plus local paths' do
+        response = downloader.download_in_parallel
+        expect(response.each.map(&:class).uniq).to eq([Attachment])
+      end
+
+      it 'assigns the correct values to the Attachment objects' do
+        response = downloader.download_in_parallel
+        attachment_values = []
+
+        response.each do |attachment|
+          attachment_values << {
+            url: attachment.url,
+            filename: attachment.filename,
+            mimetype: attachment.mimetype,
+            path: attachment.path
+          }
+        end
+        expect(attachment_values).to eq(
           [
             {
               filename: 'evidence_one.pdf',
               mimetype: 'application/pdf',
-              tmp_path: '/tmp/file1',
-              url: url1
+              path: '/tmp/file1',
+              url: 'https://example.com/service/some-service/user/some-user/fingerprint'
             },
             {
               filename: 'evidence_two.pdf',
               mimetype: 'application/pdf',
-              tmp_path: '/tmp/file2',
-              url: url2
-
+              path: '/tmp/file2',
+              url: 'https://another.domain/some/otherfile.ext'
             }
           ]
         )

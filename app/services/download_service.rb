@@ -19,7 +19,7 @@ class DownloadService
       mimetype = attachment.fetch('mimetype')
       tmp_path = file_path_for_download(url: url, target_dir: actual_dir)
       request = construct_request(url: url, file_path: tmp_path, headers: headers)
-      results << { url: url, tmp_path: tmp_path, filename: filename, mimetype: mimetype }
+      results << Attachment.new(url: url, path: tmp_path, filename: filename, mimetype: mimetype)
 
       hydra.queue(request)
     end
