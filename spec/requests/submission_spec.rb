@@ -132,6 +132,12 @@ describe 'UserData API', type: :request do
             expect(raw_messages.join).to include(file_ccontent)
           end
 
+          it 'email contains email body' do
+            post_request
+
+            expect(raw_messages).to all(include('this is the body of the email'))
+          end
+
           it 'creates a submission record' do
             expect { post_request }.to change(Submission, :count).by(1)
           end

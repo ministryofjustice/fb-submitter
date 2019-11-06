@@ -7,7 +7,7 @@ RSpec.describe RawMessage do
       to: 'reciver@example.com',
       subject: 'test email',
       body_parts: {
-        'text/plain' => 'this is a plaintext test'
+        'text/plain': 'this is a plaintext test'
       },
       attachments: [attachment]
     )
