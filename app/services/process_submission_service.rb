@@ -3,12 +3,12 @@ class ProcessSubmissionService # rubocop:disable  Metrics/ClassLength
 
   def initialize(submission_id:)
     @submission_id = submission_id
+    @submission = Submission.find(submission_id)
+    @payload_service = SubmissionPayloadService.new(submission.payload)
   end
 
   # rubocop:disable Metrics/MethodLength
   def perform # rubocop:disable Metrics/AbcSize
-
-    payload_service = SubmissionPayloadService.new(submission.payload)
     payload_service.actions.each do |action|
       case action.fetch(:type)
       when 'json'

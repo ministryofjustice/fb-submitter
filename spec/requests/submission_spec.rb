@@ -112,11 +112,6 @@ describe 'UserData API', type: :request do
           describe 'the created Submission record' do
             let(:created_record) { Submission.last }
 
-            it 'processed requests are marked as completed' do
-              post_request
-              expect(created_record.status).to eq('completed')
-            end
-
             it 'has the given service_slug' do
               post_request
               expect(created_record.service_slug).to eq(service_slug)

@@ -4,7 +4,7 @@ require 'rails_helper'
 require 'webmock/rspec'
 
 describe ProcessSubmissionService do
-  subject(:service) { ProcessSubmissionService.new(id: submission.id) }
+  subject(:service) { ProcessSubmissionService.new(submission_id: submission.id) }
 
   before do
     # Stub service token cache API call
