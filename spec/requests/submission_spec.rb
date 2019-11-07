@@ -128,14 +128,21 @@ describe 'UserData API', type: :request do
           it 'email contains downloaded attachment' do
             post_request
 
-            file_ccontent = Base64.encode64(pdf_file_content)
-            expect(raw_messages.join).to include(file_ccontent)
+            file_content = Base64.encode64(pdf_file_content)
+            expect(raw_messages.join).to include(file_content)
           end
 
           it 'email contains email body' do
             post_request
 
             expect(raw_messages).to all(include('this is the body of the email'))
+          end
+
+          it 'sends the PDF of answers with the first email' do
+            post_request
+
+            expect(raw_messages.first).to include('1/3')
+            expect(raw_messages.first).to include('-answers.pdf')
           end
 
           it 'creates a submission record' do

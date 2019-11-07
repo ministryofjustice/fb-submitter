@@ -25,7 +25,7 @@ class EmailOutputService
       email_attachments = email_attachments.concat attachments
     end
     if action.fetch(:include_pdf) == true
-      email_attachments << pdf_attachment
+      email_attachments.prepend(pdf_attachment)
     end
     email_attachments
   end
