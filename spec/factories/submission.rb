@@ -2,7 +2,6 @@ FactoryBot.define do
   submission_id = SecureRandom.uuid
 
   factory :submission do
-    status { Submission::STATUS[:queued] }
     service_slug { 'service-slug' }
     encrypted_user_id_and_token { 'some token' }
     transient do

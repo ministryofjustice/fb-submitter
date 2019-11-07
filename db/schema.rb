@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_28_124057) do
+ActiveRecord::Schema.define(version: 2019_11_07_105358) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -31,7 +31,6 @@ ActiveRecord::Schema.define(version: 2019_10_28_124057) do
   end
 
   create_table "submissions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "status"
     t.string "service_slug"
     t.string "encrypted_user_id_and_token"
     t.json "submission_details"
