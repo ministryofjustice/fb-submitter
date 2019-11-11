@@ -151,55 +151,30 @@ FactoryBot.define do
     end
 
     trait :json do
-      submission_details do
+      actions do
         [
           {
             type: 'json',
             url: 'https://my-custom-endpoint/ap/v1/foo',
-            encryption_key: 'jdwjdwjwdhwhdh73',
-            data_url: 'this-url-should-no-longer-be-called-or-used',
-            submissionId: submission_id,
-            user_answers: {
-              first_name: 'bob',
-              last_name: 'madly',
-              submissionDate: 1_571_756_381_535,
-              submissionId: SecureRandom.uuid
-            },
-            attachments: []
+            encryption_key: 'jdwjdwjwdhwhdh73'
           }
         ]
       end
     end
 
     trait :email do
-      submission_details do
+      actions do
         [
           {
             'from' => 'some.one@example.com',
             'to' => 'destination@example.com',
             'subject' => 'mail subject',
             'type' => 'email',
-            'email_body' => 'some plain text',
-            'attachments' => [
-              {
-                'type' => 'output',
-                'mimetype' => 'application/pdf',
-                'url' => '/api/submitter/pdf/default/guid1.pdf',
-                'filename' => 'form1'
-              },
-              {
-                'type' => 'output',
-                'mimetype' => 'application/pdf',
-                'url' => '/api/submitter/pdf/default/guid2.pdf',
-                'filename' => 'form2'
-              }
-            ]
+            'email_body' => 'some plain text'
           }
         ]
       end
     end
-
-    responses { {} }
 
     created_at { Time.current }
     updated_at { Time.current }

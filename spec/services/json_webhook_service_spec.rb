@@ -8,19 +8,7 @@ describe JsonWebhookService do
     )
   end
 
-  let(:submission) { create(:submission, submission_details: [submission_detail]) }
-
-  let(:submission_detail) do
-    {
-      type: 'json',
-      url: 'https://hmcts-complaints-formbuilder-adapter-staging.apps.live-1.cloud-platform.service.justice.gov.uk/v1/complaint',
-      encryption_key: '19a56ee0e50dd83f',
-      data_url: 'this-url-should-no-longer-be-called-or-used',
-      submissionId: '5de849f3-bff4-4f10-b245-23b1435f1c70',
-      user_answers: user_answers,
-      attachments: []
-    }
-  end
+  let(:submission) { create(:submission) }
 
   let(:user_answers) do
     {
@@ -34,8 +22,6 @@ describe JsonWebhookService do
   let(:runner_callback_adapter) { instance_spy(Adapters::RunnerCallback) }
   let(:webhook_destination_adapter) { instance_spy(Adapters::JweWebhookDestination) }
   let(:webhook_attachment_fetcher) { instance_spy(WebhookAttachmentService) }
-
-  let(:frontend_response) { submission.submission_details.to_json }
 
   let(:attachments) do
     [
@@ -53,7 +39,7 @@ describe JsonWebhookService do
   let(:json_payload) do
     {
       serviceSlug: submission.service_slug,
-      submissionId: submission.submission_details[0][:submissionId],
+      submissionId: submission.decrypted_payload[:submission_id],
       submissionAnswers: user_answers,
       attachments: attachments
     }.to_json
