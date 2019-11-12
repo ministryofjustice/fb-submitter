@@ -105,17 +105,13 @@ spec:
       serviceAccountName: "formbuilder-submitter-workers-{{ .Values.environmentName }}"
       containers:
       - name: "fb-submitter-worker"
-        image: "754256621582.dkr.ecr.eu-west-2.amazonaws.com/formbuilder/fb-submitter-worker:{{ .Values.circleSha1 }}"
+        image: "754256621582.dkr.ecr.eu-west-2.amazonaws.com/formbuilder/fb-submitter-api:{{ .Values.circleSha1 }}"
         imagePullPolicy: Always
         volumeMounts:
         - mountPath: /tmp
           name: tmp-files
-        # command:
-        #   - "cd /var/www/fb-submitter && bundle exec rake resque:work"
-        # ports:
-        #   - containerPort: 3000
-        # non-secret env vars
-        # defined in config_map.yaml
+        command: ["/app/bin/delayed_job"]
+        args: ["run"]
         envFrom:
           - configMapRef:
               name: fb-submitter-env-{{ .Values.environmentName }}

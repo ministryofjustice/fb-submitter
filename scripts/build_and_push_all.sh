@@ -21,14 +21,11 @@ login_to_ecr_with_creds_for() {
   eval $(aws ecr get-login --no-include-email --region eu-west-2)
 }
 
-for TYPE in api worker
-do
-  REPO_NAME=${REPO_SCOPE}/fb-submitter-${TYPE}
-  echo "Building ${REPO_NAME}"
-  docker build -f docker/${TYPE}/Dockerfile -t ${REPO_NAME}:${TAG} -t ${REPO_NAME}:${CIRCLE_SHA1} .
+REPO_NAME=${REPO_SCOPE}/fb-submitter-api
+echo "Building ${REPO_NAME}"
+docker build -f docker/api/Dockerfile -t ${REPO_NAME}:${TAG} -t ${REPO_NAME}:${CIRCLE_SHA1} .
 
-  login_to_ecr_with_creds_for ${TYPE}
-  echo "Pushing ${REPO_NAME}"
-  docker push ${REPO_NAME}:${TAG}
-  docker push ${REPO_NAME}:${CIRCLE_SHA1}
-done
+login_to_ecr_with_creds_for api
+echo "Pushing ${REPO_NAME}"
+docker push ${REPO_NAME}:${TAG}
+docker push ${REPO_NAME}:${CIRCLE_SHA1}

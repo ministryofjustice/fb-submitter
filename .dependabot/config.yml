@@ -7,12 +7,7 @@ update_configs:
     default_reviewers:
     - asmega
   - package_manager: "docker"
-    directory: "/docker/api"
-    update_schedule: "daily"
-    default_reviewers:
-    - asmega
-  - package_manager: "docker"
-    directory: "/docker/worker"
+    directory: "/"
     update_schedule: "daily"
     default_reviewers:
     - asmega
