@@ -11,7 +11,7 @@ RSpec.shared_context 'when a JSON-only API' do |method_name, url|
     end
 
     it 'responds with the json content type' do
-      expect(response.content_type).to eq('application/json')
+      expect(response.media_type).to eq('application/json')
     end
 
     it 'does not respond_with :unacceptable' do
