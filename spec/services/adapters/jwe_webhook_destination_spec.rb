@@ -4,7 +4,7 @@ require 'jwe'
 
 describe Adapters::JweWebhookDestination do
   subject(:adapter) do
-    described_class.new(url: expected_url, key: key)
+    described_class.new(url: expected_url, key: key, body: payload)
   end
 
   let(:payload) do
@@ -27,7 +27,7 @@ describe Adapters::JweWebhookDestination do
   it 'makes a post to the given url' do
     stub_request(:post, expected_url).to_return(status: 200)
 
-    adapter.send_webhook(body: payload)
+    adapter.perform
 
     expect(WebMock).to have_requested(:post, expected_url).once
   end
@@ -40,7 +40,7 @@ describe Adapters::JweWebhookDestination do
       expect(JSON.parse(JWE.decrypt(hash[:body], key)).symbolize_keys).to eql(payload)
     end.and_return(request)
 
-    adapter.send_webhook(body: payload)
+    adapter.perform
   end
   # rubocop:enable RSpec/ExampleLength
 
@@ -48,7 +48,7 @@ describe Adapters::JweWebhookDestination do
     stub_request(:post, expected_url).to_return(status: 500)
 
     expect do
-      adapter.send_webhook(body: payload)
+      adapter.perform
     end.to raise_error(Adapters::JweWebhookDestination::ClientRequestError)
   end
 end

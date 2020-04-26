@@ -7,10 +7,7 @@ class SubmissionController < ApplicationController
       )
     )
 
-    Delayed::Job.enqueue(
-      ProcessSubmissionService.new(submission_id: @submission.id),
-      run_at: 3.seconds.from_now
-    )
+    ProcessSubmissionService.new(submission_id: @submission.id).process
 
     render json: {}, status: :created
   end

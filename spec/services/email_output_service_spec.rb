@@ -1,17 +1,28 @@
+require 'rails_helper'
 require_relative '../../app/services/email_output_service'
 require_relative '../../app/services/email_service'
 require_relative '../../app/services/attachment_generator'
 require_relative '../../app/value_objects/attachment'
 
 describe EmailOutputService do
+  def execute_email_output
+    service.execute(
+      action: email_action,
+      attachments: attachments,
+      pdf_attachment: pdf_attachment,
+      submission_id: 'an-id-2323'
+    )
+  end
+
   subject(:service) do
     described_class.new(
-      emailer: email_service_mock,
+      emailer: emailer,
       attachment_generator: attachment_generator
     )
   end
 
-  let(:email_service_mock) { class_double(EmailService) }
+  let(:emailer) { EmailService }
+  let(:email_service) { object_double(EmailService.new, perform: nil) }
   let(:attachment_generator) { AttachmentGenerator.new }
 
   let(:email_action) do
@@ -38,27 +49,36 @@ describe EmailOutputService do
     [upload1, upload2, upload3]
   end
 
+  let(:expected_params) do
+    {
+      from: 'form-builder@digital.justice.gov.uk',
+      to: 'bob.admin@digital.justice.gov.uk',
+      subject: 'Complain about a court or tribunal submission {an-id-2323} [1/1]',
+      body_parts: { 'text/plain': 'Please find an application attached' },
+      attachments: []
+    }
+  end
+
   let(:pdf_attachment) { build(:attachment, mimetype: 'application/pdf', url: nil) }
 
   before do
+    Delayed::Worker.delay_jobs = false
     allow(upload1).to receive(:size).and_return(1234)
     allow(upload2).to receive(:size).and_return(5678)
     allow(upload3).to receive(:size).and_return(8_999_999)
     allow(pdf_attachment).to receive(:size).and_return(7777)
-
-    allow(email_service_mock).to receive(:send_mail)
-    subject.execute(action: email_action,
-                    attachments: attachments,
-                    pdf_attachment: pdf_attachment,
-                    submission_id: 'an-id-2323')
   end
 
-  it 'execute sends an email' do
-    expect(email_service_mock).to have_received(:send_mail).with(to: 'bob.admin@digital.justice.gov.uk',
-                                                                 from: 'form-builder@digital.justice.gov.uk',
-                                                                 subject: 'Complain about a court or tribunal submission {an-id-2323} [1/1]',
-                                                                 body_parts: { 'text/plain': 'Please find an application attached' },
-                                                                 attachments: []).once
+  after do
+    Delayed::Worker.delay_jobs = true
+  end
+
+  # rubocop:disable RSpec/MessageSpies
+  it 'enqueues a job and sends an email' do
+    expect(Delayed::Job).to receive(:enqueue).with(email_service)
+    expect(emailer).to receive(:new).with(expected_params).and_return(email_service)
+
+    execute_email_output
   end
 
   context 'when a user uploaded attachments are required but not answers pdf' do
@@ -68,14 +88,17 @@ describe EmailOutputService do
       first_email_attachments = [upload1, upload2]
       second_email_attachments = [upload3]
 
-      expect(email_service_mock).to have_received(:send_mail).exactly(2).times
-      expect(email_service_mock).to have_received(:send_mail).with(hash_including(attachments: first_email_attachments)).once
-      expect(email_service_mock).to have_received(:send_mail).with(hash_including(attachments: second_email_attachments)).once
+      expect(emailer).to receive(:new).with(hash_including(attachments: first_email_attachments)).and_return(email_service)
+      expect(emailer).to receive(:new).with(hash_including(attachments: second_email_attachments)).and_return(email_service)
+
+      execute_email_output
     end
 
     it 'the subject is numbered by how many separate emails there are' do
-      expect(email_service_mock).to have_received(:send_mail).with(hash_including(subject: 'Complain about a court or tribunal submission {an-id-2323} [1/2]')).once
-      expect(email_service_mock).to have_received(:send_mail).with(hash_including(subject: 'Complain about a court or tribunal submission {an-id-2323} [2/2]')).once
+      expect(emailer).to receive(:new).with(hash_including(subject: 'Complain about a court or tribunal submission {an-id-2323} [1/2]')).and_return(email_service)
+      expect(emailer).to receive(:new).with(hash_including(subject: 'Complain about a court or tribunal submission {an-id-2323} [2/2]')).and_return(email_service)
+
+      execute_email_output
     end
   end
 
@@ -83,12 +106,15 @@ describe EmailOutputService do
     let(:include_pdf) { true }
 
     it 'sends an email with the generated pdf as a attachment' do
-      expect(email_service_mock).to have_received(:send_mail).exactly(1).times
-      expect(email_service_mock).to have_received(:send_mail).with(hash_including(attachments: [pdf_attachment])).once
+      expect(emailer).to receive(:new).with(hash_including(attachments: [pdf_attachment])).and_return(email_service)
+
+      execute_email_output
     end
 
     it 'the subject is numbered [1/1] as there will be a single email' do
-      expect(email_service_mock).to have_received(:send_mail).with(hash_including(subject: 'Complain about a court or tribunal submission {an-id-2323} [1/1]')).once
+      expect(emailer).to receive(:new).with(hash_including(subject: 'Complain about a court or tribunal submission {an-id-2323} [1/1]')).and_return(email_service)
+
+      execute_email_output
     end
   end
 
@@ -100,9 +126,11 @@ describe EmailOutputService do
       first_email_attachments = [pdf_attachment, upload1, upload2]
       second_email_attachments = [upload3]
 
-      expect(email_service_mock).to have_received(:send_mail).exactly(2).times
-      expect(email_service_mock).to have_received(:send_mail).with(hash_including(attachments: first_email_attachments)).once
-      expect(email_service_mock).to have_received(:send_mail).with(hash_including(attachments: second_email_attachments)).once
+      expect(emailer).to receive(:new).with(hash_including(attachments: first_email_attachments)).and_return(email_service)
+      expect(emailer).to receive(:new).with(hash_including(attachments: second_email_attachments)).and_return(email_service)
+
+      execute_email_output
     end
   end
+  # rubocop:enable RSpec/MessageSpies
 end

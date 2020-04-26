@@ -1,6 +1,16 @@
 require 'rails_helper'
 
 describe JsonWebhookService do
+  def execute_json_webhook_service
+    service.execute(
+      user_answers: user_answers,
+      service_slug: submission.service_slug,
+      submission_id: submission.decrypted_payload[:submission_id],
+      url: 'some-url',
+      key: 'some-key'
+    )
+  end
+
   subject(:service) do
     described_class.new(
       webhook_attachment_fetcher: webhook_attachment_fetcher,
@@ -19,9 +29,11 @@ describe JsonWebhookService do
     }
   end
 
-  let(:runner_callback_adapter) { instance_spy(Adapters::RunnerCallback) }
-  let(:webhook_destination_adapter) { instance_spy(Adapters::JweWebhookDestination) }
   let(:webhook_attachment_fetcher) { instance_spy(WebhookAttachmentService) }
+  let(:webhook_destination_adapter) { Adapters::JweWebhookDestination }
+  let(:webhook_destination_adapter_double) do
+    object_double(Adapters::JweWebhookDestination.new(execution_payload), perform: nil)
+  end
 
   let(:attachments) do
     [
@@ -36,6 +48,14 @@ describe JsonWebhookService do
     ]
   end
 
+  let(:execution_payload) do
+    {
+      url: 'some-url',
+      key: 'some-key',
+      body: json_payload
+    }
+  end
+
   let(:json_payload) do
     {
       serviceSlug: submission.service_slug,
@@ -46,20 +66,29 @@ describe JsonWebhookService do
   end
 
   before do
-    allow(webhook_destination_adapter).to receive(:send_webhook)
+    Delayed::Worker.delay_jobs = false
     allow(webhook_attachment_fetcher).to receive(:execute).and_return(attachments)
-    service.execute(
-      user_answers: user_answers, service_slug: submission.service_slug, submission_id: submission.decrypted_payload[:submission_id]
-    )
+    allow(Delayed::Job).to receive(:enqueue)
   end
 
+  after do
+    Delayed::Worker.delay_jobs = true
+  end
+
+  # rubocop:disable RSpec/MessageSpies
   it 'modifies and sends the submission to the destination' do
-    expect(webhook_destination_adapter).to have_received(:send_webhook)
-      .with(body: json_payload)
-      .once
+    expect(Delayed::Job).to receive(:enqueue).with(webhook_destination_adapter_double)
+    expect(webhook_destination_adapter).to receive(:new)
+      .with(execution_payload)
+      .and_return(webhook_destination_adapter_double)
+
+    execute_json_webhook_service
   end
 
   it 'calls the webhook_attachment_fetcher' do
-    expect(webhook_attachment_fetcher).to have_received(:execute).once
+    expect(webhook_attachment_fetcher).to receive(:execute).once
+
+    execute_json_webhook_service
   end
+  # rubocop:enable RSpec/MessageSpies
 end

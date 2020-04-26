@@ -43,12 +43,14 @@ class EmailOutputService
   end
 
   def send_single_email(subject:, action:, attachments: [])
-    emailer.send_mail(
-      from: action.fetch(:from),
-      to: action.fetch(:to),
-      subject: subject,
-      body_parts: email_body_parts(action.fetch(:email_body)),
-      attachments: attachments
+    Delayed::Job.enqueue(
+      emailer.new(
+        from: action.fetch(:from),
+        to: action.fetch(:to),
+        subject: subject,
+        body_parts: email_body_parts(action.fetch(:email_body)),
+        attachments: attachments
+      )
     )
   end
 

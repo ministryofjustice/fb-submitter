@@ -3,12 +3,13 @@ module Adapters
     class ClientRequestError < StandardError
     end
 
-    def initialize(url:, key:)
+    def initialize(url:, key:, body:)
       @url = url
       @key = key
+      @body = body
     end
 
-    def send_webhook(body:)
+    def perform
       response = Typhoeus::Request.new(
         url,
         method: :post,
@@ -32,6 +33,6 @@ module Adapters
       JWE.encrypt(body_as_string(body), key, alg: 'dir')
     end
 
-    attr_reader :url, :key
+    attr_reader :url, :key, :body
   end
 end

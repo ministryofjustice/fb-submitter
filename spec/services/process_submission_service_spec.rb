@@ -31,7 +31,7 @@ describe ProcessSubmissionService do
     before do
       allow(EmailOutputService).to receive(:new).and_return(submission_service_spy)
 
-      service.perform
+      service.process
     end
 
     # rubocop:disable RSpec/MultipleExpectations
@@ -93,7 +93,7 @@ describe ProcessSubmissionService do
       let(:submission) { create(:submission, :email, actions: actions, attachments: attachments) }
 
       before do
-        service.perform
+        service.process
       end
 
       it 'passes the PDF of answers to the EmailOutputService' do
@@ -144,7 +144,7 @@ describe ProcessSubmissionService do
       let(:submission) { create(:submission, :email, actions: actions, attachments: attachments) }
 
       before do
-        service.perform
+        service.process
       end
 
       it 'downloads and passes through all attachments' do
@@ -177,13 +177,13 @@ describe ProcessSubmissionService do
 
     before do
       allow(JsonWebhookService).to receive(:new).and_return(json_webhook_service_spy)
-      service.perform
+      service.process
     end
 
     it 'passes the correct collaborators to the JsonWebhookService' do
       expect(JsonWebhookService).to have_received(:new) do |args|
         expect(args[:webhook_attachment_fetcher]).to be_an_instance_of(WebhookAttachmentService)
-        expect(args[:webhook_destination_adapter]).to be_an_instance_of(Adapters::JweWebhookDestination)
+        expect(args[:webhook_destination_adapter]).to eq(Adapters::JweWebhookDestination)
       end
     end
 
@@ -220,7 +220,7 @@ describe ProcessSubmissionService do
 
     it 'logs a warning' do
       expect(Rails.logger).to receive(:warn).with("Unknown action type 'unknown' for submission id #{submission.id}")
-      service.perform
+      service.process
     end
   end
 end

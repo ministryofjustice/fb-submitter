@@ -43,14 +43,6 @@ RSpec.describe SubmissionController, type: :controller do
     expect(Submission.first.decrypted_payload).to eq(payload.deep_stringify_keys)
   end
 
-  it 'creates a delayed job' do
-    expect(Delayed::Job.all.count).to eq(1)
-  end
-
-  it 'marks delayed job as created' do
-    expect(response).to have_http_status(:created)
-  end
-
   it 'returns valid json response' do
     expect { JSON.parse(response.body) }.not_to raise_error
   end

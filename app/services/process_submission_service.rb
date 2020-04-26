@@ -6,20 +6,20 @@ class ProcessSubmissionService
   end
 
   # rubocop:disable Metrics/MethodLength
-  def perform # rubocop:disable Metrics/AbcSize
+  def process # rubocop:disable Metrics/AbcSize
     payload_service.actions.each do |action|
       case action.fetch(:type)
       when 'json'
         JsonWebhookService.new(
-          webhook_attachment_fetcher: WebhookAttachmentService.new(
-            attachment_parser: AttachmentParserService.new(attachments: payload_service.attachments),
-            user_file_store_gateway: Adapters::UserFileStore.new(key: submission.encrypted_user_id_and_token)
-          ),
-          webhook_destination_adapter: Adapters::JweWebhookDestination.new(
-            url: action.fetch(:url),
-            key: action.fetch(:encryption_key)
-          )
-        ).execute(user_answers: payload_service.user_answers_map, service_slug: submission.service_slug, submission_id: payload_service.submission_id)
+          webhook_attachment_fetcher: webhook_attachment_fetcher,
+          webhook_destination_adapter: Adapters::JweWebhookDestination
+        ).execute(
+          user_answers: payload_service.user_answers_map,
+          service_slug: submission.service_slug,
+          submission_id: payload_service.submission_id,
+          url: action.fetch(:url),
+          key: action.fetch(:encryption_key)
+        )
       when 'email'
         pdf = generate_pdf(payload_service.payload, payload_service.submission_id)
 
@@ -82,6 +82,13 @@ class ProcessSubmissionService
     Adapters::PdfApi.new(
       root_url: ENV.fetch('PDF_GENERATOR_ROOT_URL'),
       token: submission.access_token
+    )
+  end
+
+  def webhook_attachment_fetcher
+    WebhookAttachmentService.new(
+      attachment_parser: AttachmentParserService.new(attachments: payload_service.attachments),
+      user_file_store_gateway: Adapters::UserFileStore.new(key: submission.encrypted_user_id_and_token)
     )
   end
 

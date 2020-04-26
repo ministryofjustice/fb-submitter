@@ -164,20 +164,6 @@ describe 'UserData API', type: :request do
             end
           end
 
-          # rubocop:disable RSpec/MessageSpies
-          it 'creates a Job to be processed asynchronously' do
-            expect(Delayed::Job).to receive(:enqueue)
-            post_request
-          end
-
-          it 'creates a Job with short delay to prevent filestore race conditions' do
-            Timecop.freeze(Time.now) do
-              expect(Delayed::Job).to receive(:enqueue).with(anything, run_at: 3.seconds.from_now)
-              post_request
-            end
-          end
-          # rubocop:enable RSpec/MessageSpies
-
           describe 'the response' do
             before do
               post_request
