@@ -26,17 +26,31 @@ describe ProcessSubmissionService do
     end
 
     let(:submission) { create(:submission, :csv, actions: actions, attachments: []) }
-    let(:submission_service_spy) { instance_spy(EmailOutputService) }
-
-    before do
-      allow(EmailOutputService).to receive(:new).and_return(submission_service_spy)
-
-      service.process
+    let(:submission_service_spy) { object_double(EmailOutputService, perform: nil) }
+    let(:email_output_service) { EmailOutputService }
+    let(:email_output_service_double) do
+      object_double(EmailOutputService.new(
+        action: actions.first,
+        emailer: double(),
+        download_service: double(),
+        submission_id: submission.id,
+        attachments: [],
+        current_email: 1,
+        number_of_emails: 1
+      ), perform: nil)
     end
+    # let(:webhook_destination_adapter) { Adapters::JweWebhookDestination }
+    # let(:webhook_destination_adapter_double) do
+    #   object_double(Adapters::JweWebhookDestination.new(execution_payload), perform: nil)
+    # end
+
+    # before do
+    #   allow(EmailOutputService).to receive(:new).and_return(email_output_service_double)
+    # end
 
     # rubocop:disable RSpec/MultipleExpectations
     it 'sends email with csv attachment' do
-      expect(submission_service_spy).to have_received(:execute) do |args|
+      expect(email_output_service_double).to receive(:new) do |args|
         expect(args[:submission_id]).to be_present
         expect(args[:action]).to eql(actions[0])
         expect(args[:attachments].length).to eq(1)
@@ -46,6 +60,8 @@ describe ProcessSubmissionService do
 
         expect(args[:pdf_attachment]).to be_nil
       end
+
+      service.process
     end
     # rubocop:enable RSpec/MultipleExpectations
   end
@@ -97,14 +113,14 @@ describe ProcessSubmissionService do
       end
 
       it 'passes the PDF of answers to the EmailOutputService' do
-        expect(submission_service_spy).to have_received(:execute) do |args|
+        expect(submission_service_spy).to have_received(:new) do |args|
           pdf_contents = File.open(args[:pdf_attachment].path).read
           expect(pdf_contents).to eq(mock_pdf_contents)
         end
       end
 
       it 'passes the correct attachments to the EmailOutputService' do
-        expect(submission_service_spy).to have_received(:execute) do |args|
+        expect(submission_service_spy).to have_received(:new) do |args|
           expect(args[:attachments].length).to eq(attachments.length)
           attachment = args[:attachments].first
           expect(attachment.filename).to eq(attachments.first['filename'])
@@ -112,13 +128,13 @@ describe ProcessSubmissionService do
       end
 
       it 'passes the correct submission_id to the EmailOutputService' do
-        expect(submission_service_spy).to have_received(:execute) do |args|
+        expect(submission_service_spy).to have_received(:new) do |args|
           expect(args[:submission_id]).to eq(submission.decrypted_payload[:submission]['submission_id'])
         end
       end
 
       it 'passes the correct action to the EmailOutputService' do
-        expect(submission_service_spy).to have_received(:execute) do |args|
+        expect(submission_service_spy).to have_received(:new) do |args|
           expect(args[:action]).to eq(actions.first)
         end
       end
@@ -148,7 +164,7 @@ describe ProcessSubmissionService do
       end
 
       it 'downloads and passes through all attachments' do
-        expect(submission_service_spy).to have_received(:execute) do |args|
+        expect(submission_service_spy).to have_received(:new) do |args|
           expect(args[:attachments].length).to eq(attachments.length)
           first_attachment = args[:attachments].first
           expect(first_attachment.filename).to eq(attachments.first['filename'])

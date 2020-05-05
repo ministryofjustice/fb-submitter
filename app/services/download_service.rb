@@ -1,26 +1,29 @@
 class DownloadService
-  attr_reader :attachments, :target_dir, :token, :access_token
+  attr_reader :target_dir, :token, :access_token
 
-  def initialize(attachments:, target_dir: nil, token:, access_token:)
-    @attachments = attachments
+  def initialize(target_dir: nil, token:, access_token:)
     @target_dir = target_dir
     @token = token
     @access_token = access_token
   end
 
-  def download_in_parallel
+  def get_file_size(url)
+    content_url = URI.join(url, 'content-length')
+    response = Typhoeus::Request.new(content_url, followlocation: true, headers: headers).run
+    JSON.parse(response)['content_length']
+  end
+
+  def download_in_parallel(attachments)
     actual_dir = target_dir || Dir.mktmpdir
     results = []
 
     hydra = Typhoeus::Hydra.hydra
 
     attachments.each do |attachment|
-      url = attachment.fetch('url')
-      filename = attachment.fetch('filename')
-      mimetype = attachment.fetch('mimetype')
-      tmp_path = file_path_for_download(url: url, target_dir: actual_dir)
-      request = construct_request(url: url, file_path: tmp_path, headers: headers)
-      results << Attachment.new(url: url, path: tmp_path, filename: filename, mimetype: mimetype)
+      tmp_path = file_path_for_download(url: attachment.url, target_dir: actual_dir)
+      request = construct_request(url: attachment.url, file_path: tmp_path, headers: headers)
+      attachment.path = tmp_path
+      results << attachment
 
       hydra.queue(request)
     end

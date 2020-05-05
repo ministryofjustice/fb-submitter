@@ -79,7 +79,8 @@ class GenerateCsvContent
   def generate_attachment_object(tmp_csv)
     attachment = Attachment.new(
       filename: "#{payload_service.submission_id}-answers.csv",
-      mimetype: 'text/csv'
+      mimetype: 'text/csv',
+      size: File.size(tmp_csv.path)
     )
     attachment.file = tmp_csv
     attachment

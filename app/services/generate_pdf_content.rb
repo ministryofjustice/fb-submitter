@@ -32,7 +32,8 @@ class GeneratePdfContent
   def generate_attachment_object(tmp_pdf)
     attachment = Attachment.new(
       filename: "#{payload[:submission][:submission_id]}-answers.pdf",
-      mimetype: 'application/pdf'
+      mimetype: 'application/pdf',
+      size: File.size(tmp_pdf.path)
     )
     attachment.file = tmp_pdf
     attachment

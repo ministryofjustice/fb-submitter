@@ -11,20 +11,12 @@ describe DownloadService do
     }
   end
   let(:mock_hydra) { instance_double(Typhoeus::Hydra) }
-  let(:attachments) do
-    [
-      'url' => url,
-      'mimetype' => 'application/pdf',
-      'filename' => 'evidence_one.pdf',
-      'type' => 'filestore'
-    ]
-  end
+  let(:attachments) { [build(:attachment)] }
   let(:target_dir) { '/my/target/dir' }
 
   describe '#download_in_parallel' do
     subject(:downloader) do
-      described_class.new(attachments: attachments,
-                          target_dir: target_dir,
+      described_class.new(target_dir: target_dir,
                           token: token,
                           access_token: access_token)
     end
@@ -50,14 +42,13 @@ describe DownloadService do
 
       it 'makes a temp dir' do
         expect(Dir).to receive(:mktmpdir)
-        downloader.download_in_parallel
+        downloader.download_in_parallel(attachments)
       end
     end
 
     context 'when a target_dir is given' do
       subject(:downloader) do
-        described_class.new(attachments: attachments,
-                            target_dir: target_dir,
+        described_class.new(target_dir: target_dir,
                             token: token,
                             access_token: access_token)
       end
@@ -66,14 +57,13 @@ describe DownloadService do
 
       it 'does not make a temp dir' do
         expect(Dir).not_to receive(:mktmpdir)
-        downloader.download_in_parallel
+        downloader.download_in_parallel(attachments)
       end
     end
 
     context 'with an array of urls' do
       subject(:downloader) do
-        described_class.new(attachments: attachments,
-                            target_dir: path,
+        described_class.new(target_dir: path,
                             token: token,
                             access_token: access_token)
       end
@@ -82,41 +72,33 @@ describe DownloadService do
       let(:url2) { 'https://another.domain/some/otherfile.ext' }
       let(:mock_request_1) { instance_double(Typhoeus::Request) }
       let(:mock_request_2) { instance_double(Typhoeus::Request) }
-
-      let(:attachments) do
-        [
-          {
-            'url' => url1,
-            'mimetype' => 'application/pdf',
-            'filename' => 'evidence_one.pdf',
-            'type' => 'filestore'
-          }, {
-            'url' => url2,
-            'mimetype' => 'application/pdf',
-            'filename' => 'evidence_two.pdf',
-            'type' => 'filestore'
-          }
-        ]
+      let(:download1) do
+        build(:attachment, url: url1, mimetype: 'application/pdf', filename: 'evidence_one.pdf', type: 'filestore')
+      end
+      let(:download2) do
+        build(:attachment, url: url2, mimetype: 'application/pdf', filename: 'evidence_two.pdf', type: 'filestore')
       end
 
+      let(:attachments) { [download1, download2] }
+
       before do
-        allow(downloader).to receive(:file_path_for_download).with(url: url1, target_dir: path).and_return('/tmp/file1')
-        allow(downloader).to receive(:file_path_for_download).with(url: url2, target_dir: path).and_return('/tmp/file2')
-        allow(downloader).to receive(:construct_request).with(url: url1, file_path: '/tmp/file1', headers: headers).and_return(mock_request_1)
-        allow(downloader).to receive(:construct_request).with(url: url2, file_path: '/tmp/file2', headers: headers).and_return(mock_request_2)
+        allow(downloader).to receive(:file_path_for_download).with(url: download1.url, target_dir: path).and_return('/tmp/file1')
+        allow(downloader).to receive(:file_path_for_download).with(url: download2.url, target_dir: path).and_return('/tmp/file2')
+        allow(downloader).to receive(:construct_request).with(url: download1.url, file_path: '/tmp/file1', headers: headers).and_return(mock_request_1)
+        allow(downloader).to receive(:construct_request).with(url: download2.url, file_path: '/tmp/file2', headers: headers).and_return(mock_request_2)
       end
 
       describe 'for each url' do
         it 'gets the file_path_for_download' do
           expect(downloader).to receive(:file_path_for_download).with(url: url1, target_dir: path).and_return('/tmp/file1')
           expect(downloader).to receive(:file_path_for_download).with(url: url2, target_dir: path).and_return('/tmp/file2')
-          downloader.download_in_parallel
+          downloader.download_in_parallel(attachments)
         end
 
         it 'constructs a request, passing the url and file path for download' do
           expect(downloader).to receive(:construct_request).with(url: url1, file_path: '/tmp/file1', headers: headers)
           expect(downloader).to receive(:construct_request).with(url: url2, file_path: '/tmp/file2', headers: headers)
-          downloader.download_in_parallel
+          downloader.download_in_parallel(attachments)
         end
 
         it 'includes x-access-token header with JWT' do
@@ -131,29 +113,29 @@ describe DownloadService do
             expect(Typhoeus::Request).to receive(:new).with(expected_url1, followlocation: true, headers: headers).and_return(double.as_null_object)
             expect(Typhoeus::Request).to receive(:new).with(expected_url2, followlocation: true, headers: headers).and_return(double.as_null_object)
 
-            downloader.download_in_parallel
+            downloader.download_in_parallel(attachments)
           end
         end
 
         it 'queues the request' do
           expect(mock_hydra).to receive(:queue).with(mock_request_1)
           expect(mock_hydra).to receive(:queue).with(mock_request_2)
-          downloader.download_in_parallel
+          downloader.download_in_parallel(attachments)
         end
       end
 
       it 'runs the request batch' do
         expect(mock_hydra).to receive(:run)
-        downloader.download_in_parallel
+        downloader.download_in_parallel(attachments)
       end
 
       it 'returns an array of Attachment objects with all file info plus local paths' do
-        response = downloader.download_in_parallel
+        response = downloader.download_in_parallel(attachments)
         expect(response.each.map(&:class).uniq).to eq([Attachment])
       end
 
       it 'assigns the correct values to the Attachment objects' do
-        response = downloader.download_in_parallel
+        response = downloader.download_in_parallel(attachments)
         attachment_values = []
 
         response.each do |attachment|
@@ -186,8 +168,7 @@ describe DownloadService do
 
   context 'when the network request is unsuccessful' do
     subject(:downloader) do
-      described_class.new(attachments: attachments,
-                          target_dir: target_dir,
+      described_class.new(target_dir: target_dir,
                           token: token,
                           access_token: access_token)
     end
@@ -195,6 +176,7 @@ describe DownloadService do
     let(:mock_request) { instance_double(Typhoeus::Request, url: 'some_url') }
     let(:good_response) { instance_double(Typhoeus::Response, code: 200, return_code: 200) }
     let(:bad_response) { instance_double(Typhoeus::Response, code: 500, return_code: 500) }
+    let(:attachments) { [build(:attachment)] }
 
     context 'when failure is on headers' do
       before do
@@ -203,7 +185,7 @@ describe DownloadService do
       end
 
       it 'raises the correct error' do
-        expect { downloader.download_in_parallel }.to raise_error(
+        expect { downloader.download_in_parallel(attachments) }.to raise_error(
           RuntimeError, 'Request failed (500: 500 some_url)'
         )
       end
@@ -221,7 +203,7 @@ describe DownloadService do
       end
 
       it 'raises the correct error' do
-        expect { downloader.download_in_parallel }.to raise_error(
+        expect { downloader.download_in_parallel(attachments) }.to raise_error(
           RuntimeError, 'Request failed (500: 500 some_url)'
         )
       end

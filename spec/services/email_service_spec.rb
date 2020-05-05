@@ -1,13 +1,9 @@
 require 'rails_helper'
 
 describe EmailService do
-  subject { described_class.new(opts) }
-
-  let(:opts) { { key: 'value', to: 'to@example.com' } }
-
   describe '.adapter' do
     it 'is Adapters::AmazonSESAdapter' do
-      expect(subject.adapter).to eq(Adapters::AmazonSESAdapter)
+      expect(described_class.adapter).to eq(Adapters::AmazonSESAdapter)
     end
 
     context 'when overriding the email endpoint' do
@@ -16,14 +12,16 @@ describe EmailService do
       end
 
       it 'uses the mock email adapter' do
-        expect(subject.adapter).to eq(Adapters::MockAmazonSESAdapter)
+        expect(described_class.adapter).to eq(Adapters::MockAmazonSESAdapter)
       end
     end
   end
 
   describe '.sanitised_params' do
+    let(:opts) { { key: 'value', to: 'to@example.com' } }
+
     describe 'return value' do
-      let(:return_value) { subject.sanitised_params(opts) }
+      let(:return_value) { described_class.sanitised_params(opts) }
 
       it 'is a hash' do
         expect(return_value).to be_a(Hash)
@@ -69,14 +67,23 @@ describe EmailService do
     end
   end
 
-  describe '.perform' do
+  describe '.send_mail' do
+    let(:opts) { { key: 'value', to: 'to@example.com' } }
+    let(:sanitised_params) { { key: 'sanitised value' } }
+
     before do
       allow(Adapters::AmazonSESAdapter).to receive(:send_mail).and_return('send response')
+      allow(described_class).to receive(:sanitised_params).with(opts).and_return(sanitised_params)
     end
 
-    it 'tells the adapter to send_mail, passing the opts' do
-      subject.perform
-      expect(subject.adapter).to have_received(:send_mail).with(hash_including(opts))
+    it 'sanitises the params' do
+      described_class.send_mail(opts)
+      expect(described_class).to have_received(:sanitised_params).with(opts)
+    end
+
+    it 'tells the adapter to send_mail, passing the sanitised_params' do
+      described_class.send_mail(opts)
+      expect(described_class.adapter).to have_received(:send_mail).with(sanitised_params)
     end
   end
 end

@@ -22,28 +22,24 @@ class ProcessSubmissionService
         )
       when 'email'
         pdf = generate_pdf(payload_service.payload, payload_service.submission_id)
+        generator = AttachmentGenerator.new(
+          action: action,
+          download_service: download_service,
+          payload_attachments: payload_service.attachments,
+          pdf_attachment: pdf
+        )
 
-        attachments = download_attachments(payload_service.attachments,
-                                           submission.encrypted_user_id_and_token,
-                                           submission.access_token)
-
-        EmailOutputService.new(
-          emailer: EmailService,
-          attachment_generator: AttachmentGenerator.new
-        ).execute(submission_id: payload_service.submission_id,
-                  action: action,
-                  attachments: attachments,
-                  pdf_attachment: pdf)
+        generator.grouped_attachments.each_with_index do |attachments, index|
+          send_email(
+            action: action,
+            attachments: attachments,
+            current_email: index + 1,
+            number_of_emails: generator.grouped_attachments.size
+          )
+        end
       when 'csv'
         csv_attachment = generate_csv(payload_service)
-
-        EmailOutputService.new(
-          emailer: EmailService,
-          attachment_generator: AttachmentGenerator.new
-        ).execute(submission_id: payload_service.submission_id,
-                  action: action,
-                  attachments: [csv_attachment],
-                  pdf_attachment: nil)
+        send_email(action: action, attachments: [csv_attachment])
       else
         Rails.logger.warn "Unknown action type '#{action.fetch(:type)}' for submission id #{submission.id}"
       end
@@ -58,13 +54,25 @@ class ProcessSubmissionService
 
   private
 
-  def download_attachments(attachments_payload, token, access_token)
-    DownloadService.new(
-      attachments: attachments_payload,
-      target_dir: nil,
-      token: token,
-      access_token: access_token
-    ).download_in_parallel
+  def send_email(action:, attachments:, current_email: 1, number_of_emails: 1)
+    Delayed::Job.enqueue(
+      EmailOutputService.new(
+        action: action,
+        emailer: EmailService,
+        download_service: download_service,
+        submission_id: payload_service.submission_id,
+        attachments: attachments,
+        current_email: current_email,
+        number_of_emails: number_of_emails
+      )
+    )
+  end
+
+  def download_service
+    @download_service ||= DownloadService.new(
+      token: submission.encrypted_user_id_and_token,
+      access_token: submission.access_token
+    )
   end
 
   def generate_pdf(pdf_detail, _submission_id)

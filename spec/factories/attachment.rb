@@ -5,6 +5,7 @@ FactoryBot.define do
     url { "example.com/#{filename}" }
     mimetype { 'image/jpeg' }
     path {}
+    size {}
 
     initialize_with { new(filename: filename, mimetype: mimetype) }
   end

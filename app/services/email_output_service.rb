@@ -1,68 +1,46 @@
 class EmailOutputService
-  def initialize(emailer:, attachment_generator:)
+  def initialize(action:, emailer:, download_service:, submission_id:, attachments:,
+                 current_email:, number_of_emails:)
+    @action = action
     @emailer = emailer
-    @attachment_generator = attachment_generator
+    @download_service = download_service
+    @submission_id = submission_id
+    @attachments = attachments
+    @current_email = current_email
+    @number_of_emails = number_of_emails
   end
 
-  def execute(submission_id:, action:, attachments:, pdf_attachment:)
-    attachment_generator.execute(
-      action: action,
-      attachments: attachments,
-      pdf_attachment: pdf_attachment
-    )
-
-    if attachment_generator.sorted_attachments.empty?
-      send_single_email(
-        action: action,
-        subject: subject(subject: action.fetch(:subject), submission_id: submission_id)
-      )
+  def perform
+    if attachments.empty? || action.fetch(:type) == 'csv'
+      send_email(attachments)
     else
-      send_emails_with_attachments(
-        action,
-        attachment_generator.sorted_attachments,
-        submission_id: submission_id
-      )
+      email_attachments = download_service.download_in_parallel(attachments)
+      send_email(email_attachments)
     end
   end
 
   private
 
-  def send_emails_with_attachments(action, email_attachments, submission_id:)
-    email_attachments.each_with_index do |attachments, index|
-      send_single_email(
-        action: action,
-        attachments: attachments,
-        subject: subject(
-          subject: action.fetch(:subject),
-          current_email: index + 1,
-          number_of_emails: email_attachments.size,
-          submission_id: submission_id
-        )
-      )
-    end
-  end
-
-  def send_single_email(subject:, action:, attachments: [])
-    Delayed::Job.enqueue(
-      emailer.new(
-        from: action.fetch(:from),
-        to: action.fetch(:to),
-        subject: subject,
-        body_parts: email_body_parts(action.fetch(:email_body)),
-        attachments: attachments
-      )
+  def send_email(attachments)
+    emailer.send_mail(
+      from: action.fetch(:from),
+      to: action.fetch(:to),
+      subject: subject,
+      body_parts: email_body_parts,
+      attachments: attachments
     )
   end
 
-  def subject(submission_id:, subject:, current_email: 1, number_of_emails: 1)
-    "#{subject} {#{submission_id}} [#{current_email}/#{number_of_emails}]"
+  def subject
+    "#{action.fetch(:subject)} {#{submission_id}} [#{current_email}/#{number_of_emails}]"
   end
 
-  def email_body_parts(email_body)
+  def email_body_parts
     {
-      'text/plain': email_body
+      'text/plain': action.fetch(:email_body)
     }
   end
 
-  attr_reader :emailer, :attachment_generator
+  attr_reader :action, :emailer, :download_service, :submission_id, :attachments,
+              :current_email, :number_of_emails
 end

@@ -1,12 +1,13 @@
 class Attachment
-  attr_accessor :type, :filename, :url, :mimetype, :path
+  attr_accessor :type, :filename, :url, :mimetype, :path, :size
 
-  def initialize(type: nil, filename:, url: nil, mimetype:, path: nil)
+  def initialize(type: nil, filename:, url: nil, mimetype:, path: nil, size: nil)
     @type = type
     @filename = filename
     @url = url
     @mimetype = mimetype
     @path = path
+    @size = size
   end
 
   def file=(file)
@@ -20,9 +21,5 @@ class Attachment
     ext = MIME::Types[@mimetype][0].preferred_extension
 
     "#{raw_filename}.#{ext}"
-  end
-
-  def size
-    File.size(path)
   end
 end
