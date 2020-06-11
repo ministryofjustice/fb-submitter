@@ -1,53 +1,32 @@
-inherit_from: .rubocop_todo.yml
+inherit_gem:
+  rubocop-govuk:
+    - config/default.yml
+    - config/rails.yml
 
 require: rubocop-rspec
 
 AllCops:
+  # Exclude anything that isn't really part of our code.
+  # rails_helper is excluded because it's full of solecisms, but it's mostly
+  # generated code and copy-and-pasted snipets from READMEs.
   Exclude:
-    - .bundle/**
-    - vendor/**/*
-    - bin/**
-    - db/schema.rb
-    - Guardfile
+    - "vendor/**/*"
+    - "db/**/*"
+    - "bin/**/*"
+    - "config/**/*"
+    - "tmp/**/*"
 
-RSpec/DescribeClass:
-  Enabled: false
+Style/StringLiterals:
+  EnforcedStyle: single_quotes
 
-RSpec/NamedSubject:
-  Enabled: false
+Style/TrailingCommaInArguments:
+  EnforcedStyleForMultiline: no_comma
 
-Style/IfUnlessModifier:
-  Enabled: false
+Style/TrailingCommaInHashLiteral:
+  EnforcedStyleForMultiline: no_comma
 
-Style/Documentation:
-  Enabled: false
-
-Style/FrozenStringLiteralComment:
-  Enabled: false
-
-Style/SymbolArray:
-  Enabled: false
-
-Metrics/LineLength:
-  Enabled: false
-
-Style/Next:
-  Enabled: false
-
-Style/SymbolProc:
-  Enabled: false
-
-Style/ConditionalAssignment:
-  EnforcedStyle: assign_inside_condition
-  IncludeTernaryExpressions: false
+Style/TrailingCommaInArrayLiteral:
+  EnforcedStyleForMultiline: no_comma
 
 Metrics/BlockLength:
   ExcludedMethods: ['describe', 'context', 'let']
-
-Layout/FirstArrayElementIndentation:
-  EnforcedStyle: consistent
-
-Metrics/MethodLength:
-  Enabled: true
-  Exclude:
-    - db/**/*

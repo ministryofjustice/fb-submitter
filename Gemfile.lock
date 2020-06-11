@@ -244,6 +244,17 @@ GEM
       unicode-display_width (>= 1.4.0, < 2.0)
     rubocop-ast (0.0.3)
       parser (>= 2.7.0.1)
+    rubocop-govuk (3.16.0)
+      rubocop (= 0.85.1)
+      rubocop-rails (= 2.6.0)
+      rubocop-rake (= 0.5.1)
+      rubocop-rspec (= 1.39.0)
+    rubocop-rails (2.6.0)
+      activesupport (>= 4.2.0)
+      rack (>= 1.1)
+      rubocop (>= 0.82.0)
+    rubocop-rake (0.5.1)
+      rubocop
     rubocop-rspec (1.39.0)
       rubocop (>= 0.68.1)
     ruby-progressbar (1.10.1)
@@ -312,6 +323,7 @@ DEPENDENCIES
   rails (~> 6.0.3)
   rspec-rails (>= 3.8.0)
   rubocop (~> 0.85.1)
+  rubocop-govuk
   rubocop-rspec (~> 1.39)
   sentry-raven
   simplecov
