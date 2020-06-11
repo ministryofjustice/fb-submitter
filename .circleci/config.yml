@@ -10,6 +10,9 @@ jobs:
       - run:
           name: lint
           command: docker-compose run --rm app bundle exec rubocop
+      - run:
+          name: security
+          command: docker-compose run --rm app bundle exec brakeman
   test:
     working_directory: ~/circle
     docker:
