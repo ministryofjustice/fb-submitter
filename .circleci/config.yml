@@ -1,5 +1,15 @@
 version: 2
 jobs:
+  verify:
+    working_directory: ~/circle
+    docker:
+      - image: circleci/ruby:2.6.4
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: lint
+          command: docker-compose run --rm app bundle exec rubocop
   test:
     working_directory: ~/circle
     docker:
@@ -10,9 +20,6 @@ jobs:
       - run:
           name: test
           command: docker-compose run --rm app bundle exec rspec
-      - run:
-          name: lint
-          command: docker-compose run --rm app bundle exec rubocop
   build_and_deploy_to_test:
     working_directory: ~/circle/git/fb-submitter
     docker: &ecr_image
@@ -94,7 +101,10 @@ workflows:
           filters:
             branches:
               only: master
-      - test
+      - verify
+      - test:
+          requires:
+            - verify
       - build_and_deploy_to_test:
           requires:
             - test
