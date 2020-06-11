@@ -47,8 +47,8 @@ describe Adapters::JweWebhookDestination do
   it 'throws exception if not 200 response' do
     stub_request(:post, expected_url).to_return(status: 500)
 
-    expect do
+    expect {
       adapter.send_webhook(body: payload)
-    end.to raise_error(Adapters::JweWebhookDestination::ClientRequestError)
+    }.to raise_error(Adapters::JweWebhookDestination::ClientRequestError)
   end
 end

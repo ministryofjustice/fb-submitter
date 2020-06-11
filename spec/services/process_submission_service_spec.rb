@@ -34,7 +34,6 @@ describe ProcessSubmissionService do
       service.perform
     end
 
-    # rubocop:disable RSpec/MultipleExpectations
     it 'sends email with csv attachment' do
       expect(submission_service_spy).to have_received(:execute) do |args|
         expect(args[:action]).to eql(actions[0])
@@ -46,7 +45,6 @@ describe ProcessSubmissionService do
         expect(args[:pdf_attachment]).to be_nil
       end
     end
-    # rubocop:enable RSpec/MultipleExpectations
   end
 
   context 'when sending an email submission' do

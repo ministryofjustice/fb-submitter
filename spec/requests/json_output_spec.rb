@@ -74,7 +74,8 @@ describe 'Submits JSON given a JSON submission type', type: :request do
         encryption_iv: 'baz1',
         mimetype: 'application/pdf',
         filename: 'form1.pdf'
-      }, {
+      },
+      {
         url: 'example.com/2',
         encryption_key: 'bar2',
         encryption_iv: 'baz2',

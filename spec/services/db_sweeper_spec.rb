@@ -12,9 +12,9 @@ RSpec.describe DbSweeper do
       end
 
       it 'destroys the older submission records and associated email payload records' do
-        expect do
+        expect {
           subject.call
-        end.to change(Submission, :count).by(-1).and change(EmailPayload, :count).by(-1)
+        }.to change(Submission, :count).by(-1).and change(EmailPayload, :count).by(-1)
       end
     end
 

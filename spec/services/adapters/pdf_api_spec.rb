@@ -48,9 +48,9 @@ describe Adapters::PdfApi do
     end
 
     it 'throws an exception' do
-      expect do
+      expect {
         adapter.generate_pdf(submission: {})
-      end.to raise_error(Adapters::PdfApi::ClientRequestError)
+      }.to raise_error(Adapters::PdfApi::ClientRequestError)
     end
   end
 end

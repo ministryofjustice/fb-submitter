@@ -93,7 +93,8 @@ describe DownloadService do
             'mimetype' => 'application/pdf',
             'filename' => 'evidence_one.pdf',
             'type' => 'filestore'
-          }, {
+          },
+          {
             'url' => url2,
             'mimetype' => 'application/pdf',
             'filename' => 'evidence_two.pdf',

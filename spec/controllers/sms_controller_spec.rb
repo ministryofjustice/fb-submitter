@@ -18,9 +18,9 @@ describe SmsController do
 
   describe 'POST #create' do
     it 'enqueues job' do
-      expect do
+      expect {
         post :create, body: json_hash.to_json, format: :json
-      end.to change { ActiveJob::Base.queue_adapter.enqueued_jobs.size }.by(1)
+      }.to change { ActiveJob::Base.queue_adapter.enqueued_jobs.size }.by(1)
     end
 
     it 'returns 201' do

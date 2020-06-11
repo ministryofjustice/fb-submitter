@@ -25,7 +25,8 @@ describe WebhookAttachmentService do
         url: 'example.com/public_url_1',
         encryption_key: 'somekey_1',
         encryption_iv: 'somekey_iv_1'
-      }, {
+      },
+      {
         url: 'example.com/public_url_2',
         encryption_key: 'somekey_2',
         encryption_iv: 'somekey_iv_2'
@@ -41,7 +42,8 @@ describe WebhookAttachmentService do
         encryption_iv: 'somekey_iv_1',
         mimetype: 'application/pdf',
         filename: 'form1.pdf'
-      }, {
+      },
+      {
         url: 'example.com/public_url_2',
         encryption_key: 'somekey_2',
         encryption_iv: 'somekey_iv_2',

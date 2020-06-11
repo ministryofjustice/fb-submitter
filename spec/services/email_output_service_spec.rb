@@ -163,7 +163,6 @@ describe EmailOutputService do
       )
     end
 
-    # rubocop:disable RSpec/MultipleExpectations
     it 'only retries emails that did not previously succeed' do
       allow(email_service_mock).to receive(:send_mail).with(first_payload)
       allow(email_service_mock).to receive(:send_mail).with(second_payload).and_raise(Aws::SES::Errors::MessageRejected.new({}, 'it was the day my grandmother exploded'))
@@ -208,7 +207,6 @@ describe EmailOutputService do
         end
       end
     end
-    # rubocop:enable RSpec/MultipleExpectations
   end
 
   context 'when there are multiple service output emails' do
@@ -244,7 +242,6 @@ describe EmailOutputService do
         second_service.execute(second_execution_payload)
       end
 
-      # rubocop:disable RSpec/MultipleExpectations
       it 'will send emails to the necessary recipients' do
         expect(email_service_mock).to have_received(:send_mail).exactly(4).times
         expect(email_service_mock).to have_received(:send_mail).with(hash_including(to: 'bob.admin@digital.justice.gov.uk')).twice
@@ -261,7 +258,6 @@ describe EmailOutputService do
           match_payload(email_payloads, to, second_email_attachments.map(&:filename).sort)
         end
       end
-      # rubocop:enable RSpec/MultipleExpectations
     end
 
     context 'when some emails fail to be sent' do
@@ -310,7 +306,6 @@ describe EmailOutputService do
         )
       end
 
-      # rubocop:disable RSpec/MultipleExpectations
       it 'only retries emails to recipients that did not previously succeed' do
         allow(email_service_mock).to receive(:send_mail).with(first_payload)
         allow(email_service_mock).to receive(:send_mail).with(second_payload)
@@ -347,7 +342,6 @@ describe EmailOutputService do
           end
         end
       end
-      # rubocop:enable RSpec/MultipleExpectations
     end
   end
   # rubocop:enable RSpec/ExampleLength

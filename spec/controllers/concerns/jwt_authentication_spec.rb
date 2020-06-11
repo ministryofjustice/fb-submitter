@@ -40,7 +40,7 @@ RSpec.describe 'Concerns::JWTAuthentication' do
       describe 'the errors key' do
         it 'has a message indicating the header is not present' do
           expect(parsed_body.fetch('errors').first.fetch('title')).to eq(
-            I18n.t(:title, scope: [:error_messages, :token_not_present])
+            I18n.t(:title, scope: %i[error_messages token_not_present])
           )
         end
       end
@@ -89,7 +89,7 @@ RSpec.describe 'Concerns::JWTAuthentication' do
           describe 'the errors key' do
             it 'has a message indicating the token is invalid' do
               expect(parsed_body.fetch('errors').first.fetch('title')).to eq(
-                I18n.t(:title, scope: [:error_messages, :token_not_valid])
+                I18n.t(:title, scope: %i[error_messages token_not_valid])
               )
             end
           end
@@ -122,7 +122,7 @@ RSpec.describe 'Concerns::JWTAuthentication' do
           describe 'the errors key' do
             it 'has a message indicating the token is invalid' do
               expect(parsed_body.fetch('errors').first.fetch('title')).to eq(
-                I18n.t(:title, scope: [:error_messages, :token_not_valid])
+                I18n.t(:title, scope: %i[error_messages token_not_valid])
               )
             end
           end
