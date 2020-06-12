@@ -12,7 +12,7 @@ jobs:
           command: docker-compose run --rm app bundle exec rubocop
       - run:
           name: security
-          command: docker-compose run --rm app bundle exec brakeman
+          command: docker-compose run --rm app bundle exec brakeman -q --no-pager
   test:
     working_directory: ~/circle
     docker:
