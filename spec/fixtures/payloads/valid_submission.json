@@ -59,12 +59,5 @@
         }
       ]
     }
-  ],
-  "attachments": [
-    {
-      "filename": "basset-hound-dog-picture.png",
-      "mimetype": "image/png",
-      "url": "http://fb-user-filestore-api-svc-test-dev.formbuilder-platform-test-dev/service/dog-contest/user/1/123"
-    }
   ]
 }

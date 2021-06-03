@@ -42,19 +42,13 @@
       "type": "array",
       "description": "All the pages and answers of the form",
       "items": { "$ref": "#/definitions/page" }
-    },
-    "attachments": {
-      "type": "array",
-      "description": "All attachments in the submission",
-      "items": { "$ref": "#/definitions/attachment" }
     }
   },
   "required": [
     "service",
     "meta",
     "actions",
-    "pages",
-    "attachments"
+    "pages"
   ],
   "additionalProperties": false,
   "definitions": {
@@ -111,23 +105,6 @@
         "answers"
       ],
       "additionalProperties": false
-    },
-    "attachment": {
-      "type": "object",
-      "properties": {
-        "url": {
-          "type": "string",
-          "description": "The url of the attachment to be downloaded."
-        },
-        "filename": {
-          "type": "string",
-          "description": "The name of the attachment with the extension."
-        },
-        "mimetype": {
-          "type": "string",
-          "description": "The mimetype of the attachment. e.g text/plain."
-        }
-      }
     },
     "user_answer": {
       "type": "object",

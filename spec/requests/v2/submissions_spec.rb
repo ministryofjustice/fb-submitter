@@ -13,7 +13,6 @@ describe 'V2 Submissions endpoint', type: :request do
       }
     end
     let(:service_slug) { 'mos-eisley' }
-    let(:encrypted_user_id_and_token) { '4df5ab180993404877562a03601a1137' }
     let(:url) { '/v2/submissions' }
     let(:pdf_file_content) { 'apology accepted, captain needa' }
     let(:post_request) { post url, params: params.to_json, headers: headers }
@@ -63,8 +62,7 @@ describe 'V2 Submissions endpoint', type: :request do
             encrypted_submission: SubmissionEncryption.new(
               key: submission_decryption_key
             ).encrypt(valid_submission_payload),
-            service_slug: service_slug,
-            encrypted_user_id_and_token: encrypted_user_id_and_token
+            service_slug: service_slug
           }
         end
 
@@ -78,40 +76,25 @@ describe 'V2 Submissions endpoint', type: :request do
           expect { post_request }.to change(Submission, :count).by(1)
         end
 
+        it 'encrypts the submission in the database' do
+          post_request
+          submission = Submission.last
+          expect(submission.try(:payload)).not_to be_nil
+          expect(submission.decrypted_submission).to eq(valid_submission_payload)
+        end
+
+        it 'saves the submission attributes' do
+          post_request
+          submission = Submission.last
+          expect(submission).not_to be_nil
+          expect(submission.access_token).to eq(access_token)
+          expect(submission.service_slug).to eq(service_slug)
+        end
+
         it 'creates a V2 Job to be processed asynchronously' do
           process_submission_job = class_spy(V2::ProcessSubmissionJob).as_stubbed_const
           post_request
           expect(process_submission_job).to have_received(:perform_later)
-        end
-
-        context 'when saving the submission in the database' do
-          let(:submission) { Submission.last }
-
-          # rubocop:disable RSpec/ExpectInHook
-          before do
-            post_request
-            expect(submission).not_to be_nil
-          end
-          # rubocop:enable RSpec/ExpectInHook
-
-          it 'encrypts the submission in the database' do
-            expect(submission.payload).not_to be_nil
-            expect(submission.decrypted_submission).to eq(valid_submission_payload)
-          end
-
-          it 'saves the submission access token' do
-            expect(submission.access_token).to eq(access_token)
-          end
-
-          it 'saves submission service slug' do
-            expect(submission.service_slug).to eq(service_slug)
-          end
-
-          it 'saves submisstion encrypted user id and token' do
-            expect(submission.encrypted_user_id_and_token).to eq(
-              encrypted_user_id_and_token
-            )
-          end
         end
       end
 

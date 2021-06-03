@@ -47,9 +47,6 @@ RSpec.describe V2::ProcessSubmissionJob do
       stub_request(:post, 'http://pdf-generator.com/v1/pdfs')
         .with(body: expected_pdf_request_body)
         .to_return(status: 200, body: generated_pdf_content, headers: {})
-
-      stub_request(:get, 'http://fb-user-filestore-api-svc-test-dev.formbuilder-platform-test-dev/service/dog-contest/user/1/123')
-        .to_return(status: 200, body: 'image', headers: {})
     end
 
     it 'sends the email with pdf attachment' do
@@ -58,15 +55,6 @@ RSpec.describe V2::ProcessSubmissionJob do
       expect(email_output_service).to have_received(:execute) do |args|
         pdf_contents = File.open(args[:pdf_attachment].path).read
         expect(pdf_contents).to eq(generated_pdf_content)
-      end
-    end
-
-    it 'sends email with attachments' do
-      perform_job
-
-      expect(email_output_service).to have_received(:execute) do |args|
-        expect(args[:attachments].length).to eq(1)
-        expect(args[:attachments].first.filename).to match(/basset-hound-dog-picture.png/)
       end
     end
 
