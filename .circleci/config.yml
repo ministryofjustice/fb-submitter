@@ -126,14 +126,15 @@ workflows:
   version: 2
   test_and_build:
     jobs:
-      - test
+      #- test
       - build_and_deploy_to_test:
-          requires:
-            - test
+        #  requires:
+        #    - test
           filters:
             branches:
               only:
                 - master
+                - fix/download-service
       - acceptance_tests:
           requires:
             - build_and_deploy_to_test
