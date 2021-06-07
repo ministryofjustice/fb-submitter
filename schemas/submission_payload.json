@@ -84,6 +84,10 @@
         "include_pdf": {
           "type": "boolean",
           "default": true
+        },
+        "include_attachments": {
+          "type": "boolean",
+          "default": true
         }
       },
       "required": [
