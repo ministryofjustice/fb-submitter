@@ -116,6 +116,8 @@ GEM
     faraday-excon (1.1.0)
     faraday-net_http (1.0.1)
     faraday-net_http_persistent (1.1.0)
+    faraday_middleware (1.0.0)
+      faraday (~> 1.0)
     fb-jwt-auth (0.7.0)
       activesupport
       json
@@ -346,6 +348,7 @@ DEPENDENCIES
   delayed_job_active_record (~> 4.1.6)
   factory_bot_rails (~> 6.2)
   faraday
+  faraday_middleware
   fb-jwt-auth (~> 0.7.0)
   guard-rspec
   guard-shell
