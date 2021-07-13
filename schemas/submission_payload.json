@@ -53,7 +53,8 @@
     "service",
     "meta",
     "actions",
-    "pages"
+    "pages",
+    "attachments"
   ],
   "additionalProperties": false,
   "definitions": {
