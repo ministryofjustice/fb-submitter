@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 ruby File.read('.ruby-version').strip
 
-gem 'aws-sdk-ses', '~> 1.40.0'
+gem 'aws-sdk-ses', '~> 1.41.0'
 gem 'bootsnap', '>= 1.1.0', require: false
 gem 'daemons'
 gem 'delayed_job_active_record', '~> 4.1.6'
