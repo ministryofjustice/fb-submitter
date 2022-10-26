@@ -44,6 +44,51 @@ RSpec.describe RawMessage do
       this is a plaintext test=
 
 
+      --AltPart
+      Content-Type: text/html; charset=iso-8859-1
+      Content-Transfer-Encoding: quoted-printable
+
+      <html>
+        <head>
+            <style>
+                html, body {
+                    background-color: #fff;
+                    color: #0b0c0c;
+                    font-family: arial, sans-serif;
+                }
+                p {
+                    color: #0b0c0c;
+                    font-size: 19px;
+                }
+            </style>
+        </head>
+        <body style="background-color: #fff; color: #0b0c0c; font-family: arial, sans-serif;">
+            <table width="100%" style="background-color: #fff; border-collapse: collapse;" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td style="background-color: #0b0c0c; padding: 10px 20px;">
+                        <table width="100" style="width: 100%; border-collapse: collapse;" cellspacing="0" cellpadding="0">
+                            <tbody>
+                                <a href="#" style="display: flex; align-items: center; font-size: 30px; font-weight: 700; color: #fff; line-height: 1;">
+                                    <img src="https://design-system.service.gov.uk/assets/images/govuk-logotype-crown.png" style="display: inline-block; padding-right: 12px;"/><span>GOV.UK</span>
+                                </a>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color: #1d70b8; height: 10px"></td>
+                </tr>
+                <tr>
+                    <td style="background-color: #fff; padding: 30px 20px;">
+                        <div style="min-width: 260px; max-width: 65ch; font-size: 19px;">
+                            <p>this is a plaintext test</p>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </body>
+      </html>
+
       --NextPart
       Content-Type: application/pdf
       Content-Disposition: attachment; filename="some-file-name.pdf"
