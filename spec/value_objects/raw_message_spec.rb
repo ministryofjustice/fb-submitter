@@ -89,6 +89,8 @@ RSpec.describe RawMessage do
         </body>
       </html>
 
+      --AltPart--
+
       --NextPart
       Content-Type: application/pdf
       Content-Disposition: attachment; filename="some-file-name.pdf"

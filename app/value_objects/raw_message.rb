@@ -78,6 +78,8 @@ class RawMessage
         </body>
       </html>
 
+      --AltPart--
+
       --NextPart
       #{inline_attachments.join("\n\n--NextPart\n")}
 
