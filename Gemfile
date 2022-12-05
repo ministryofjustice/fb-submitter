@@ -29,7 +29,7 @@ group :development, :test do
   gem 'brakeman'
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'rspec-rails', '>= 3.8.0'
-  gem 'rubocop', '~> 0.87.1'
+  gem 'rubocop', '~> 1.39.0'
   gem 'rubocop-govuk'
 end
 
