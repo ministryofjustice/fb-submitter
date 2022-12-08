@@ -5,26 +5,19 @@ module V2
     def perform(submission_id:, jwt_skew_override: nil)
       submission = Submission.find(submission_id)
       decrypted_submission = submission.decrypted_submission.merge('submission_id' => submission.id)
+      if generate_email_attachments?(decrypted_submission)
+        pdf_attachment = generate_pdf_content(submission, decrypted_submission)
+        attachments = download_attachments(
+          decrypted_submission['attachments'],
+          submission.encrypted_user_id_and_token,
+          submission.access_token,
+          jwt_skew_override
+        )
+      end
 
       decrypted_submission['actions'].each do |action|
         case action['kind']
         when 'email'
-          pdf_api_gateway = Adapters::PdfApi.new(
-            root_url: ENV.fetch('PDF_GENERATOR_ROOT_URL'),
-            token: submission.access_token
-          )
-          pdf_attachment = GeneratePdfContent.new(
-            pdf_api_gateway: pdf_api_gateway,
-            payload: PdfPayloadTranslator.new(decrypted_submission).to_h
-          ).execute
-
-          attachments = download_attachments(
-            decrypted_submission['attachments'],
-            submission.encrypted_user_id_and_token,
-            submission.access_token,
-            jwt_skew_override
-          )
-
           send_email(submission: submission, action: action, attachments: attachments, pdf_attachment: pdf_attachment)
         when 'csv'
           payload_service = V2::SubmissionPayloadService.new(decrypted_submission)
@@ -58,6 +51,24 @@ module V2
         action: action.symbolize_keys,
         attachments: attachments,
         pdf_attachment: pdf_attachment
+      )
+    end
+
+    def generate_email_attachments?(actions)
+      actions.map { |action| action['kind'] }.include?('email')
+    end
+
+    def generate_pdf_content(submission, decrypted_submission)
+      GeneratePdfContent.new(
+        pdf_api_gateway: pdf_api_gateway(submission),
+        payload: PdfPayloadTranslator.new(decrypted_submission).to_h
+      ).execute
+    end
+
+    def pdf_api_gateway(submission)
+      Adapters::PdfApi.new(
+        root_url: ENV.fetch('PDF_GENERATOR_ROOT_URL'),
+        token: submission.access_token
       )
     end
   end
