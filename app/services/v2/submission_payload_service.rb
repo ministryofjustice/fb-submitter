@@ -1,9 +1,16 @@
 module V2
   class SubmissionPayloadService
-    attr_reader :payload
+    attr_reader :submission
 
-    def initialize(payload)
-      @payload = payload
+    def initialize(submission)
+      @submission = submission
+    end
+
+    delegate :encrypted_user_id_and_token, :access_token, to: :submission
+
+    def payload
+      @payload ||=
+        submission.decrypted_submission.merge('submission_id' => submission.id)
     end
 
     def submission_id
@@ -27,6 +34,14 @@ module V2
           hash[answer['field_id']] = answer['answer']
         end
       end
+    end
+
+    def attachments
+      payload['attachments']
+    end
+
+    def actions
+      payload['actions']
     end
   end
 end
