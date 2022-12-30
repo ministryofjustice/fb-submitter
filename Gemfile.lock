@@ -186,7 +186,7 @@ GEM
     mini_mime (1.1.2)
     mini_portile2 (2.8.0)
     minitest (5.16.3)
-    mixpanel-ruby (2.2.2)
+    mixpanel-ruby (2.3.0)
     msgpack (1.6.0)
     multi_json (1.15.0)
     multipart-post (2.2.3)
