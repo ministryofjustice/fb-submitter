@@ -5,7 +5,7 @@ module Adapters
     # creds automatically retrieved from
     # ENV['AWS_ACCESS_KEY_ID'] and ENV['AWS_SECRET_ACCESS_KEY']
     def self.send_mail(opts = {})
-      Rails.logger.warn opts.to_str
+      Rails.logger.warn opts.to_s
       client.send_email(
         from_email_address: DEFAULT_FROM_ADDRESS,
         destination: {
