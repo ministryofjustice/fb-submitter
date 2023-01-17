@@ -16,6 +16,7 @@ class BaseEmailOutputService
       attachments: attachments,
       pdf_attachment: pdf_attachment
     )
+    Rails.logger.info "Executed Attachment Generator for submission id #{payload_submission_id}"
 
     if attachment_generator.sorted_attachments.empty?
       send_single_email(
@@ -49,7 +50,7 @@ class BaseEmailOutputService
   def send_single_email(subject:, action:, attachments: [])
     to = action.fetch(:to)
     email_payload = find_or_create_email_payload(to, attachments)
-
+    Rails.logger.info "Executed Attachment Generator for submission id #{payload_submission_id}"
     if email_payload.succeeded_at.nil?
       emailer.send_mail(
         from: action.fetch(:from),
@@ -59,7 +60,7 @@ class BaseEmailOutputService
         attachments: attachments,
         raw_message: raw_message
       )
-
+      Rails.logger.info "Executed send email with subject #{subject} id #{payload_submission_id}"
       email_payload.update!(succeeded_at: Time.zone.now)
     end
   end
