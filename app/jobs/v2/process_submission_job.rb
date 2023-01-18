@@ -8,6 +8,24 @@ module V2
 
       decrypted_submission['actions'].each do |action|
         case action['kind']
+        when 'confirmation_email'
+          pdf_api_gateway = Adapters::PdfApi.new(
+            root_url: ENV.fetch('PDF_GENERATOR_ROOT_URL'),
+            token: submission.access_token
+          )
+          pdf_attachment = GeneratePdfContent.new(
+            pdf_api_gateway: pdf_api_gateway,
+            payload: PdfPayloadTranslator.new(decrypted_submission).to_h
+          ).execute
+
+          attachments = download_attachments(
+            decrypted_submission['attachments'],
+            submission.encrypted_user_id_and_token,
+            submission.access_token,
+            jwt_skew_override
+          )
+
+          send_email(submission: submission, action: action, attachments: attachments, pdf_attachment: pdf_attachment)
         when 'email'
           pdf_api_gateway = Adapters::PdfApi.new(
             root_url: ENV.fetch('PDF_GENERATOR_ROOT_URL'),
