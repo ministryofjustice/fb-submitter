@@ -48,7 +48,8 @@ class BaseEmailOutputService
 
   def send_single_email(subject:, action:, attachments: [])
     to = action.fetch(:to)
-    email_payload = find_or_create_email_payload(to, attachments)
+    type = action.fetch(:type)
+    email_payload = find_or_create_email_payload(to, type, attachments)
 
     if email_payload.succeeded_at.nil?
       emailer.send_mail(
@@ -68,7 +69,8 @@ class BaseEmailOutputService
     "#{subject} {#{payload_submission_id}} [#{current_email}/#{number_of_emails}]"
   end
 
-  def find_or_create_email_payload(to, attachments)
+  def find_or_create_email_payload(to, type, attachments)
+    Rails.logger.info "Looking for email of type #{type}"
     filenames = attachments.map(&:filename).sort
     email_payload = EmailPayload.where(submission_id: submission_id)
                                 .find do |payload|
