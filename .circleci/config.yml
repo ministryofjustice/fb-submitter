@@ -63,7 +63,8 @@ jobs:
             echo "export SSH_FILE_FOR_SECRETS=~/.ssh/id_rsa_f6b5f3b9d67ed45b0557fb62cc124dad" >> $BASH_ENV
       - run: &deploy_scripts
           name: cloning deploy scripts
-          command: 'git clone git@github.com:ministryofjustice/fb-deploy.git deploy-scripts'
+          # command: 'git clone git@github.com:ministryofjustice/fb-deploy.git:remove-submission-id deploy-scripts'
+          command: 'git clone --single-branch --branch remove-submission-id git@github.com:ministryofjustice/fb-deploy.git deploy-scripts'
       - run:
           name: build and push docker images
           environment:
