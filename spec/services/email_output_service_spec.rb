@@ -69,7 +69,7 @@ describe EmailOutputService do
     {
       to: 'bob.admin@digital.justice.gov.uk',
       from: 'form-builder@digital.justice.gov.uk',
-      subject: 'Complain about a court or tribunal submission {an-id-2323} [1/1]',
+      subject: 'Complain about a court or tribunal submission [1/1]',
       body_parts: {
         'text/plain': 'Please find an application attached'
       },
@@ -107,8 +107,8 @@ describe EmailOutputService do
       end
 
       it 'the subject is numbered by how many separate emails there are' do
-        expect(email_service_mock).to have_received(:send_mail).with(hash_including(subject: 'Complain about a court or tribunal submission {an-id-2323} [1/2]')).once
-        expect(email_service_mock).to have_received(:send_mail).with(hash_including(subject: 'Complain about a court or tribunal submission {an-id-2323} [2/2]')).once
+        expect(email_service_mock).to have_received(:send_mail).with(hash_including(subject: 'Complain about a court or tribunal submission [1/2]')).once
+        expect(email_service_mock).to have_received(:send_mail).with(hash_including(subject: 'Complain about a court or tribunal submission [2/2]')).once
       end
 
       it 'creates the required email payload records' do
@@ -130,7 +130,7 @@ describe EmailOutputService do
       end
 
       it 'the subject is numbered [1/1] as there will be a single email' do
-        expect(email_service_mock).to have_received(:send_mail).with(hash_including(subject: 'Complain about a court or tribunal submission {an-id-2323} [1/1]')).once
+        expect(email_service_mock).to have_received(:send_mail).with(hash_including(subject: 'Complain about a court or tribunal submission [1/1]')).once
       end
     end
 
@@ -156,13 +156,13 @@ describe EmailOutputService do
     let(:second_email_attachments) { [upload3] }
     let(:first_payload) do
       send_email_payload.merge(
-        subject: 'Complain about a court or tribunal submission {an-id-2323} [1/2]',
+        subject: 'Complain about a court or tribunal submission [1/2]',
         attachments: first_email_attachments
       )
     end
     let(:second_payload) do
       send_email_payload.merge(
-        subject: 'Complain about a court or tribunal submission {an-id-2323} [2/2]',
+        subject: 'Complain about a court or tribunal submission [2/2]',
         attachments: second_email_attachments
       )
     end
@@ -250,8 +250,8 @@ describe EmailOutputService do
         expect(email_service_mock).to have_received(:send_mail).exactly(4).times
         expect(email_service_mock).to have_received(:send_mail).with(hash_including(to: 'bob.admin@digital.justice.gov.uk')).twice
         expect(email_service_mock).to have_received(:send_mail).with(hash_including(to: 'robert.admin@digital.justice.gov.uk')).twice
-        expect(email_service_mock).to have_received(:send_mail).with(hash_including(subject: 'Complain about a court or tribunal submission {an-id-2323} [1/2]')).twice
-        expect(email_service_mock).to have_received(:send_mail).with(hash_including(subject: 'Complain about a court or tribunal submission {an-id-2323} [2/2]')).twice
+        expect(email_service_mock).to have_received(:send_mail).with(hash_including(subject: 'Complain about a court or tribunal submission [1/2]')).twice
+        expect(email_service_mock).to have_received(:send_mail).with(hash_including(subject: 'Complain about a court or tribunal submission [2/2]')).twice
       end
 
       it 'will creates email payloads to the necessary recipients with the correct attachments' do
@@ -285,27 +285,27 @@ describe EmailOutputService do
       end
       let(:first_payload) do
         send_email_payload.merge(
-          subject: 'Complain about a court or tribunal submission {an-id-2323} [1/2]',
+          subject: 'Complain about a court or tribunal submission [1/2]',
           attachments: first_email_attachments
         )
       end
       let(:second_payload) do
         send_email_payload.merge(
-          subject: 'Complain about a court or tribunal submission {an-id-2323} [2/2]',
+          subject: 'Complain about a court or tribunal submission [2/2]',
           attachments: second_email_attachments
         )
       end
       let(:third_payload) do
         send_email_payload.merge(
           to: 'robert.admin@digital.justice.gov.uk',
-          subject: 'Complain about a court or tribunal submission {an-id-2323} [1/2]',
+          subject: 'Complain about a court or tribunal submission [1/2]',
           attachments: first_email_attachments
         )
       end
       let(:fourth_payload) do
         send_email_payload.merge(
           to: 'robert.admin@digital.justice.gov.uk',
-          subject: 'Complain about a court or tribunal submission {an-id-2323} [2/2]',
+          subject: 'Complain about a court or tribunal submission [2/2]',
           attachments: second_email_attachments
         )
       end
