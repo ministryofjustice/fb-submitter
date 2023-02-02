@@ -65,7 +65,7 @@ class BaseEmailOutputService
   end
 
   def subject(subject:, current_email: 1, number_of_emails: 1)
-    "#{subject} [#{current_email}/#{number_of_emails}]"
+    "#{subject} {#{payload_submission_id}} [#{current_email}/#{number_of_emails}]"
   end
 
   def find_or_create_email_payload(to, attachments)

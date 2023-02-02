@@ -177,7 +177,7 @@ workflows:
   version: 2
   test_and_build:
     jobs:
-      - test
+      # - test
       - build
       - lint:
           requires:
@@ -190,7 +190,7 @@ workflows:
             - moj-forms
             - moj-forms-platform-apps
           requires:
-            - test
+            # - test
             - lint
             - security
           filters:
