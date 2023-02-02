@@ -1,6 +1,6 @@
 module Adapters
   class AmazonSESAdapter
-    DEFAULT_FROM_ADDRESS = 'no-reply-moj-forms@digital.justice.gov.uk'.freeze
+    DEFAULT_FROM_ADDRESS = 'MoJ-Forms no-reply-moj-forms@digital.justice.gov.uk'.freeze
 
     # creds automatically retrieved from
     # ENV['AWS_ACCESS_KEY_ID'] and ENV['AWS_SECRET_ACCESS_KEY']
