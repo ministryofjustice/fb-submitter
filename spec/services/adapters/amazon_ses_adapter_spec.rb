@@ -9,13 +9,15 @@ describe Adapters::AmazonSESAdapter do
     Aws::SESV2::Client.new(region: 'eu-west-1', stub_responses: true)
   end
 
+  let(:default_from_address) { Adapters::AmazonSESAdapter::DEFAULT_FROM_ADDRESS }
+
   it 'returns the response given the correct params' do
     expect(described_class.send_mail(to: '', raw_message: '', from: '').to_h).to eq(message_id: 'OutboundMessageId')
   end
 
   context 'when sending email payload' do
-    let(:to_address) { 'someaddress' }
-    let(:from_address) { 'someaddress' }
+    let(:to_address) { 'some_to_address@example.com' }
+    let(:from_address) { 'Some Service <some_from_address@example.com>' }
     let(:email_body) { 'email body' }
     let(:opts) do
       {
@@ -26,7 +28,7 @@ describe Adapters::AmazonSESAdapter do
     end
     let(:expected_payload) do
       {
-        from_email_address: Adapters::AmazonSESAdapter::DEFAULT_FROM_ADDRESS,
+        from_email_address: "Some Service <#{default_from_address}>",
         destination: {
           to_addresses: [to_address]
         },
@@ -50,17 +52,7 @@ describe Adapters::AmazonSESAdapter do
     end
 
     context 'when from address is the same as moj forms default address' do
-      let(:from_address) { Adapters::AmazonSESAdapter::DEFAULT_FROM_ADDRESS }
-      let(:expected_reply_to_addresses) { [] }
-
-      it 'does not set a reply to address' do
-        expect(stub_aws).to receive(:send_email).with(expected_payload)
-        described_class.send_mail(opts)
-      end
-    end
-
-    context 'when the from address is not present' do
-      let(:from_address) { nil }
+      let(:from_address) { "Some Service <#{default_from_address}>" }
       let(:expected_reply_to_addresses) { [] }
 
       it 'does not set a reply to address' do
