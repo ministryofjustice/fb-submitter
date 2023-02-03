@@ -196,29 +196,30 @@ workflows:
             branches:
               only:
                 - master
+                - reply-to
       - deploy_to_test_dev:
           context: *context
           requires:
             - build_and_push_image
-      - deploy_to_test_production:
-          context: *context
-          requires:
-            - build_and_push_image
-      - acceptance_tests:
-          context: *context
-          requires:
-            - deploy_to_test_dev
-            - deploy_to_test_production
-      - deploy_to_live_dev:
-          context: *context
-          requires:
-            - acceptance_tests
-      - deploy_to_live_production:
-          context: *context
-          requires:
-            - acceptance_tests
-      - smoke_tests:
-          context: *context
-          requires:
-            - deploy_to_live_dev
-            - deploy_to_live_production
+      # - deploy_to_test_production:
+      #     context: *context
+      #     requires:
+      #       - build_and_push_image
+      # - acceptance_tests:
+      #     context: *context
+      #     requires:
+      #       - deploy_to_test_dev
+      #       - deploy_to_test_production
+      # - deploy_to_live_dev:
+      #     context: *context
+      #     requires:
+      #       - acceptance_tests
+      # - deploy_to_live_production:
+      #     context: *context
+      #     requires:
+      #       - acceptance_tests
+      # - smoke_tests:
+      #     context: *context
+      #     requires:
+      #       - deploy_to_live_dev
+      #       - deploy_to_live_production
