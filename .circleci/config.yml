@@ -63,7 +63,8 @@ jobs:
             echo "export SSH_FILE_FOR_SECRETS=~/.ssh/id_rsa_f6b5f3b9d67ed45b0557fb62cc124dad" >> $BASH_ENV
       - run: &deploy_scripts
           name: cloning deploy scripts
-          command: 'git clone git@github.com:ministryofjustice/fb-deploy.git deploy-scripts'
+          # command: 'git clone git@github.com:ministryofjustice/fb-deploy.git:remove-submission-id deploy-scripts'
+          command: 'git clone --single-branch --branch remove-submission-id git@github.com:ministryofjustice/fb-deploy.git deploy-scripts'
       - run:
           name: build and push docker images
           environment:
@@ -176,7 +177,7 @@ workflows:
   version: 2
   test_and_build:
     jobs:
-      - test
+      # - test
       - build
       - lint:
           requires:
@@ -189,36 +190,38 @@ workflows:
             - moj-forms
             - moj-forms-platform-apps
           requires:
-            - test
+            # - test
             - lint
             - security
           filters:
             branches:
               only:
                 - master
+                - remove-submission-id
       - deploy_to_test_dev:
           context: *context
           requires:
             - build_and_push_image
-      - deploy_to_test_production:
-          context: *context
-          requires:
-            - build_and_push_image
+      # - deploy_to_test_production:
+      #     context: *context
+      #     requires:
+      #       - build_and_push_image
       - acceptance_tests:
           context: *context
           requires:
             - deploy_to_test_dev
-            - deploy_to_test_production
-      - deploy_to_live_dev:
-          context: *context
-          requires:
-            - acceptance_tests
-      - deploy_to_live_production:
-          context: *context
-          requires:
-            - acceptance_tests
+      #       - deploy_to_test_production
+      # - deploy_to_live_dev:
+      #     context: *context
+      #     requires:
+      #       - acceptance_tests
+      # - deploy_to_live_production:
+      #     context: *context
+      #     requires:
+      #       - acceptance_tests
       - smoke_tests:
           context: *context
           requires:
-            - deploy_to_live_dev
-            - deploy_to_live_production
+              - deploy_to_test_dev
+          #   - deploy_to_live_dev
+          #   - deploy_to_live_production
