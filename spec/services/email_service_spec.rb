@@ -8,6 +8,7 @@ describe EmailService do
 
     context 'when overriding the email endpoint' do
       before do
+        allow(ENV).to receive(:[])
         allow(ENV).to receive(:[]).with('EMAIL_ENDPOINT_OVERRIDE').and_return('http://some-custom-email-api.com')
       end
 
@@ -35,6 +36,7 @@ describe EmailService do
 
       context 'when the OVERRIDE_EMAIL_TO env var is set' do
         before do
+          allow(ENV).to receive(:[])
           allow(ENV).to receive(:[]).with('OVERRIDE_EMAIL_TO').and_return('overridden_to')
         end
 
