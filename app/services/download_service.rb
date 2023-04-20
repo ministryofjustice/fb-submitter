@@ -15,6 +15,8 @@ class DownloadService
 
     hydra = Typhoeus::Hydra.hydra
 
+    return if attachments.blank?
+
     attachments.each do |attachment|
       url = attachment.fetch('url')
       filename = attachment.fetch('filename')

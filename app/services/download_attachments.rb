@@ -14,6 +14,7 @@ class DownloadAttachments
 
   def download
     results = []
+    return if attachments.blank?
 
     attachments.each do |attachment|
       url = attachment.fetch('url')
