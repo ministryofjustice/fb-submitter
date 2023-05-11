@@ -106,8 +106,6 @@ RSpec.describe V2::ProcessSubmissionJob do
         perform_job
 
         expect(email_output_service).to have_received(:execute) do |args|
-          # (byebug) args
-          # {:action=>{:kind=>"csv", :to=>"captain.needa@star-destroyer.com,admiral.piett@star-destroyer.com", :from=>"\"Email Output Acceptance Test Service\" <moj-online@digital.justice.gov.uk>", :subject=>"CSV Output Acceptance Test submission: fc242acb-c03f-439e-b41d-bec76fa0f032", :email_body=>"", :include_pdf=>true, :include_attachments=>false}, :attachments=>[#<Attachment:0x00007f5885ce2b08 @type=nil, @filename="e17f5560-5afa-4fdf-a14e-e68ed226f5ea-answers.csv", @url=nil, @mimetype="text/csv", @path="/tmp/20230511-1-tjn92h", @file=#<Tempfile:/tmp/20230511-1-tjn92h>>], :pdf_attachment=>nil}
           expect(args[:action]).to include(expected_action)
         end
       end
@@ -153,6 +151,14 @@ RSpec.describe V2::ProcessSubmissionJob do
       #     expect(args[:action]).to include(expected_action)
       #   end
       # end
+
+      it 'passes the correct user_answers payload as an argument' do
+        decrypted_payload = SubmissionEncryption.new(key:).decrypt(submission[:payload])
+        user_answers = V2::SubmissionPayloadService.new(decrypted_payload).user_answers
+        expect(json_webhook_service_spy).to have_received(:execute) do |args|
+          expect(args[:user_answers]).to eq(user_answers)
+        end
+      end
     end
   end
 end
