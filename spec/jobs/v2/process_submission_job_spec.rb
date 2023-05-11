@@ -112,22 +112,12 @@ RSpec.describe V2::ProcessSubmissionJob do
     end
 
     context 'when JSON API action' do
-      # like v2:
       let(:encrypted_payload) do
         fixture = payload_fixture
         fixture['actions'] = fixture['actions'].select { |action| action['kind'] == 'json' }
         SubmissionEncryption.new(key:).encrypt(fixture)
       end
-      let(:expected_action) do
-        {
-          kind: 'json',
-          url: 'http://api-endpoint.com',
-          data_url: 'deprecated field',
-          encryption_key: 'fb730a667840d79c'
-        }
-      end
 
-      # like v1:
       let(:json_webhook_service_spy) { instance_spy(JsonWebhookService) }
 
       before do
@@ -135,22 +125,12 @@ RSpec.describe V2::ProcessSubmissionJob do
         perform_job
       end
 
-      # like v1
       it 'passes the correct collaborators to the JsonWebhookService' do
         expect(JsonWebhookService).to have_received(:new) do |args|
           expect(args[:webhook_attachment_fetcher]).to be_an_instance_of(WebhookAttachmentService)
           expect(args[:webhook_destination_adapter]).to be_an_instance_of(Adapters::JweWebhookDestination)
         end
       end
-      # like v2
-      # it 'sends a output json' do
-      #   perform_job
-
-      #   expect(email_output_service).to have_received(:execute) do |args|
-      #     byebug
-      #     expect(args[:action]).to include(expected_action)
-      #   end
-      # end
 
       it 'passes the correct user_answers payload as an argument' do
         decrypted_payload = SubmissionEncryption.new(key:).decrypt(submission[:payload])

@@ -31,7 +31,6 @@ module V2
 
     def attachments
       payload[:attachment]
-      # payload.dig('meta', 'attachments')
     end
   end
 end
