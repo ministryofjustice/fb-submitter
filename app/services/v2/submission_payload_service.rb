@@ -28,5 +28,10 @@ module V2
         end
       end
     end
+
+    def attachments
+      payload[:attachment]
+      # payload.dig('meta', 'attachments')
+    end
   end
 end

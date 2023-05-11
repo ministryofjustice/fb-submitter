@@ -106,9 +106,53 @@ RSpec.describe V2::ProcessSubmissionJob do
         perform_job
 
         expect(email_output_service).to have_received(:execute) do |args|
+          # (byebug) args
+          # {:action=>{:kind=>"csv", :to=>"captain.needa@star-destroyer.com,admiral.piett@star-destroyer.com", :from=>"\"Email Output Acceptance Test Service\" <moj-online@digital.justice.gov.uk>", :subject=>"CSV Output Acceptance Test submission: fc242acb-c03f-439e-b41d-bec76fa0f032", :email_body=>"", :include_pdf=>true, :include_attachments=>false}, :attachments=>[#<Attachment:0x00007f5885ce2b08 @type=nil, @filename="e17f5560-5afa-4fdf-a14e-e68ed226f5ea-answers.csv", @url=nil, @mimetype="text/csv", @path="/tmp/20230511-1-tjn92h", @file=#<Tempfile:/tmp/20230511-1-tjn92h>>], :pdf_attachment=>nil}
           expect(args[:action]).to include(expected_action)
         end
       end
+    end
+
+    context 'when JSON API action' do
+      # like v2:
+      let(:encrypted_payload) do
+        fixture = payload_fixture
+        fixture['actions'] = fixture['actions'].select { |action| action['kind'] == 'json' }
+        SubmissionEncryption.new(key:).encrypt(fixture)
+      end
+      let(:expected_action) do
+        {
+          kind: 'json',
+          url: 'http://api-endpoint.com',
+          data_url: 'deprecated field',
+          encryption_key: 'fb730a667840d79c'
+        }
+      end
+
+      # like v1:
+      let(:json_webhook_service_spy) { instance_spy(JsonWebhookService) }
+
+      before do
+        allow(JsonWebhookService).to receive(:new).and_return(json_webhook_service_spy)
+        perform_job
+      end
+
+      # like v1
+      it 'passes the correct collaborators to the JsonWebhookService' do
+        expect(JsonWebhookService).to have_received(:new) do |args|
+          expect(args[:webhook_attachment_fetcher]).to be_an_instance_of(WebhookAttachmentService)
+          expect(args[:webhook_destination_adapter]).to be_an_instance_of(Adapters::JweWebhookDestination)
+        end
+      end
+      # like v2
+      # it 'sends a output json' do
+      #   perform_job
+
+      #   expect(email_output_service).to have_received(:execute) do |args|
+      #     byebug
+      #     expect(args[:action]).to include(expected_action)
+      #   end
+      # end
     end
   end
 end

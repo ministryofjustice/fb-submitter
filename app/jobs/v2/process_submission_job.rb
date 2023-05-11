@@ -5,9 +5,25 @@ module V2
     def perform(submission_id:, jwt_skew_override: nil)
       submission = Submission.find(submission_id)
       decrypted_submission = submission.decrypted_submission.merge('submission_id' => submission.id)
+      payload_service = V2::SubmissionPayloadService.new(decrypted_submission)
 
       decrypted_submission['actions'].each do |action|
         case action['kind']
+        when 'json'
+          JsonWebhookService.new(
+            webhook_attachment_fetcher: WebhookAttachmentService.new(
+              attachment_parser: AttachmentParserService.new(attachments: payload_service.attachments),
+              user_file_store_gateway: Adapters::UserFileStore.new(key: submission.encrypted_user_id_and_token)
+            ),
+            webhook_destination_adapter: Adapters::JweWebhookDestination.new(
+              url: action['url'],
+              key: action['encryption_key']
+            )
+          ).execute(
+            user_answers: payload_service.user_answers,
+            service_slug: submission.service_slug,
+            payload_submission_id: payload_service.submission_id
+          )
         when 'email'
           pdf_api_gateway = Adapters::PdfApi.new(
             root_url: ENV.fetch('PDF_GENERATOR_ROOT_URL'),
@@ -27,7 +43,6 @@ module V2
 
           send_email(submission:, action:, attachments:, pdf_attachment:)
         when 'csv'
-          payload_service = V2::SubmissionPayloadService.new(decrypted_submission)
           csv_attachment = V2::GenerateCsvContent.new(payload_service:).execute
 
           send_email(submission:, action:, attachments: [csv_attachment])
