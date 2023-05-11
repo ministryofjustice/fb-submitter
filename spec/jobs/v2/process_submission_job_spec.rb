@@ -139,6 +139,12 @@ RSpec.describe V2::ProcessSubmissionJob do
           expect(args[:user_answers]).to eq(user_answers)
         end
       end
+
+      it 'passes the correct service_slug as an argument' do
+        expect(json_webhook_service_spy).to have_received(:execute) do |args|
+          expect(args[:service_slug]).to eq(submission.service_slug)
+        end
+      end
     end
   end
 end
