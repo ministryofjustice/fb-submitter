@@ -36,6 +36,12 @@ RSpec.describe V2::SubmissionPayloadService do
           'email_body' => '',
           'include_pdf' => true,
           'include_attachments' => false
+        },
+        {
+          'kind' => 'json',
+          'url' => 'http://api-endpoint.com',
+          'data_url': 'deprecated field',
+          'encryption_key': 'fb730a667840d79c'
         }
       ],
       'pages' => [
