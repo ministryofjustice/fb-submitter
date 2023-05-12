@@ -127,4 +127,20 @@ RSpec.describe V2::SubmissionPayloadService do
       end
     end
   end
+
+  describe '#attachments' do
+    let(:expected_attachments) do
+      [
+        {
+          'url ' => 'http://the-filestore-url-for-attachment',
+          'filename' => 'hello_world.txt',
+          'mimetype' => 'text/plain'
+        }
+      ]
+    end
+
+    it 'returns a array of attachments objects' do
+      expect(payload_service.attachments).to eq(expected_attachments)
+    end
+  end
 end

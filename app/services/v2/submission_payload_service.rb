@@ -30,7 +30,7 @@ module V2
     end
 
     def attachments
-      payload[:attachment]
+      payload['attachments']
     end
   end
 end
