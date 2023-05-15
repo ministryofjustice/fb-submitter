@@ -102,11 +102,6 @@
           "type": "string"
         }
       },
-      "required": [
-        "to",
-        "from",
-        "include_pdf"
-      ],
       "additionalProperties": false
     },
     "page": {
