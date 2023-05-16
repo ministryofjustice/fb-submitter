@@ -95,10 +95,7 @@
         "url": {
           "type": "string"
         },
-        "data_url": {
-          "type": "string"
-        },
-        "encryption_key": {
+        "key": {
           "type": "string"
         }
       },
@@ -106,7 +103,7 @@
         {
           "required":[
             "url",
-            "encryption_key"
+            "key"
           ]
         },
         {
