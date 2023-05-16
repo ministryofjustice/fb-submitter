@@ -102,6 +102,24 @@
           "type": "string"
         }
       },
+      "anyOf":[
+        {
+          "required":[
+            "url",
+            "encryption_key"
+          ]
+        },
+        {
+          "required": [
+            "to",
+            "from",
+            "include_pdf"
+          ]
+        }
+      ],
+      "required": [
+        "kind"
+      ],
       "additionalProperties": false
     },
     "page": {
