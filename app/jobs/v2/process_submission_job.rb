@@ -17,7 +17,7 @@ module V2
             ),
             webhook_destination_adapter: Adapters::JweWebhookDestination.new(
               url: action['url'],
-              key: action['encryption_key']
+              key: action['key']
             )
           ).execute(
             user_answers: payload_service.user_answers,

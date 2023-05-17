@@ -40,8 +40,7 @@ RSpec.describe V2::SubmissionPayloadService do
         {
           'kind' => 'json',
           'url' => 'http://api-endpoint.com',
-          'data_url': 'deprecated field',
-          'encryption_key': 'fb730a667840d79c'
+          'key': 'fb730a667840d79c'
         }
       ],
       'pages' => [
