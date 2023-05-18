@@ -29,6 +29,9 @@ module Adapters
     end
 
     def encrypted_body(body)
+      Rails.logger.debug '********************* DEBUG'
+      Rails.logger.debug key.length
+      Rails.logger.debug key.bytesize
       JWE.encrypt(body_as_string(body), key, alg: 'dir')
     end
 
