@@ -30,7 +30,8 @@
     {
       "kind":"json",
       "url": "http://api-endpoint.com",
-      "key": "fb730a667840d79c"
+      "key": "fb730a667840d79c",
+      "include_attachments": false
     }
   ],
   "pages": [
