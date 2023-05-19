@@ -9,7 +9,7 @@ class AttachmentParserService
         url: attachment.fetch(:url, nil),
         mimetype: attachment.fetch(:mimetype),
         filename: attachment.fetch(:filename),
-        type: attachment.fetch(:type),
+        type: attachment.fetch(:type, nil),
         path: nil
       )
     end
