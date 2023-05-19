@@ -203,10 +203,10 @@ workflows:
           context: *context
           requires:
             - build_and_push_image
-      - deploy_to_test_production:
-          context: *context
-          requires:
-            - build_and_push_image
+      # - deploy_to_test_production:
+      #     context: *context
+      #     requires:
+      #       - build_and_push_image
       - acceptance_tests:
           context: *context
           requires:

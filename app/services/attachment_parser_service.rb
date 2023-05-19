@@ -8,8 +8,8 @@ class AttachmentParserService
       Rails.logger.debug attachment
       Attachment.new(
         url: attachment.fetch(:url, nil),
-        mimetype: attachment.fetch(:mimetype),
-        filename: attachment.fetch(:filename),
+        mimetype: attachment.fetch(:mimetype, nil),
+        filename: attachment.fetch(:filename, nil),
         type: attachment.fetch(:type, nil),
         path: nil
       )
