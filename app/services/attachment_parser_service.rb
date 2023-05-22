@@ -9,10 +9,10 @@ class AttachmentParserService
       Rails.logger.info '++++++ Attachment content'
       Rails.logger.info attachment.to_s
       Attachment.new(
-        url: attachment.fetch(:url, nil),
-        mimetype: attachment.fetch(:mimetype),
-        filename: attachment.fetch(:filename),
-        type: attachment.fetch(:type, nil),
+        url: attachment.fetch('url', nil),
+        mimetype: attachment.fetch('mimetype'),
+        filename: attachment.fetch('filename'),
+        type: attachment.fetch('type', nil),
         path: nil
       )
     rescue KeyError

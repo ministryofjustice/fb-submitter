@@ -15,11 +15,11 @@ describe AttachmentParserService do
     let(:input) do
       [
         {
-          type: 'output',
-          mimetype: 'applcation/pdf',
-          filename: 'foo.pdf',
-          url: 'https://example.com',
-          pdf_data: {
+          'type' => 'output',
+          'mimetype' => 'applcation/pdf',
+          'filename' => 'foo.pdf',
+          'url' => 'https://example.com',
+          'pdf_data' => {
             question: 'answer'
           }
         }
