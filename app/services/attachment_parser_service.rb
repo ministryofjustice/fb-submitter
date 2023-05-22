@@ -9,7 +9,7 @@ class AttachmentParserService
       Rails.logger.info attachment.to_s
       Attachment.new(
         url: attachment.fetch(:url, nil),
-        mimetype: attachment.fetch(:mimetype),
+        mimetype: attachment.fetch(:mimetype) { MIME::Types.type_for(attachment[:filename]).first.content_type },
         filename: attachment.fetch(:filename),
         type: attachment.fetch(:type),
         path: nil
