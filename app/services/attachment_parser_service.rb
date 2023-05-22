@@ -4,8 +4,9 @@ class AttachmentParserService
   end
 
   def execute
+    Rails.logger.info '************* Attachment parser - going through all attachments'
     attachments.map do |attachment|
-      Rails.logger.info '************* Attachment parser'
+      Rails.logger.info '++++++ Attachment content'
       Rails.logger.info attachment.to_s
       Attachment.new(
         url: attachment.fetch(:url, nil),
@@ -15,7 +16,7 @@ class AttachmentParserService
         path: nil
       )
     rescue KeyError
-      Rails.logger.info 'Couldn\'t parse the attachment and will skip it'
+      Rails.logger.error "Couldn\'t parse the attachment #{attachment} and will skip it"
     end
   end
 
