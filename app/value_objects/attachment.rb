@@ -2,6 +2,13 @@ class Attachment
   attr_accessor :type, :filename, :url, :mimetype, :path
 
   def initialize(filename:, mimetype:, type: nil, url: nil, path: nil)
+    Rails.logger.info '*************** Attachment'
+    Rails.logger.info type
+    Rails.logger.info filename
+    Rails.logger.info url
+    Rails.logger.info mimetype
+    Rails.logger.info path
+
     @type = type
     @filename = filename
     @url = url
