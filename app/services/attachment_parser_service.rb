@@ -9,9 +9,9 @@ class AttachmentParserService
       Rails.logger.info attachment.to_s
       Attachment.new(
         url: attachment.fetch(:url, nil),
-        mimetype: attachment.fetch(:mimetype, nil),
-        filename: attachment.fetch(:filename, nil),
-        type: attachment.fetch(:type, nil),
+        mimetype: attachment.fetch(:mimetype),
+        filename: attachment.fetch(:filename),
+        type: attachment.fetch(:type),
         path: nil
       )
     end
