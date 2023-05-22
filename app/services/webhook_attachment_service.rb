@@ -6,8 +6,9 @@ class WebhookAttachmentService
 
   def execute
     attachments = attachment_parser.execute
+    Rails.logger.info "*************** Webhook going through all #{attachments.count} attachments"
     attachments.map do |attachment|
-      Rails.logger.info '*************** Webhook'
+      Rails.logger.info '*************** attachment:'
       Rails.logger.info attachment.to_s
       Rails.logger.info attachment.url
       hash = user_file_store_gateway.get_presigned_url(attachment.url)

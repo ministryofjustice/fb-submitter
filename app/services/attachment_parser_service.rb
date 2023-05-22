@@ -4,7 +4,7 @@ class AttachmentParserService
   end
 
   def execute
-    Rails.logger.info '************* Attachment parser - going through all attachments'
+    Rails.logger.info "************* Attachment parser - going through #{attachments.count} attachments"
     attachments.map do |attachment|
       Rails.logger.info '++++++ Attachment content'
       Rails.logger.info attachment.to_s
