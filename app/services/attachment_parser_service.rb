@@ -5,8 +5,8 @@ class AttachmentParserService
 
   def execute
     attachments.map do |attachment|
-      Rails.logger.debug '************* Attachment parser'
-      Rails.logger.debug attachment
+      Rails.logger.info '************* Attachment parser'
+      Rails.logger.info attachment.to_s
       Attachment.new(
         url: attachment.fetch(:url, nil),
         mimetype: attachment.fetch(:mimetype, nil),
