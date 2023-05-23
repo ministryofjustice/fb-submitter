@@ -12,7 +12,7 @@ module V2
         when 'json'
           JsonWebhookService.new(
             webhook_attachment_fetcher: WebhookAttachmentService.new(
-              attachment_parser: AttachmentParserService.new(attachments: payload_service.attachments),
+              attachment_parser: AttachmentParserService.new(attachments: payload_service.attachments, v2submission: true),
               user_file_store_gateway: Adapters::UserFileStore.new(key: submission.encrypted_user_id_and_token)
             ),
             webhook_destination_adapter: Adapters::JweWebhookDestination.new(
