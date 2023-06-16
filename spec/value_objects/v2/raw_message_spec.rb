@@ -180,8 +180,8 @@ RSpec.describe V2::RawMessage do
 
       --NextPart
       Content-Type: application/pdf
-      Content-Disposition: attachment; filename="some-file-name.pdf"
-      Content-Description: some-file-name.pdf
+      Content-Disposition: attachment; filename="some-file-name.jpg"
+      Content-Description: some-file-name.jpg
       Content-Transfer-Encoding: base64
 
       aGVsbG8gd29ybGQK
@@ -193,7 +193,7 @@ RSpec.describe V2::RawMessage do
   end
 
   it 'uses correct filename and extension' do
-    expect(raw_message.to_s).to include('some-file-name.pdf')
+    expect(raw_message.to_s).to include('some-file-name.jpg')
   end
 
   it 'creates the expected raw message' do

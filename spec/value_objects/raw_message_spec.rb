@@ -57,7 +57,7 @@ RSpec.describe RawMessage do
   end
   let(:filename) { 'some-file-name.jpg' }
   let(:mimetype) { 'application/pdf' }
-  let(:expected_filename) { 'some-file-name.pdf' }
+  let(:expected_filename) { 'some-file-name.jpg' }
 
   it 'uses correct filename and extension' do
     expect(subject.to_s).to include(expected_filename)
@@ -70,7 +70,7 @@ RSpec.describe RawMessage do
   context 'when filename has multiple fullstops' do
     let(:filename) { 'Screenshot 2023-04-04 at 16.02.20.png' }
     let(:mimetype) { 'application/pdf' }
-    let(:expected_filename) { 'Screenshot 2023-04-04 at 16.02.20.pdf' }
+    let(:expected_filename) { 'Screenshot 2023-04-04 at 16.02.20.png' }
 
     it 'uses maintains the filename' do
       expect(subject.to_s).to include(expected_filename)

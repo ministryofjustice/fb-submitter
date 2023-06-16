@@ -19,7 +19,8 @@ class Attachment
     raw_filename = tail.last.presence || head
     ext = MIME::Types[@mimetype][0].preferred_extension
 
-    # "#{raw_filename}.#{ext}"
+    return "#{raw_filename}.#{ext}" if raw_filename == head
+
     filename
   end
 
