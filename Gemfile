@@ -19,7 +19,7 @@ gem 'net-smtp', require: false
 gem 'notifications-ruby-client'
 gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 6.4'
-gem 'rails', '~> 6.1.7.1', '< 7.0.0.0'
+gem 'rails', '~> 7.0.8'
 gem 'sentry-delayed_job', '~> 5.11.0'
 gem 'sentry-rails', '~> 5.11.0'
 gem 'sentry-ruby', '~> 5.11.0'
