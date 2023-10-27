@@ -60,11 +60,6 @@ module Concerns
       ENV['MAX_IAT_SKEW_SECONDS'].to_i
     end
 
-    def service_token(service_slug)
-      service = ServiceTokenService.new(service_slug:)
-      service.get
-    end
-
     def public_key(service_slug)
       service = ServiceTokenService.new(service_slug:)
       public_key = service.public_key
