@@ -11,8 +11,6 @@ class WebhookAttachmentService
       hash[:mimetype] = attachment.mimetype
       hash[:filename] = attachment.filename_with_extension
       hash
-    rescue NoMethodError
-      Rails.logger.error "Couldn\'t parse the attachment information #{attachment} and it won\'t be included"
     end
   end
 

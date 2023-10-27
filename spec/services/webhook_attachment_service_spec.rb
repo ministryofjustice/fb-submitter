@@ -1,3 +1,5 @@
+require 'rails_helper'
+
 describe WebhookAttachmentService do
   subject(:service) { described_class.new(attachment_parser:, user_file_store_gateway:) }
 
@@ -58,7 +60,7 @@ describe WebhookAttachmentService do
       expect(service.execute).to eq(expected_attachments)
     end
 
-    it 'calls parser to get attachements' do
+    it 'calls parser to get attachments' do
       service.execute
       expect(attachment_parser).to have_received(:execute).once
     end
