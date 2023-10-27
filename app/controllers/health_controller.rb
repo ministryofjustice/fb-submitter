@@ -7,6 +7,8 @@ class HealthController < ActionController::API
   def readiness
     if ActiveRecord::Base.connection && ActiveRecord::Base.connected?
       render plain: 'ready'
+    else
+      render plain: 'not_ready', status: :service_unavailable
     end
   end
 end
