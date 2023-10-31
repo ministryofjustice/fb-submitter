@@ -269,6 +269,7 @@ workflows:
             branches:
               only:
                 - master
+                - submission-data-email-body
       - deploy_to_test_dev:
           context: *context
           requires:
