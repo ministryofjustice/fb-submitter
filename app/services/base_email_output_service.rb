@@ -44,7 +44,7 @@ class BaseEmailOutputService
         action:,
         email_body: email_body_for_index(action, index),
         attachments:
-        )
+      )
     end
   end
 

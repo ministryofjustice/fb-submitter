@@ -171,9 +171,9 @@ RSpec.describe EmailOutputServiceV2 do
       send_email_payload.merge(
         subject: 'Complain about a court or tribunal submission {an-id-2323} [2/2]',
         body_parts: {
-            'text/html': 'Please find an application attached',
-            'text/plain': 'Please find an application attached'
-          },
+          'text/html': 'Please find an application attached',
+          'text/plain': 'Please find an application attached'
+        },
         attachments: second_email_attachments
       )
     end
