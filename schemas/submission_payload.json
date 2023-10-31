@@ -84,6 +84,9 @@
         "email_body": {
           "type": "string"
         },
+        "user_answers": {
+          "type": "string"
+        },
         "include_pdf": {
           "type": "boolean",
           "default": true
