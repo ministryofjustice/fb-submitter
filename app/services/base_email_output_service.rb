@@ -20,7 +20,8 @@ class BaseEmailOutputService
     if attachment_generator.sorted_attachments.empty?
       send_single_email(
         action:,
-        subject: subject(subject: action.fetch(:subject))
+        subject: subject(subject: action.fetch(:subject)),
+        email_body: email_body_for_index(action)
       )
     else
       send_emails_with_attachments(
@@ -35,18 +36,19 @@ class BaseEmailOutputService
   def send_emails_with_attachments(action, email_attachments)
     email_attachments.each_with_index do |attachments, index|
       send_single_email(
-        action:,
-        attachments:,
         subject: subject(
           subject: action.fetch(:subject),
           current_email: index + 1,
           number_of_emails: email_attachments.size
+        ),
+        action:,
+        email_body: email_body_for_index(action, index),
+        attachments:
         )
-      )
     end
   end
 
-  def send_single_email(subject:, action:, attachments: [])
+  def send_single_email(subject:, action:, email_body:, attachments: [])
     to = action.fetch(:to)
     email_payload = find_or_create_email_payload(to, attachments)
 
@@ -55,7 +57,7 @@ class BaseEmailOutputService
         from: action.fetch(:from),
         to:,
         subject:,
-        body_parts: email_body_parts(action.fetch(:email_body)),
+        body_parts: email_body_parts(email_body),
         attachments:,
         raw_message:
       )
@@ -79,6 +81,10 @@ class BaseEmailOutputService
     email_payload || EmailPayload.create!(submission_id:,
                                           to: encryption_service.encrypt(to),
                                           attachments: encryption_service.encrypt(filenames))
+  end
+
+  def email_body_for_index(action, _index = 0)
+    action.fetch(:email_body)
   end
 
   attr_reader :emailer, :attachment_generator, :encryption_service, :submission_id,
