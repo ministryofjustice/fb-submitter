@@ -12,7 +12,7 @@ class EmailOutputServiceV2 < BaseEmailOutputService
 
   def email_body_for_index(action, index = 0)
     email_body = action.fetch(:email_body)
-    user_answers = action.fetch(:user_answers)
+    user_answers = action.fetch(:user_answers, '')
     if index.zero?
       email_body + user_answers
     else
