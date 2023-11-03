@@ -1,8 +1,12 @@
 require 'rails_helper'
 
 describe AttachmentParserService do
+  subject(:service) { described_class.new(attachments:, v2submission:) }
+
+  let(:v2submission) { false }
+
   context 'when given no input' do
-    subject(:service) { described_class.new(attachments: []) }
+    let(:attachments) { [] }
 
     it 'returns a empty array' do
       expect(service.execute).to eq([])
@@ -11,9 +15,7 @@ describe AttachmentParserService do
 
   context 'when given a single attachment' do
     context 'when submissions are legacy v1' do
-      subject(:service) { described_class.new(attachments: input) }
-
-      let(:input) do
+      let(:attachments) do
         [
           {
             type: 'output',
@@ -37,9 +39,8 @@ describe AttachmentParserService do
     end
 
     context 'when submissions are v2' do
-      subject(:service) { described_class.new(attachments: input, v2submission: true) }
-
-      let(:input) do
+      let(:v2submission) { true }
+      let(:attachments) do
         [
           {
             'type' => 'output',
@@ -59,6 +60,40 @@ describe AttachmentParserService do
 
       it 'returns a list of attachment objects' do
         expect(service.execute.first).to have_attributes(class: Attachment, type: 'output', mimetype: 'application/pdf', filename: 'foo.pdf', url: 'https://example.com', path: nil)
+      end
+    end
+
+    context 'when some attachment fails to parse' do
+      let(:v2submission) { true }
+      let(:attachments) do
+        [
+          {
+            # This attachment is missing required `mimetype` attribute, so will fail
+            'type' => 'output',
+            'filename' => 'foo1.pdf',
+            'url' => 'https://example.com',
+            'pdf_data' => {
+              question: 'answer'
+            }
+          },
+          {
+            'type' => 'output',
+            'mimetype' => 'application/pdf',
+            'filename' => 'foo2.pdf',
+            'url' => 'https://example.com',
+            'pdf_data' => {
+              question: 'answer'
+            }
+          }
+        ]
+      end
+
+      it 'returns only objects successfully parsed' do
+        expect(service.execute.count).to eq(1)
+      end
+
+      it 'returns a list of attachment objects' do
+        expect(service.execute.first).to have_attributes(filename: 'foo2.pdf')
       end
     end
   end

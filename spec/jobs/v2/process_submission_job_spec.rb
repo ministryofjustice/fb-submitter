@@ -146,5 +146,22 @@ RSpec.describe V2::ProcessSubmissionJob do
         end
       end
     end
+
+    context 'when the action is not recognised' do
+      let(:encrypted_payload) do
+        fixture = payload_fixture
+        fixture['actions'] = [{ 'kind' => 'foobar' }]
+        SubmissionEncryption.new(key:).encrypt(fixture)
+      end
+
+      before do
+        allow(Rails.logger).to receive(:warn)
+        perform_job
+      end
+
+      it 'logs a warning' do
+        expect(Rails.logger).to have_received(:warn).with(/Unknown action type/)
+      end
+    end
   end
 end

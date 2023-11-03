@@ -5,7 +5,7 @@ class AttachmentParserService
   end
 
   def execute
-    attachments.map do |attachment|
+    attachments.filter_map do |attachment|
       if @v2submission
         Attachment.new(
           url: attachment.fetch('url', nil),
@@ -24,7 +24,8 @@ class AttachmentParserService
         )
       end
     rescue KeyError
-      Rails.logger.error "Couldn\'t parse the attachment #{attachment} and will skip it"
+      Rails.logger.error "Couldn't parse the attachment #{attachment} and will skip it"
+      nil
     end
   end
 
