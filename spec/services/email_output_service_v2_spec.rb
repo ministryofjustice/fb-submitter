@@ -40,6 +40,7 @@ RSpec.describe EmailOutputServiceV2 do
       to: 'bob.admin@digital.justice.gov.uk',
       subject: 'Complain about a court or tribunal submission',
       email_body: 'Please find an application attached',
+      user_answers: 'My answer is that I like chocolate',
       include_pdf:,
       include_attachments:
     }
@@ -71,8 +72,8 @@ RSpec.describe EmailOutputServiceV2 do
       from: 'form-builder@digital.justice.gov.uk',
       subject: 'Complain about a court or tribunal submission {an-id-2323} [1/1]',
       body_parts: {
-        'text/plain': 'Please find an application attached',
-        'text/html': 'Please find an application attached'
+        'text/plain': 'Please find an application attachedMy answer is that I like chocolate',
+        'text/html': 'Please find an application attachedMy answer is that I like chocolate'
       },
       attachments: [],
       raw_message: V2::RawMessage
@@ -158,12 +159,21 @@ RSpec.describe EmailOutputServiceV2 do
     let(:first_payload) do
       send_email_payload.merge(
         subject: 'Complain about a court or tribunal submission {an-id-2323} [1/2]',
+        body_parts: {
+          'text/html': 'Please find an application attachedMy answer is that I like chocolate',
+          'text/plain': 'Please find an application attachedMy answer is that I like chocolate'
+        },
         attachments: first_email_attachments
       )
     end
+
     let(:second_payload) do
       send_email_payload.merge(
         subject: 'Complain about a court or tribunal submission {an-id-2323} [2/2]',
+        body_parts: {
+          'text/html': 'Please find an application attached',
+          'text/plain': 'Please find an application attached'
+        },
         attachments: second_email_attachments
       )
     end
@@ -287,12 +297,20 @@ RSpec.describe EmailOutputServiceV2 do
       let(:first_payload) do
         send_email_payload.merge(
           subject: 'Complain about a court or tribunal submission {an-id-2323} [1/2]',
+          body_parts: {
+            'text/html': 'Please find an application attachedMy answer is that I like chocolate',
+            'text/plain': 'Please find an application attachedMy answer is that I like chocolate'
+          },
           attachments: first_email_attachments
         )
       end
       let(:second_payload) do
         send_email_payload.merge(
           subject: 'Complain about a court or tribunal submission {an-id-2323} [2/2]',
+          body_parts: {
+            'text/html': 'Please find an application attached',
+            'text/plain': 'Please find an application attached'
+          },
           attachments: second_email_attachments
         )
       end
@@ -300,6 +318,10 @@ RSpec.describe EmailOutputServiceV2 do
         send_email_payload.merge(
           to: 'robert.admin@digital.justice.gov.uk',
           subject: 'Complain about a court or tribunal submission {an-id-2323} [1/2]',
+          body_parts: {
+            'text/html': 'Please find an application attachedMy answer is that I like chocolate',
+            'text/plain': 'Please find an application attachedMy answer is that I like chocolate'
+          },
           attachments: first_email_attachments
         )
       end
@@ -307,6 +329,10 @@ RSpec.describe EmailOutputServiceV2 do
         send_email_payload.merge(
           to: 'robert.admin@digital.justice.gov.uk',
           subject: 'Complain about a court or tribunal submission {an-id-2323} [2/2]',
+          body_parts: {
+            'text/html': 'Please find an application attached',
+            'text/plain': 'Please find an application attached'
+          },
           attachments: second_email_attachments
         )
       end
