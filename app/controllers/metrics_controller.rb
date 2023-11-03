@@ -3,7 +3,7 @@ class MetricsController < ActionController::Base
     response.set_header('Content-Type', 'text/plain; version=0.0.4')
     @stats = [delayed_jobs_stats, submission_stats].flatten
 
-    render 'metrics/show.text'
+    render 'metrics/show', formats: [:text]
   end
 
   private

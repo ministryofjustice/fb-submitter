@@ -39,8 +39,4 @@ class PdfPayloadTranslator
   def human_value(answer)
     answer.is_a?(Array) ? answer.join("\n\n") : answer
   end
-
-  def service
-    decrypted_submission[:service]
-  end
 end

@@ -32,7 +32,7 @@ Style/TrailingCommaInArrayLiteral:
   EnforcedStyleForMultiline: no_comma
 
 Metrics/BlockLength:
-  ExcludedMethods: ['describe', 'context', 'let']
+  AllowedMethods: ['describe', 'context', 'let']
 
 RSpec/MultipleMemoizedHelpers:
   Enabled: false
