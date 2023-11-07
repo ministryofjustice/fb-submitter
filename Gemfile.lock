@@ -91,7 +91,7 @@ GEM
     date (3.3.3)
     delayed_job (4.1.11)
       activesupport (>= 3.0, < 8.0)
-    delayed_job_active_record (4.1.7)
+    delayed_job_active_record (4.1.8)
       activerecord (>= 3.0, < 8.0)
       delayed_job (>= 3.0, < 5)
     diff-lcs (1.5.0)
@@ -362,7 +362,7 @@ DEPENDENCIES
   byebug
   daemons
   database_cleaner
-  delayed_job_active_record (~> 4.1.7)
+  delayed_job_active_record (~> 4.1.8)
   factory_bot_rails (~> 6.2)
   faraday
   faraday_middleware
