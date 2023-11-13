@@ -10,12 +10,11 @@ module Filters
     def self.before(controller)
       JSON::Validator.validate!(
         SUBMISSION_PAYLOAD_SCHEMA,
-        controller.decrypted_submission
+        controller.send(:decrypted_submission)
       )
     rescue StandardError => e
-      Sentry.capture_message(
-        "#{e.message}\nService Slug -> #{controller.submission_params[:service_slug]}"
-      )
+      Sentry.capture_exception(e)
+
       controller.render json: {
         message: [e.message]
       }, status: :unprocessable_entity

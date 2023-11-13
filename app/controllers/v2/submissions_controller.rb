@@ -15,11 +15,13 @@ module V2
       )
 
       V2::ProcessSubmissionJob.perform_later(
-        submission_id: @submission.id
+        submission_id: @submission.id, request_id:
       )
 
       render json: {}, status: :created
     end
+
+    private
 
     def submission_params
       params.slice(
@@ -33,11 +35,17 @@ module V2
       request.authorization.to_s.gsub(/^Bearer /, '')
     end
 
+    def request_id
+      request.request_id
+    end
+
+    def encrypted_submission
+      submission_params[:encrypted_submission]
+    end
+
     def decrypted_submission
       @decrypted_submission ||=
-        SubmissionEncryption.new.decrypt(
-          submission_params[:encrypted_submission]
-        )
+        SubmissionEncryption.new.decrypt(encrypted_submission)
     end
   end
 end
