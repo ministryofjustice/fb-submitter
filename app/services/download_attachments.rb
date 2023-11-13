@@ -57,7 +57,7 @@ class DownloadAttachments
       'x-encrypted-user-id-and-token' => encrypted_user_id_and_token,
       'x-access-token-v2' => access_token,
       'x-jwt-skew-override' => jwt_skew_override,
-      'X-Request-Id' => request_id,
+      'X-Request-Id' => request_id
     }.compact
   end
 

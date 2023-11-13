@@ -9,7 +9,7 @@ describe DownloadAttachments do
       access_token:,
       request_id:,
       target_dir:,
-      jwt_skew_override:,
+      jwt_skew_override:
     )
   end
 
@@ -23,7 +23,7 @@ describe DownloadAttachments do
     {
       'x-encrypted-user-id-and-token' => encrypted_user_id_and_token,
       'x-access-token-v2' => access_token,
-      'X-Request-Id' => request_id,
+      'X-Request-Id' => request_id
     }
   end
   let(:attachments) do

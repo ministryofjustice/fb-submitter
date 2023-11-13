@@ -42,7 +42,7 @@ module V2
           attachments = download_attachments(
             decrypted_submission['attachments'],
             submission.encrypted_user_id_and_token,
-            submission.access_token,
+            submission.access_token
           )
 
           send_email(submission:, action:, attachments:, pdf_attachment:)
@@ -62,7 +62,7 @@ module V2
         encrypted_user_id_and_token:,
         access_token:,
         request_id:,
-        jwt_skew_override:,
+        jwt_skew_override:
       ).download
     end
 

@@ -9,10 +9,11 @@ describe 'V2 Submissions endpoint', type: :request do
       {
         'Content-type' => 'application/json',
         'Accept' => 'application/json',
-        'X-Request-Id' => '12345',
+        'X-Request-Id' => request_id,
         'Authorization': "Bearer #{access_token}"
       }
     end
+    let(:request_id) { '12345' }
     let(:service_slug) { 'mos-eisley' }
     let(:encrypted_user_id_and_token) { '4df5ab180993404877562a03601a1137' }
     let(:url) { '/v2/submissions' }
@@ -70,6 +71,7 @@ describe 'V2 Submissions endpoint', type: :request do
         end
 
         let(:submission) { Submission.last }
+        let(:submission_id) { submission.id }
 
         it 'returns status 201' do
           post_request
@@ -87,10 +89,7 @@ describe 'V2 Submissions endpoint', type: :request do
 
           expect(
             process_submission_job
-          ).to have_received(:perform_later).with(
-            submission_id: submission.id,
-            request_id: '12345',
-          )
+          ).to have_received(:perform_later).with(submission_id:, request_id:)
         end
 
         context 'when saving the submission in the database' do
