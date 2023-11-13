@@ -6,7 +6,7 @@ metadata:
 data:
   AWS_REGION: eu-west-2
   FB_ENVIRONMENT_SLUG: '{{ .Values.environmentName }}'
-  MAX_IAT_SKEW_SECONDS: "60"
+  MAX_IAT_SKEW_SECONDS: "90"
   RAILS_ENV: production
   RAILS_SERVE_STATIC_FILES: "true"
   SERVICE_TOKEN_CACHE_ROOT_URL: "http://fb-service-token-cache-svc-{{ .Values.environmentName }}/"

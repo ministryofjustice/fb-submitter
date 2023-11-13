@@ -17,7 +17,7 @@ x-shared-variables: &shared-variables
   PDF_GENERATOR_ROOT_URL: http://pdf-generator.com
   ENCRYPTION_KEY: i6USnzeRKljfLMPbRlB2E9oikURx4ou3
   ENCRYPTION_SALT: lGlcn9HabIducdpwlSHcM06e9gFuIfS1Ogg5krtn1Fw=
-  MAX_IAT_SKEW_SECONDS: 60
+  MAX_IAT_SKEW_SECONDS: 90
 
 services:
   db:
