@@ -9,6 +9,7 @@ describe 'V2 Submissions endpoint', type: :request do
       {
         'Content-type' => 'application/json',
         'Accept' => 'application/json',
+        'X-Request-Id' => '12345',
         'Authorization': "Bearer #{access_token}"
       }
     end
@@ -68,6 +69,8 @@ describe 'V2 Submissions endpoint', type: :request do
           }
         end
 
+        let(:submission) { Submission.last }
+
         it 'returns status 201' do
           post_request
           expect(response_body).to eq({})
@@ -81,12 +84,16 @@ describe 'V2 Submissions endpoint', type: :request do
         it 'creates a V2 Job to be processed asynchronously' do
           process_submission_job = class_spy(V2::ProcessSubmissionJob).as_stubbed_const
           post_request
-          expect(process_submission_job).to have_received(:perform_later)
+
+          expect(
+            process_submission_job
+          ).to have_received(:perform_later).with(
+            submission_id: submission.id,
+            request_id: '12345',
+          )
         end
 
         context 'when saving the submission in the database' do
-          let(:submission) { Submission.last }
-
           # rubocop:disable RSpec/ExpectInHook
           before do
             post_request

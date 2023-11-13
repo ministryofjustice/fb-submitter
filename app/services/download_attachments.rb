@@ -1,15 +1,19 @@
 class DownloadAttachments
   SUBSCRIPTION = 'download_attachments'.freeze
-  TIMEOUT = 30
-  OPEN_TIMEOUT = 30
-  attr_reader :attachments, :target_dir, :encrypted_user_id_and_token, :access_token
+  DEFAULT_OPEN_TIMEOUT = 10
+  DEFAULT_READ_TIMEOUT = 30
 
-  def initialize(attachments:, encrypted_user_id_and_token:, access_token:, jwt_skew_override:, target_dir: nil)
+  attr_reader :attachments, :encrypted_user_id_and_token, :access_token,
+              :target_dir, :request_id, :jwt_skew_override
+
+  def initialize(attachments:, encrypted_user_id_and_token:, access_token:, **options)
     @attachments = attachments
-    @target_dir = target_dir || Dir.mktmpdir
     @encrypted_user_id_and_token = encrypted_user_id_and_token
     @access_token = access_token
-    @jwt_skew_override = jwt_skew_override
+
+    @target_dir = options[:target_dir] || Dir.mktmpdir
+    @request_id = options[:request_id]
+    @jwt_skew_override = options[:jwt_skew_override]
   end
 
   def download
@@ -33,8 +37,12 @@ class DownloadAttachments
     connection = Faraday.new(url) do |conn|
       conn.response :raise_error
       conn.use :instrumentation, name: SUBSCRIPTION
-      conn.options[:open_timeout] = OPEN_TIMEOUT
-      conn.options[:timeout] = TIMEOUT
+
+      # Number of seconds to wait for the connection to open
+      conn.options.open_timeout = DEFAULT_OPEN_TIMEOUT
+
+      # Number of seconds to wait for one block to be read
+      conn.options.read_timeout = DEFAULT_READ_TIMEOUT
     end
 
     response = connection.get('', {}, headers)
@@ -44,13 +52,12 @@ class DownloadAttachments
     end
   end
 
-  attr_reader :jwt_skew_override
-
   def headers
     {
       'x-encrypted-user-id-and-token' => encrypted_user_id_and_token,
       'x-access-token-v2' => access_token,
-      'x-jwt-skew-override' => jwt_skew_override
+      'x-jwt-skew-override' => jwt_skew_override,
+      'X-Request-Id' => request_id,
     }.compact
   end
 

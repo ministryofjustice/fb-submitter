@@ -2,7 +2,12 @@ module V2
   class ProcessSubmissionJob < ApplicationJob
     queue_as :default
 
-    def perform(submission_id:, jwt_skew_override: nil)
+    attr_accessor :request_id, :jwt_skew_override
+
+    def perform(submission_id:, **options)
+      self.request_id = options[:request_id]
+      self.jwt_skew_override = options[:jwt_skew_override]
+
       submission = Submission.find(submission_id)
       decrypted_submission = submission.decrypted_submission.merge('submission_id' => submission.id)
       payload_service = V2::SubmissionPayloadService.new(decrypted_submission)
@@ -38,7 +43,6 @@ module V2
             decrypted_submission['attachments'],
             submission.encrypted_user_id_and_token,
             submission.access_token,
-            jwt_skew_override
           )
 
           send_email(submission:, action:, attachments:, pdf_attachment:)
@@ -52,13 +56,13 @@ module V2
       end
     end
 
-    def download_attachments(attachments, encrypted_user_id_and_token, access_token, jwt_skew_override)
+    def download_attachments(attachments, encrypted_user_id_and_token, access_token)
       DownloadAttachments.new(
         attachments:,
         encrypted_user_id_and_token:,
         access_token:,
+        request_id:,
         jwt_skew_override:,
-        target_dir: nil
       ).download
     end
 

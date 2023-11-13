@@ -5,20 +5,25 @@ describe DownloadAttachments do
   subject(:downloader) do
     described_class.new(
       attachments:,
-      target_dir:,
       encrypted_user_id_and_token:,
       access_token:,
-      jwt_skew_override: nil
+      request_id:,
+      target_dir:,
+      jwt_skew_override:,
     )
   end
 
   let(:url) { 'https://my.domain/some/path/file.ext' }
   let(:encrypted_user_id_and_token) { 'sometoken' }
   let(:access_token) { 'someaccesstoken' }
+  let(:request_id) { '12345' }
+  let(:jwt_skew_override) { nil }
+
   let(:headers) do
     {
       'x-encrypted-user-id-and-token' => encrypted_user_id_and_token,
-      'x-access-token-v2' => access_token
+      'x-access-token-v2' => access_token,
+      'X-Request-Id' => request_id,
     }
   end
   let(:attachments) do
@@ -161,13 +166,7 @@ describe DownloadAttachments do
       end
 
       context 'when a jwt skew override is supplied' do
-        subject(:downloader) do
-          described_class.new(attachments:,
-                              target_dir:,
-                              encrypted_user_id_and_token:,
-                              access_token:,
-                              jwt_skew_override: '600')
-        end
+        let(:jwt_skew_override) { '600' }
 
         it 'sends the jwt skew override with the other headers' do
           expected_headers = headers.merge('x-jwt-skew-override' => '600')
@@ -192,14 +191,6 @@ describe DownloadAttachments do
   # rubocop:enable RSpec/StubbedMock
 
   context 'when the network request is unsuccessful' do
-    subject(:downloader) do
-      described_class.new(attachments:,
-                          target_dir:,
-                          encrypted_user_id_and_token:,
-                          access_token:,
-                          jwt_skew_override: nil)
-    end
-
     let(:mock_request) { double }
     let(:bad_response) { instance_double(Faraday::Response, code: 500, return_code: 500) }
 
