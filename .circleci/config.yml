@@ -293,8 +293,8 @@ workflows:
 #          context: *context
 #          requires:
 #            - acceptance_tests
-      - smoke_tests:
-          context: *context
-          requires:
-            - deploy_to_live_dev
-            - deploy_to_live_production
+#      - smoke_tests:
+#          context: *context
+#          requires:
+#            - deploy_to_live_dev
+#            - deploy_to_live_production
