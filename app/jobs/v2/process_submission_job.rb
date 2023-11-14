@@ -2,11 +2,11 @@ module V2
   class ProcessSubmissionJob < ApplicationJob
     queue_as :default
 
-    attr_accessor :request_id, :jwt_skew_override
+    attr_reader :request_id, :jwt_skew_override
 
     def perform(submission_id:, **options)
-      self.request_id = options[:request_id]
-      self.jwt_skew_override = options[:jwt_skew_override]
+      @request_id = options[:request_id]
+      @jwt_skew_override = options[:jwt_skew_override]
 
       submission = Submission.find(submission_id)
       decrypted_submission = submission.decrypted_submission.merge('submission_id' => submission.id)
@@ -32,7 +32,8 @@ module V2
         when 'email'
           pdf_api_gateway = Adapters::PdfApi.new(
             root_url: ENV.fetch('PDF_GENERATOR_ROOT_URL'),
-            token: submission.access_token
+            token: submission.access_token,
+            request_id:
           )
           pdf_attachment = GeneratePdfContent.new(
             pdf_api_gateway:,

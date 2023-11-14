@@ -3,9 +3,10 @@ module Adapters
     class ClientRequestError < StandardError
     end
 
-    def initialize(root_url:, token:)
+    def initialize(root_url:, token:, **options)
       @root_url = root_url
       @token = token
+      @request_id = options[:request_id]
     end
 
     def generate_pdf(submission:)
@@ -22,11 +23,12 @@ module Adapters
     def headers
       {
         'x-access-token-v2' => token,
+        'X-Request-Id' => request_id,
         'Accept' => 'application/json',
         'Content-Type' => 'application/json'
       }
     end
 
-    attr_reader :root_url, :token
+    attr_reader :root_url, :token, :request_id
   end
 end

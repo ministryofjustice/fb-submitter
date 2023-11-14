@@ -3,7 +3,7 @@ require 'webmock/rspec'
 
 describe Adapters::PdfApi do
   subject(:adapter) do
-    described_class.new(root_url:, token: 'some-token')
+    described_class.new(root_url:, token:, request_id:)
   end
 
   let(:submission) do
@@ -17,9 +17,9 @@ describe Adapters::PdfApi do
     'a-lot-of-pdf-contents'
   end
 
-  let(:root_url) do
-    'http://www.pdf-generator.com/'
-  end
+  let(:root_url) { 'http://www.pdf-generator.com/' }
+  let(:token) { 'some-token' }
+  let(:request_id) { '12345' }
 
   let(:expected_url) do
     'http://www.pdf-generator.com/v1/pdfs'
@@ -27,7 +27,8 @@ describe Adapters::PdfApi do
 
   let(:expected_headers) do
     {
-      'x-access-token-v2' => 'some-token',
+      'x-access-token-v2' => token,
+      'X-Request-Id' => request_id,
       'Accept' => 'application/json',
       'Content-Type' => 'application/json'
     }
