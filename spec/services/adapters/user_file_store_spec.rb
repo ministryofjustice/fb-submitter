@@ -1,5 +1,5 @@
 describe Adapters::UserFileStore do
-  subject(:adaptor) { described_class.new(key:) }
+  subject(:adaptor) { described_class.new(key:, request_id:) }
 
   before do
     stub_request(:post, requested_url).to_return(body: { url: 'foo', encryption_key: 'bar', encryption_iv: 'baz' }.to_json)
@@ -7,6 +7,7 @@ describe Adapters::UserFileStore do
 
   let(:url) { "https://the-url/#{SecureRandom.alphanumeric(10)}" }
   let(:key) { SecureRandom.alphanumeric(10) }
+  let(:request_id) { '12345' }
   let(:requested_url) { "#{url}/presigned-s3-url" }
 
   it 'posts to the user file store endpoint' do
@@ -18,8 +19,9 @@ describe Adapters::UserFileStore do
     adaptor.get_presigned_url(url)
     expect(WebMock).to have_requested(:post, requested_url).with(headers: {
       'x-encrypted-user-id-and-token': key,
-      'Expect': '',
-      'User-Agent': 'Typhoeus - https://github.com/typhoeus/typhoeus'
+      'X-Request-Id': request_id,
+      'User-Agent': 'Submitter',
+      'Expect': ''
     })
   end
 
