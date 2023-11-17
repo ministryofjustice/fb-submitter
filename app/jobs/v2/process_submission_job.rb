@@ -8,11 +8,17 @@ module V2
       @request_id = options[:request_id]
       @jwt_skew_override = options[:jwt_skew_override]
 
+      Sentry.set_tags(request_id:)
+
       submission = Submission.find(submission_id)
       decrypted_submission = submission.decrypted_submission.merge('submission_id' => submission.id)
       payload_service = V2::SubmissionPayloadService.new(decrypted_submission)
 
+      Sentry.set_context('attachments', { size: payload_service.attachments.size })
+
       decrypted_submission['actions'].each do |action|
+        Sentry.set_context('action_payload', action.slice('kind', 'include_attachments', 'include_pdf'))
+
         case action['kind']
         when 'json'
           JsonWebhookService.new(
