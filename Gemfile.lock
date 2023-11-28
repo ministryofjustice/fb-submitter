@@ -305,13 +305,13 @@ GEM
       rubocop-capybara (~> 2.17)
     ruby-progressbar (1.11.0)
     ruby2_keywords (0.0.5)
-    sentry-delayed_job (5.12.0)
+    sentry-delayed_job (5.14.0)
       delayed_job (>= 4.0)
-      sentry-ruby (~> 5.12.0)
-    sentry-rails (5.12.0)
+      sentry-ruby (~> 5.14.0)
+    sentry-rails (5.14.0)
       railties (>= 5.0)
-      sentry-ruby (~> 5.12.0)
-    sentry-ruby (5.12.0)
+      sentry-ruby (~> 5.14.0)
+    sentry-ruby (5.14.0)
       concurrent-ruby (~> 1.0, >= 1.0.2)
     shellany (0.0.1)
     simplecov (0.22.0)
@@ -384,9 +384,9 @@ DEPENDENCIES
   rspec-rails (>= 3.8.0)
   rubocop (~> 1.44.1)
   rubocop-govuk
-  sentry-delayed_job (~> 5.12.0)
-  sentry-rails (~> 5.12.0)
-  sentry-ruby (~> 5.12.0)
+  sentry-delayed_job (~> 5.14.0)
+  sentry-rails (~> 5.14.0)
+  sentry-ruby (~> 5.14.0)
   simplecov
   simplecov-console
   timecop
