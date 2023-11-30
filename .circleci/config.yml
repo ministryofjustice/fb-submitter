@@ -269,6 +269,7 @@ workflows:
             branches:
               only:
                 - main
+                - update-dependencies
       - deploy_to_test_dev:
           context: *context
           requires:
