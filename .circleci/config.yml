@@ -258,7 +258,6 @@ workflows:
             branches:
               only:
                 - main
-                - update-dependencies
       - build_and_push_worker_image:
           context: *context
           requires:
@@ -269,7 +268,6 @@ workflows:
             branches:
               only:
                 - main
-                - update-dependencies
       - deploy_to_test_dev:
           context: *context
           requires:
