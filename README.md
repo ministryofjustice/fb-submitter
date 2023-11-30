@@ -1,6 +1,6 @@
 # fb-submitter
 
-[![CircleCI](https://circleci.com/gh/ministryofjustice/fb-submitter/tree/master.svg?style=svg)](https://circleci.com/gh/ministryofjustice/fb-submitter/tree/master)
+[![CircleCI](https://circleci.com/gh/ministryofjustice/fb-submitter/tree/main.svg?style=svg)](https://circleci.com/gh/ministryofjustice/fb-submitter/tree/main)
 
 API for services built and deployed on Form Builder to send the user data to where it ultimately needs to go.
 
@@ -16,7 +16,7 @@ make spec
 
 Continuous Integration (CI) is enabled on this project via CircleCI.
 
-On merge to master tests are executed and if green deployed to the test environment.
+On merge to main tests are executed and if green deployed to the test environment.
 This build can then be promoted to production
 
 

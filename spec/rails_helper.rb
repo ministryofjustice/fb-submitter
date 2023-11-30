@@ -8,7 +8,7 @@ require 'rspec/rails'
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # require database cleaner at the top level
-require 'database_cleaner'
+require 'database_cleaner/active_record'
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -37,6 +37,7 @@ RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
+  config.include ActiveSupport::Testing::TimeHelpers
   config.include FactoryBot::Syntax::Methods
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
@@ -71,12 +72,10 @@ RSpec.configure do |config|
     DatabaseCleaner.strategy = :transaction
   end
 
-  # start the transaction strategy as examples are run
-  config.before do
-    DatabaseCleaner.start
-  end
-  config.after do
-    DatabaseCleaner.clean
+  config.around do |example|
+    DatabaseCleaner.cleaning do
+      example.run
+    end
   end
 
   config.include Requests::JsonHelpers, type: :request

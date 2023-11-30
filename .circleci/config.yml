@@ -32,7 +32,7 @@ jobs:
       - ruby/install-deps
       - slack/status: &slack_status
           fail_only: true
-          only_for_branches: master
+          only_for_branches: main
           failure_message: ":facepalm:  Failed job $CIRCLE_JOB  :homer-disappear:"
           include_job_number_field: false
   test:
@@ -180,7 +180,7 @@ jobs:
             K8S_NAMESPACE: formbuilder-platform-live-dev
           command: './deploy-scripts/bin/deploy-eks'
       - slack/status:
-          only_for_branches: master
+          only_for_branches: main
           success_message: ":rocket:  Successfully deployed to Live Dev  :guitar:"
           failure_message: ":alert:  Failed to deploy to Live Dev  :try_not_to_cry:"
           include_job_number_field: false
@@ -202,7 +202,7 @@ jobs:
             K8S_NAMESPACE: formbuilder-platform-live-production
           command: './deploy-scripts/bin/deploy-eks'
       - slack/status:
-          only_for_branches: master
+          only_for_branches: main
           success_message: ":rocket:  Successfully deployed to Live Production  :guitar:"
           failure_message: ":alert:  Failed to deploy to Live Production  :try_not_to_cry:"
           include_job_number_field: false
@@ -257,7 +257,8 @@ workflows:
           filters:
             branches:
               only:
-                - master
+                - main
+                - update-dependencies
       - build_and_push_worker_image:
           context: *context
           requires:
@@ -267,7 +268,7 @@ workflows:
           filters:
             branches:
               only:
-                - master
+                - main
       - deploy_to_test_dev:
           context: *context
           requires:
@@ -290,7 +291,7 @@ workflows:
           filters:
             branches:
               only:
-                - master
+                - main
       - deploy_to_live_production:
           context: *context
           requires:
@@ -298,7 +299,7 @@ workflows:
           filters:
             branches:
               only:
-                - master
+                - main
       - smoke_tests:
           context: *context
           requires:

@@ -188,7 +188,7 @@ describe 'UserData API', type: :request do
           end
 
           it 'creates a Job with short delay to prevent filestore race conditions' do
-            Timecop.freeze(Time.zone.now) do
+            freeze_time do
               expect(Delayed::Job).to receive(:enqueue).with(anything, run_at: 3.seconds.from_now)
               post_request
             end

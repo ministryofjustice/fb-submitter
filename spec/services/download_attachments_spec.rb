@@ -116,7 +116,7 @@ describe DownloadAttachments do
         it 'includes x-access-token header with JWT' do
           time = Time.zone.local(2019, 1, 1, 13, 57).utc
 
-          Timecop.freeze(time) do
+          travel_to(time) do
             allow(downloader).to receive(:request).and_call_original
 
             expected_url1 = 'https://example.com/service/some-service/user/some-user/fingerprint'

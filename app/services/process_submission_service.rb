@@ -83,6 +83,7 @@ class ProcessSubmissionService
     @payload_service ||= SubmissionPayloadService.new(submission.decrypted_payload)
   end
 
+  # rubocop:disable Metrics/MethodLength
   def send_email(action:, attachments:, pdf_attachment: nil)
     EmailOutputService.new(
       emailer: EmailService,
@@ -96,4 +97,5 @@ class ProcessSubmissionService
       pdf_attachment:
     )
   end
+  # rubocop:enable Metrics/MethodLength
 end
