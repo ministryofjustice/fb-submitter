@@ -36,3 +36,6 @@ Metrics/BlockLength:
 
 RSpec/MultipleMemoizedHelpers:
   Enabled: false
+
+Style/RedundantParentheses:
+  Enabled: false
