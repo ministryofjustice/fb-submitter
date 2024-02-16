@@ -109,7 +109,7 @@ RSpec.describe V2::GenerateCsvContent do
     it 'uses the submission id in the file name' do
       result = generate_csv_content.execute
 
-      expect(result.filename).to eq("#{payload_service.submission_id}-answers.csv")
+      expect(result.filename).to eq("#{payload_service.submission_id}-answers_OFFICIAL-SENSITIVE.csv")
       expect(result.mimetype).to eq('text/csv')
     end
 
@@ -153,7 +153,7 @@ RSpec.describe V2::GenerateCsvContent do
     it 'uses the reference number in the file name' do
       result = generate_csv_content.execute
 
-      expect(result.filename).to eq("#{reference_number}-answers.csv")
+      expect(result.filename).to eq("#{reference_number}-answers_OFFICIAL-SENSITIVE.csv")
       expect(result.mimetype).to eq('text/csv')
     end
   end

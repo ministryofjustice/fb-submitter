@@ -75,7 +75,7 @@ module V2
 
     def generate_attachment_object(tmp_csv)
       attachment = Attachment.new(
-        filename: "#{submission_reference}-answers.csv",
+        filename: "#{submission_reference}-answers_OFFICIAL-SENSITIVE.csv",
         mimetype: 'text/csv'
       )
       attachment.file = tmp_csv
