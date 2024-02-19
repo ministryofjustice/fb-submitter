@@ -61,30 +61,29 @@ module V2
                         <table role="presentation" width="100%" style="border-collapse: collapse;max-width: 580px;" cellpadding="0" cellspacing="0" border="0" align="center">
                             <tr>
                                 <td width="70" bgcolor="#0b0c0c" valign="middle">
-                                        <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
-                                            <tr>
-                                                <td style="padding-left: 10px">
-                                                    <img
-                                                        src="https://static.notifications.service.gov.uk/images/gov.uk_logotype_crown.png"
-                                                        alt=""
-                                                        height="32"
-                                                        border="0"
-                                                        style="Margin-top: 4px;"
-                                                        />
-                                                </td>
-                                                <td style="font-size: 28px; line-height: 1.315789474; Margin-top: 4px; padding-left: 10px;">
-                                                    <span style="
-                                                    font-family: Helvetica, Arial, sans-serif;
-                                                    font-weight: 700;
-                                                    color: #ffffff;
-                                                    text-decoration: none;
-                                                    vertical-align:top;
-                                                    display: inline-block;
-                                                    ">#{service_name}</span>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </a>
+                                    <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
+                                        <tr>
+                                            <td style="padding-left: 10px">
+                                                <img
+                                                    src="https://static.notifications.service.gov.uk/images/gov.uk_logotype_crown.png"
+                                                    alt=""
+                                                    height="32"
+                                                    border="0"
+                                                    style="Margin-top: 4px;"
+                                                    />
+                                            </td>
+                                            <td style="font-size: 28px; line-height: 1.315789474; Margin-top: 4px; padding-left: 10px;">
+                                                <span style="
+                                                font-family: Helvetica, Arial, sans-serif;
+                                                font-weight: 700;
+                                                color: #ffffff;
+                                                text-decoration: none;
+                                                vertical-align:top;
+                                                display: inline-block;
+                                                ">#{service_name}</span>
+                                            </td>
+                                        </tr>
+                                    </table>
                                 </td>
                             </tr>
                         </table>
@@ -141,7 +140,9 @@ module V2
                 width="100%"
                 >
                 <tr>
-                    <td height="30"><br /></td>
+                    <td colspan="3" height="65" style="padding-bottom: 12px; padding-right: 9px; text-align: right; font-weight: lighter; letter-spacing: 1px;">
+                      OFFICIAL-SENSITIVE
+                    </td>
                 </tr>
                 <tr>
                     <td width="10" valign="middle"><br /></td>
