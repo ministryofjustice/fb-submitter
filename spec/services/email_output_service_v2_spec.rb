@@ -257,7 +257,7 @@ RSpec.describe EmailOutputServiceV2 do
         second_service.execute(**second_execution_payload)
       end
 
-      it 'will send emails to the necessary recipients' do
+      it 'sends emails to the necessary recipients' do
         expect(email_service_mock).to have_received(:send_mail).exactly(4).times
         expect(email_service_mock).to have_received(:send_mail).with(hash_including(to: 'bob.admin@digital.justice.gov.uk')).twice
         expect(email_service_mock).to have_received(:send_mail).with(hash_including(to: 'robert.admin@digital.justice.gov.uk')).twice
@@ -265,7 +265,7 @@ RSpec.describe EmailOutputServiceV2 do
         expect(email_service_mock).to have_received(:send_mail).with(hash_including(subject: 'Complain about a court or tribunal submission {an-id-2323} [2/2]')).twice
       end
 
-      it 'will creates email payloads to the necessary recipients with the correct attachments' do
+      it 'creates email payloads to the necessary recipients with the correct attachments' do
         email_payloads = EmailPayload.all
         expect(email_payloads.count).to eq(4)
         ['bob.admin@digital.justice.gov.uk', 'robert.admin@digital.justice.gov.uk'].each do |to|
