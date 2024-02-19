@@ -34,7 +34,7 @@ RSpec.describe V2::SubmissionPayloadService do
           'from' => 'moj-forms@digital.justice.gov.uk',
           'subject' => 'Submission from new-runner-acceptance-tests',
           'email_body' => '',
-          'include_pdf' => true,
+          'include_pdf' => false,
           'include_attachments' => false
         },
         {

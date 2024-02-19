@@ -130,6 +130,65 @@ RSpec.describe V2::ProcessSubmissionJob do
       end
     end
 
+    context 'when email action without pdf attachment' do
+      let(:encrypted_payload) do
+        fixture = payload_fixture
+        fixture['actions'] = fixture['actions'].select { |action| action['kind'] == 'email' }
+        fixture['actions'].each { |action| action['include_pdf'] = false }
+        SubmissionEncryption.new(key:).encrypt(fixture)
+      end
+
+      before do
+        stub_request(:get, 'http://fb-user-filestore-api-svc-test-dev.formbuilder-platform-test-dev/service/dog-contest/user/1/123')
+          .to_return(status: 200, body: 'image', headers: {})
+      end
+
+      it 'sends email with attachments' do
+        perform_job
+
+        expect(email_output_service).to have_received(:execute) do |args|
+          expect(args[:attachments].length).to eq(1)
+          expect(args[:attachments].first.filename).to match(/basset-hound-dog-picture.png/)
+        end
+      end
+
+      it 'sends email without pdf attachment' do
+        perform_job
+
+        expect(email_output_service).to have_received(:execute) do |args|
+          expect(args[:pdf_attachment]).to be_nil
+        end
+      end
+    end
+
+    context 'when email action without pdf and without attachments' do
+      let(:encrypted_payload) do
+        fixture = payload_fixture
+        fixture['actions'] = fixture['actions'].select { |action| action['kind'] == 'email' }
+        fixture['actions'].each do |action|
+          action['include_pdf'] = false
+          action['include_attachments'] = false
+        end
+        SubmissionEncryption.new(key:).encrypt(fixture)
+      end
+
+      it 'sends email without attachments' do
+        perform_job
+
+        expect(email_output_service).to have_received(:execute) do |args|
+          expect(args[:attachments]).to eq([])
+        end
+      end
+
+      it 'sends email without pdf attachment' do
+        perform_job
+
+        expect(email_output_service).to have_received(:execute) do |args|
+          expect(args[:pdf_attachment]).to be_nil
+        end
+      end
+    end
+
     context 'when csv action' do
       let(:encrypted_payload) do
         fixture = payload_fixture
@@ -143,12 +202,12 @@ RSpec.describe V2::ProcessSubmissionJob do
           to: 'captain.needa@star-destroyer.com,admiral.piett@star-destroyer.com',
           from: '"Email Output Acceptance Test Service" <moj-online@digital.justice.gov.uk>',
           email_body: '',
-          include_attachments: false,
-          include_pdf: true
+          include_attachments: true,
+          include_pdf: false
         }
       end
 
-      it 'sends an email with a csv attachement' do
+      it 'sends an email with a csv attachment' do
         perform_job
 
         expect(email_output_service).to have_received(:execute) do |args|

@@ -36,25 +36,28 @@ module V2
             payload_submission_id: payload_service.submission_id
           )
         when 'email'
-          pdf_api_gateway = Adapters::PdfApi.new(
-            root_url: ENV.fetch('PDF_GENERATOR_ROOT_URL'),
-            token: submission.access_token,
-            request_id:
-          )
-          pdf_attachment = GeneratePdfContent.new(
-            pdf_api_gateway:,
-            payload: PdfPayloadTranslator.new(decrypted_submission).to_h
-          ).execute
+          attachments = []
+          pdf_attachment = nil
 
-          attachments = if action['include_attachments'] == true
-                          download_attachments(
-                            decrypted_submission['attachments'],
-                            submission.encrypted_user_id_and_token,
-                            submission.access_token
-                          )
-                        else
-                          []
-                        end
+          if action['include_pdf'] == true
+            pdf_api_gateway = Adapters::PdfApi.new(
+              root_url: ENV.fetch('PDF_GENERATOR_ROOT_URL'),
+              token: submission.access_token,
+              request_id:
+            )
+            pdf_attachment = GeneratePdfContent.new(
+              pdf_api_gateway:,
+              payload: PdfPayloadTranslator.new(decrypted_submission).to_h
+            ).execute
+          end
+
+          if action['include_attachments'] == true
+            attachments = download_attachments(
+              decrypted_submission['attachments'],
+              submission.encrypted_user_id_and_token,
+              submission.access_token
+            )
+          end
 
           send_email(submission:, action:, attachments:, pdf_attachment:)
         when 'csv'

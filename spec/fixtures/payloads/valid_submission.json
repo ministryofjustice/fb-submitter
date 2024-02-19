@@ -24,8 +24,8 @@
       "from":"\"Email Output Acceptance Test Service\" <moj-online@digital.justice.gov.uk>",
       "subject":"CSV Output Acceptance Test submission: fc242acb-c03f-439e-b41d-bec76fa0f032",
       "email_body":"",
-      "include_pdf":true,
-      "include_attachments": false
+      "include_pdf": false,
+      "include_attachments": true
     },
     {
       "kind":"json",
