@@ -258,6 +258,7 @@ workflows:
             branches:
               only:
                 - main
+                - protective-marking
       - build_and_push_worker_image:
           context: *context
           requires:
@@ -268,6 +269,7 @@ workflows:
             branches:
               only:
                 - main
+                - protective-marking
       - deploy_to_test_dev:
           context: *context
           requires:
@@ -283,24 +285,24 @@ workflows:
           requires:
             - deploy_to_test_dev
             - deploy_to_test_production
-      - deploy_to_live_dev:
-          context: *context
-          requires:
-            - acceptance_tests
-          filters:
-            branches:
-              only:
-                - main
-      - deploy_to_live_production:
-          context: *context
-          requires:
-            - acceptance_tests
-          filters:
-            branches:
-              only:
-                - main
-      - smoke_tests:
-          context: *context
-          requires:
-            - deploy_to_live_dev
-            - deploy_to_live_production
+#      - deploy_to_live_dev:
+#          context: *context
+#          requires:
+#            - acceptance_tests
+#          filters:
+#            branches:
+#              only:
+#                - main
+#      - deploy_to_live_production:
+#          context: *context
+#          requires:
+#            - acceptance_tests
+#          filters:
+#            branches:
+#              only:
+#                - main
+#      - smoke_tests:
+#          context: *context
+#          requires:
+#            - deploy_to_live_dev
+#            - deploy_to_live_production
