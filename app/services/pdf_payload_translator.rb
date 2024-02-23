@@ -40,7 +40,7 @@ class PdfPayloadTranslator
     if answer.is_a?(Array)
       answer.join("\r\n")
     elsif answer.is_a?(Hash)
-      answer.values.compact_blank.join("\r\n")
+      answer.values.compact_blank.join(', ')
     else
       answer
     end

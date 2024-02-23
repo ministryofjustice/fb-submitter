@@ -46,7 +46,7 @@
       "questions": [
         {
           "label": "Your postal address",
-          "human_value": "1 road\r\nruby town\r\n99 999\r\nruby land"
+          "human_value": "1 road, ruby town, 99 999, ruby land"
         }
       ]
     }
