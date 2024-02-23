@@ -280,11 +280,11 @@ workflows:
           requires:
             - build_and_push_image
             - build_and_push_worker_image
-#      - acceptance_tests:
-#          context: *context
-#          requires:
-#            - deploy_to_test_dev
-#            - deploy_to_test_production
+      - acceptance_tests:
+          context: *context
+          requires:
+            - deploy_to_test_dev
+            - deploy_to_test_production
 #      - deploy_to_live_dev:
 #          context: *context
 #          requires:
