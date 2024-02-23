@@ -46,6 +46,22 @@ RSpec.describe V2::GenerateCsvContent do
               'answer' => "Zombie ipsum reversus ab viral inferno, nam rick grimes malum cerebro.\n\r\nDe carne lumbering animata corpora quaeritis.\n\r\nSummus brains sit, morbo vel maleficia?"
             }
           ]
+        },
+        {
+          'heading' => 'Your postal address',
+          'answers' => [
+            {
+              'field_id' => 'postal-address_address_1',
+              'answer' => {
+                'address_line_one' => '1 road',
+                'address_line_two' => '',
+                'city' => "ruby\r\ntown",
+                'county' => '',
+                'postcode' => '99 999',
+                'country' => 'ruby land'
+              }
+            }
+          ]
         }
       ]
     }.merge(meta)
@@ -60,6 +76,12 @@ RSpec.describe V2::GenerateCsvContent do
         name_text_2
         your-email-address_text_1
         life-history_textarea_1
+        postal-address_address_1/address_line_one
+        postal-address_address_1/address_line_two
+        postal-address_address_1/city
+        postal-address_address_1/county
+        postal-address_address_1/postcode
+        postal-address_address_1/country
       ]
     end
     let(:expected_column_1) do
@@ -69,7 +91,13 @@ RSpec.describe V2::GenerateCsvContent do
         'Stormtrooper',
         'FN-some-last-name',
         'fb-acceptance-tests@digital.justice.gov.uk',
-        'Zombie ipsum reversus ab viral inferno, nam rick grimes malum cerebro. De carne lumbering animata corpora quaeritis. Summus brains sit, morbo vel maleficia?'
+        'Zombie ipsum reversus ab viral inferno, nam rick grimes malum cerebro. De carne lumbering animata corpora quaeritis. Summus brains sit, morbo vel maleficia?',
+        '1 road',
+        '',
+        'ruby town',
+        '',
+        '99 999',
+        'ruby land'
       ]
     end
 

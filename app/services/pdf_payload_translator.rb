@@ -37,6 +37,12 @@ class PdfPayloadTranslator
   end
 
   def human_value(answer)
-    answer.is_a?(Array) ? answer.join("\n\n") : answer
+    if answer.is_a?(Array)
+      answer.join("\r\n")
+    elsif answer.is_a?(Hash)
+      answer.values.compact_blank.join("\r\n")
+    else
+      answer
+    end
   end
 end

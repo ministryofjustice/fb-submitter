@@ -74,6 +74,23 @@
           "answer": "BB8"
         }
       ]
+    },
+    {
+      "heading": "",
+      "answers": [
+        {
+          "field_id": "postal-address_address_1",
+          "field_name": "Your postal address",
+          "answer": {
+            "address_line_one": "1 road",
+            "address_line_two": "",
+            "city": "ruby town",
+            "county": "",
+            "postcode": "99 999",
+            "country": "ruby land"
+          }
+        }
+      ]
     }
   ],
   "attachments": [

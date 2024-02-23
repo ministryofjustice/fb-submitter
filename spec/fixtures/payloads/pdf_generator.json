@@ -18,7 +18,7 @@
       "questions":[
          {
            "label":"What would you like on your burger?",
-           "human_value":"Beef, cheese, tomato\n\nMozzarella, cheddar, feta"
+           "human_value":"Beef, cheese, tomato\r\nMozzarella, cheddar, feta"
          }
       ]
     },
@@ -37,6 +37,16 @@
         {
           "label": "Multiple Question 3",
           "human_value": "BB8"
+        }
+      ]
+    },
+    {
+      "heading": "",
+      "summary_heading": "",
+      "questions": [
+        {
+          "label": "Your postal address",
+          "human_value": "1 road\r\nruby town\r\n99 999\r\nruby land"
         }
       ]
     }

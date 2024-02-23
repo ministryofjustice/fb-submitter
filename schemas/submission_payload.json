@@ -173,6 +173,7 @@
           "description": "The user answer",
           "oneOf": [
             { "type": "string" },
+            { "type": "object" },
             {
               "type": "array",
               "items": { "type": "string" }

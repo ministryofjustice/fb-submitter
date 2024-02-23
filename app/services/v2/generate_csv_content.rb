@@ -4,6 +4,7 @@ require 'tempfile'
 module V2
   class GenerateCsvContent
     DATA_UNAVAILABLE = 'Data not available in CSV format'.freeze
+    FIELD_SEPARATOR = '/'.freeze
 
     def initialize(payload_service:)
       @payload_service = payload_service
@@ -38,8 +39,13 @@ module V2
     end
 
     def answer_values
-      payload_service.user_answers.values.map do |value|
-        value.is_a?(Hash) || value.is_a?(Array) ? DATA_UNAVAILABLE : value.gsub(/\R+/, ' ')
+      payload_service.user_answers.values.map do |answer|
+        if answer.is_a?(Array)
+          DATA_UNAVAILABLE
+        else
+          values = answer.is_a?(Hash) ? answer.values : [answer]
+          values.each { |v| v.gsub!(/\R+/, ' ') }
+        end
       end
     end
 
@@ -48,13 +54,23 @@ module V2
 
       data << submission_reference
       data << payload_service.submission_at.iso8601(3)
-      data.concat(answer_values)
+      data.concat(answer_values.flatten)
 
       data
     end
 
     def csv_headers
-      [first_heading, 'submission_at'] + payload_service.user_answers.keys
+      headers = []
+
+      payload_service.user_answers.each do |field_id, answer|
+        headers << if answer.is_a?(Hash)
+                     answer.keys.map { |answer_id| [field_id, answer_id].join(FIELD_SEPARATOR) }
+                   else
+                     field_id
+                   end
+      end
+
+      [first_heading, 'submission_at', headers].flatten
     end
 
     def generate_attachment_object(tmp_csv)

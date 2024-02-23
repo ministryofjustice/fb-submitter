@@ -68,6 +68,23 @@ RSpec.describe V2::SubmissionPayloadService do
               'answer' => 'fb-acceptance-tests@digital.justice.gov.uk'
             }
           ]
+        },
+        {
+          'heading' => '',
+          'answers' => [
+            {
+              'field_id' => 'postal-address_address_1',
+              'field_name' => 'Your postal address',
+              'answer' => {
+                'address_line_one' => '1 road',
+                'address_line_two' => '',
+                'city' => 'ruby town',
+                'county' => '',
+                'postcode' => '99 999',
+                'country' => 'ruby land'
+              }
+            }
+          ]
         }
       ],
       'attachments' => [
@@ -99,7 +116,15 @@ RSpec.describe V2::SubmissionPayloadService do
       {
         'name_text_1' => 'Stormtrooper',
         'name_text_2' => 'FN-b0046eb3-37ff-400d-85f8-8bbb5c11183b',
-        'your-email-address_text_1' => 'fb-acceptance-tests@digital.justice.gov.uk'
+        'your-email-address_text_1' => 'fb-acceptance-tests@digital.justice.gov.uk',
+        'postal-address_address_1' => {
+          'address_line_one' => '1 road',
+          'address_line_two' => '',
+          'city' => 'ruby town',
+          'county' => '',
+          'postcode' => '99 999',
+          'country' => 'ruby land'
+        }
       }
     end
 
