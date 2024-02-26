@@ -140,9 +140,7 @@ module V2
                 width="100%"
                 >
                 <tr>
-                    <td colspan="3" height="65" style="padding-bottom: 12px; padding-right: 9px; text-align: right; font-weight: lighter; letter-spacing: 1px;">
-                      OFFICIAL-SENSITIVE
-                    </td>
+                   #{protective_marking}
                 </tr>
                 <tr>
                     <td width="10" valign="middle"><br /></td>
@@ -195,6 +193,18 @@ module V2
       # now that we allow special chars, we need to get the last occurence of <
       index_of_left_angle_bracket = @from.rindex('<')
       @from.slice(0..index_of_left_angle_bracket - 1).strip
+    end
+
+    def protective_marking
+      if @attachments.any?
+        <<~WATERMARK
+          <td colspan="3" height="65" style="padding-bottom: 12px; padding-right: 9px; text-align: right; font-weight: lighter; letter-spacing: 1px;">
+            OFFICIAL-SENSITIVE
+          </td>
+        WATERMARK
+      else
+        '<td height="30"><br/></td>'
+      end
     end
   end
 end
