@@ -1,7 +1,8 @@
 module V2
   class RawMessage
-    ACTION_CONFIRMATION = 'confirmation'.freeze
-    ACTION_SUBMISSION = 'submission'.freeze
+    VARIANT_SAVE_AND_RETURN = 'save_and_return'.freeze
+    VARIANT_CONFIRMATION = 'confirmation'.freeze
+    VARIANT_SUBMISSION = 'submission'.freeze
     SUBJECT_REGEXP = /{([a-z0-9-]+?)} \[(\d+?)\/(\d+?)\]$/
 
     attr_accessor :from, :to, :subject, :body_parts, :attachments
@@ -202,7 +203,7 @@ module V2
     end
 
     def body_heading
-      return '' unless @variant.eql?(ACTION_SUBMISSION)
+      return '' unless @variant.eql?(VARIANT_SUBMISSION)
 
       # Bit fragile but subject has all information we need and is
       # unlikely to change as many acceptance tests depends on this

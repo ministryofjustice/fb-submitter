@@ -198,6 +198,7 @@ RSpec.describe V2::ProcessSubmissionJob do
       let(:expected_action) do
         {
           kind: 'csv',
+          variant: nil,
           subject: 'CSV Output Acceptance Test submission: fc242acb-c03f-439e-b41d-bec76fa0f032',
           to: 'captain.needa@star-destroyer.com,admiral.piett@star-destroyer.com',
           from: '"Email Output Acceptance Test Service" <moj-online@digital.justice.gov.uk>',

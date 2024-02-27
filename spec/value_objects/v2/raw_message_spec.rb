@@ -19,7 +19,7 @@ RSpec.describe V2::RawMessage do
     allow(File).to receive(:read).and_return('hello world')
   end
 
-  let(:variant) { described_class::ACTION_CONFIRMATION }
+  let(:variant) { described_class::VARIANT_CONFIRMATION }
   let(:attachments) { [attachment] }
   let(:attachment) do
     build(
@@ -34,7 +34,7 @@ RSpec.describe V2::RawMessage do
     <<~RAW_MESSAGE
       From: Service name <sender@example.com>
       To: reciver@example.com
-      Subject: test email
+      Subject: Submission from service name, reference number: AJ9-U2R4-EHC {25db2d01-f017-4d8f-9590-435435b06233} [1/2]
       Content-Type: multipart/mixed; boundary="NextPart"
 
       --NextPart
@@ -90,7 +90,7 @@ RSpec.describe V2::RawMessage do
   end
 
   context 'when variant is submission email' do
-    let(:variant) { described_class::ACTION_SUBMISSION }
+    let(:variant) { described_class::VARIANT_SUBMISSION }
 
     it 'has a body heading with details of the submission' do
       expect(body).to match('Submission from Service name')

@@ -21,6 +21,7 @@
     },
     {
       "kind":"csv",
+      "variant": null,
       "to": "captain.needa@star-destroyer.com,admiral.piett@star-destroyer.com",
       "from":"\"Email Output Acceptance Test Service\" <moj-online@digital.justice.gov.uk>",
       "subject":"CSV Output Acceptance Test submission: fc242acb-c03f-439e-b41d-bec76fa0f032",
@@ -29,7 +30,8 @@
       "include_attachments": true
     },
     {
-      "kind":"json",
+      "kind": "json",
+      "variant": null,
       "url": "http://api-endpoint.com",
       "key": "fb730a667840d79c",
       "include_attachments": false
