@@ -210,7 +210,7 @@ module V2
       service_id, email_index, email_count = SUBJECT_REGEXP.match(@subject)[1..3]
 
       <<~BODY_HEADING
-        <h1 style="font-size: 25px; margin-bottom: 5px;">
+        <h1 style="font-size: 25px; margin-top: 0; margin-bottom: 5px;">
           Submission from #{service_name}
         </h1>
         <p style="font-size: 20px; margin-top: 0; margin-bottom: 0;">
