@@ -213,7 +213,7 @@ module V2
         <h1 style="font-size: 25px; margin-top: 0; margin-bottom: 5px;">
           Submission from #{service_name}
         </h1>
-        <p style="font-size: 20px; margin-top: 0; margin-bottom: 0;">
+        <p style="font-size: 20px; margin-top: 0;">
           ID: #{service_id}
         </p>
       BODY_HEADING
