@@ -95,7 +95,6 @@ RSpec.describe V2::RawMessage do
     it 'has a body heading with details of the submission' do
       expect(body).to match('Submission from Service name')
       expect(body).to match('ID: 25db2d01-f017-4d8f-9590-435435b06233')
-      expect(body).to match('Email 1 of 2')
     end
   end
 

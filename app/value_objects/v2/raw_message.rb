@@ -207,7 +207,7 @@ module V2
 
       # Bit fragile but subject has all information we need and is
       # unlikely to change as many acceptance tests depends on this
-      service_id, email_index, email_count = SUBJECT_REGEXP.match(@subject)[1..3]
+      service_id, _email_index, _email_count = SUBJECT_REGEXP.match(@subject)[1..3]
 
       <<~BODY_HEADING
         <h1 style="font-size: 25px; margin-top: 0; margin-bottom: 5px;">
@@ -215,9 +215,6 @@ module V2
         </h1>
         <p style="font-size: 20px; margin-top: 0; margin-bottom: 0;">
           ID: #{service_id}
-        </p>
-        <p style="font-size: 20px; margin-top: 0;">
-          Email #{email_index} of #{email_count}
         </p>
       BODY_HEADING
     end
