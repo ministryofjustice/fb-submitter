@@ -59,6 +59,7 @@ class BaseEmailOutputService
         subject:,
         body_parts: email_body_parts(email_body),
         attachments:,
+        variant: action[:variant],
         raw_message:
       )
 

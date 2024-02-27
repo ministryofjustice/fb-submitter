@@ -1,9 +1,14 @@
 module V2
   class RawMessage
+    ACTION_CONFIRMATION = 'confirmation'.freeze
+    ACTION_SUBMISSION = 'submission'.freeze
+    SUBJECT_REGEXP = /{([a-z0-9-]+?)} \[(\d+?)\/(\d+?)\]$/
+
     attr_accessor :from, :to, :subject, :body_parts, :attachments
 
     def initialize(opts = {})
       symbol_params = opts.dup.symbolize_keys!
+      @variant      = symbol_params[:variant]
       @attachments  = symbol_params[:attachments]
       @body_parts   = symbol_params[:body_parts]
       @from         = symbol_params[:from]
@@ -151,6 +156,7 @@ module V2
                             <td style="font-family: Helvetica, Arial, sans-serif; font-size: 19px; line-height: 1.315789474;">
                         <![endif]-->
 
+                        #{body_heading}
                         #{@body_parts[:'text/html']}
 
                         <!--[if (gte mso 9)|(IE)]>
@@ -178,6 +184,12 @@ module V2
       attachments
     end
 
+    def service_name
+      # now that we allow special chars, we need to get the last occurrence of <
+      index_of_left_angle_bracket = @from.rindex('<')
+      @from.slice(0..index_of_left_angle_bracket - 1).strip
+    end
+
     def inline_attachment(attachment)
       <<~RAW_ATTACHMENT
         Content-Type: #{attachment.mimetype}
@@ -189,10 +201,24 @@ module V2
       RAW_ATTACHMENT
     end
 
-    def service_name
-      # now that we allow special chars, we need to get the last occurence of <
-      index_of_left_angle_bracket = @from.rindex('<')
-      @from.slice(0..index_of_left_angle_bracket - 1).strip
+    def body_heading
+      return '' unless @variant.eql?(ACTION_SUBMISSION)
+
+      # Bit fragile but subject has all information we need and is
+      # unlikely to change as many acceptance tests depends on this
+      service_id, email_index, email_count = SUBJECT_REGEXP.match(@subject)[1..3]
+
+      <<~BODY_HEADING
+        <h1 style="font-size: 25px; margin-bottom: 5px;">
+          Submission from #{service_name}
+        </h1>
+        <p style="font-size: 20px; margin-top: 0; margin-bottom: 0;">
+          ID: #{service_id}
+        </p>
+        <p style="font-size: 20px; margin-top: 0;">
+          Email #{email_index} of #{email_count}
+        </p>
+      BODY_HEADING
     end
 
     def protective_marking

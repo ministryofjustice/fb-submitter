@@ -17,7 +17,7 @@ module V2
       Sentry.set_context('attachments', { size: payload_service.attachments.size })
 
       decrypted_submission['actions'].each do |action|
-        Sentry.set_context('action_payload', action.slice('kind', 'include_attachments', 'include_pdf'))
+        Sentry.set_context('action_payload', action.slice('kind', 'variant', 'include_attachments', 'include_pdf'))
 
         case action['kind']
         when 'json'

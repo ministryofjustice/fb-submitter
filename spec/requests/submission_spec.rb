@@ -60,6 +60,7 @@ describe 'UserData API', type: :request do
           [
             {
               type: 'email',
+              variant: 'submission',
               recipientType: 'team',
               from: 'from@example.com',
               to: 'destination@example.com',

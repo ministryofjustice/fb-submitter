@@ -53,6 +53,7 @@ describe ProcessSubmissionService do
         {
           'recipientType' => 'team',
           'type' => 'email',
+          'variant' => 'submission',
           'from' =>
           '"Complain about a court or tribunal" <form-builder@digital.justice.gov.uk>',
           'to' => 'bob.admin@digital.justice.gov.uk',

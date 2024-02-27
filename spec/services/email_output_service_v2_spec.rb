@@ -36,6 +36,7 @@ RSpec.describe EmailOutputServiceV2 do
     {
       recipientType: 'team',
       type: 'email',
+      variant: 'submission',
       from: 'form-builder@digital.justice.gov.uk',
       to: 'bob.admin@digital.justice.gov.uk',
       subject: 'Complain about a court or tribunal submission',
@@ -76,6 +77,7 @@ RSpec.describe EmailOutputServiceV2 do
         'text/html': 'Please find an application attachedMy answer is that I like chocolate'
       },
       attachments: [],
+      variant: 'submission',
       raw_message: V2::RawMessage
     }
   end

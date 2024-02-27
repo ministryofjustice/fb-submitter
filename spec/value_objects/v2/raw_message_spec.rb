@@ -5,12 +5,13 @@ RSpec.describe V2::RawMessage do
     described_class.new(
       from: 'Service name <sender@example.com>',
       to: 'reciver@example.com',
-      subject: 'test email',
+      subject: 'Submission from service name, reference number: AJ9-U2R4-EHC {25db2d01-f017-4d8f-9590-435435b06233} [1/2]',
       body_parts: {
         'text/plain': 'some body',
         'text/html': 'some body'
       },
-      attachments:
+      attachments:,
+      variant:
     )
   end
 
@@ -18,6 +19,7 @@ RSpec.describe V2::RawMessage do
     allow(File).to receive(:read).and_return('hello world')
   end
 
+  let(:variant) { described_class::ACTION_CONFIRMATION }
   let(:attachments) { [attachment] }
   let(:attachment) do
     build(
@@ -84,6 +86,16 @@ RSpec.describe V2::RawMessage do
 
     it 'does not add the protective watermark' do
       expect(body).not_to match('OFFICIAL-SENSITIVE')
+    end
+  end
+
+  context 'when variant is submission email' do
+    let(:variant) { described_class::ACTION_SUBMISSION }
+
+    it 'has a body heading with details of the submission' do
+      expect(body).to match('Submission from Service name')
+      expect(body).to match('ID: 25db2d01-f017-4d8f-9590-435435b06233')
+      expect(body).to match('Email 1 of 2')
     end
   end
 

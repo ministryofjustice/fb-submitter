@@ -74,6 +74,7 @@ describe EmailOutputService do
         'text/plain': 'Please find an application attached'
       },
       attachments: [],
+      variant: nil,
       raw_message: RawMessage
     }
   end

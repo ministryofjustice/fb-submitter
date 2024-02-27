@@ -72,6 +72,14 @@
             "json"
           ]
         },
+        "variant": {
+          "type": ["string", "null"],
+          "enum": [
+            null,
+            "submission",
+            "confirmation"
+          ]
+        },
         "to": {
           "type": "string"
         },
