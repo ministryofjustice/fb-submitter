@@ -258,7 +258,6 @@ workflows:
             branches:
               only:
                 - main
-                - protective-marking
       - build_and_push_worker_image:
           context: *context
           requires:
