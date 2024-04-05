@@ -15,10 +15,6 @@ RSpec.describe Submission do
     it 'decrypts the payload' do
       expect(submission.decrypted_payload).to eq(decrypted_payload)
     end
-
-    it 'returns false for v2' do
-      expect(submission).not_to be_v2
-    end
   end
 
   describe '#decrypted_submission' do
@@ -38,10 +34,6 @@ RSpec.describe Submission do
 
     it 'decrypts the payload' do
       expect(submission.decrypted_submission).to eq(decrypted_payload.stringify_keys)
-    end
-
-    it 'returns true for v2' do
-      expect(submission).to be_v2
     end
   end
 end

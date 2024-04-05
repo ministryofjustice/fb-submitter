@@ -168,56 +168,6 @@ spec:
               secretKeyRef:
                 name: rds-instance-formbuilder-submitter-2-{{ .Values.environmentName }}
                 key: url
-          - name: NOTIFY_API_KEY
-            valueFrom:
-              secretKeyRef:
-                name: fb-submitter-app-secrets-{{ .Values.environmentName }}
-                key: notify_api_key
-          - name: NOTIFY_EMAIL_RETURN_SETUP_EMAIL_TOKEN
-            valueFrom:
-              secretKeyRef:
-                name: fb-submitter-app-secrets-{{ .Values.environmentName }}
-                key: notify_email_return_setup_email_token
-          - name: NOTIFY_EMAIL_RETURN_SETUP_EMAIL_VERIFIED
-            valueFrom:
-              secretKeyRef:
-                name: fb-submitter-app-secrets-{{ .Values.environmentName }}
-                key: notify_email_return_setup_email_verified
-          - name: NOTIFY_EMAIL_RETURN_SETUP_MOBILE_VERIFIED
-            valueFrom:
-              secretKeyRef:
-                name: fb-submitter-app-secrets-{{ .Values.environmentName }}
-                key: notify_email_return_setup_mobile_verified
-          - name: NOTIFY_EMAIL_RETURN_SIGNIN_EMAIL
-            valueFrom:
-              secretKeyRef:
-                name: fb-submitter-app-secrets-{{ .Values.environmentName }}
-                key: notify_email_return_signin_email
-          - name: NOTIFY_EMAIL_RETURN_SIGNIN_SUCCESS
-            valueFrom:
-              secretKeyRef:
-                name: fb-submitter-app-secrets-{{ .Values.environmentName }}
-                key: notify_email_return_signin_success
-          - name: NOTIFY_EMAIL_GENERIC
-            valueFrom:
-              secretKeyRef:
-                name: fb-submitter-app-secrets-{{ .Values.environmentName }}
-                key: notify_email_generic
-          - name: NOTIFY_SMS_RETURN_SETUP_MOBILE
-            valueFrom:
-              secretKeyRef:
-                name: fb-submitter-app-secrets-{{ .Values.environmentName }}
-                key: notify_sms_return_setup_mobile
-          - name: NOTIFY_SMS_RETURN_SIGNIN_MOBILE
-            valueFrom:
-              secretKeyRef:
-                name: fb-submitter-app-secrets-{{ .Values.environmentName }}
-                key: notify_sms_return_signin_mobile
-          - name: NOTIFY_SMS_GENERIC
-            valueFrom:
-              secretKeyRef:
-                name: fb-submitter-app-secrets-{{ .Values.environmentName }}
-                key: notify_sms_generic
           - name: SENTRY_DSN
             valueFrom:
               secretKeyRef:

@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'ostruct'
 
 RSpec.describe Adapters::ServiceTokenCacheClient do
   subject { described_class.new(request_id:) }

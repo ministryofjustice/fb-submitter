@@ -6,8 +6,5 @@ Rails.application.routes.draw do
     resources :submissions, only: :create
   end
 
-  post '/email', to: 'email#create'
-  post '/sms', to: 'sms#create'
-
   resource :metrics, only: [:show]
 end

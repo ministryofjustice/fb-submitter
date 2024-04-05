@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'ostruct'
 
 RSpec.describe 'Concerns::JWTAuthentication' do
   let(:service_token) { 'service-token' }

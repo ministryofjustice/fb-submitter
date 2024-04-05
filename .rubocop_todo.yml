@@ -13,34 +13,6 @@
 Layout/AccessModifierIndentation:
   EnforcedStyle: indent
 
-# Offense count: 2
-Lint/DuplicateMethods:
-  Exclude:
-    - 'app/models/email.rb'
-    - 'app/models/sms.rb'
-
-# Offense count: 3
-# Cop supports --auto-correct.
-Lint/RedundantCopDisableDirective:
-  Exclude:
-    - 'app/services/email_output_service.rb'
-    - 'app/services/process_submission_service.rb'
-
-# Offense count: 2
-Lint/UselessAssignment:
-  Exclude:
-    - 'app/jobs/email_job.rb'
-    - 'app/jobs/sms_job.rb'
-
-# Offense count: 7
-RSpec/AnyInstance:
-  Exclude:
-    - 'spec/controllers/email_controller_spec.rb'
-    - 'spec/controllers/sms_controller_spec.rb'
-    - 'spec/controllers/submission_controller_spec.rb'
-    - 'spec/requests/json_output_spec.rb'
-    - 'spec/requests/submission_spec.rb'
-
 # Offense count: 8
 # Configuration parameters: Max.
 RSpec/ExampleLength:
@@ -48,7 +20,6 @@ RSpec/ExampleLength:
     - 'spec/services/adapters/user_file_store_spec.rb'
     - 'spec/services/download_attachments_spec.rb'
     - 'spec/services/download_service_spec.rb'
-    - 'spec/services/process_submission_service_spec.rb'
 
 # Offense count: 24
 # Configuration parameters: EnforcedStyle.
@@ -57,7 +28,6 @@ RSpec/MessageSpies:
   Exclude:
     - 'spec/services/download_attachments_spec.rb'
     - 'spec/services/download_service_spec.rb'
-    - 'spec/services/process_submission_service_spec.rb'
 
 # Offense count: 43
 RSpec/MultipleExpectations:
@@ -75,7 +45,6 @@ RSpec/NamedSubject:
     - 'spec/services/generate_csv_content_spec.rb'
     - 'spec/services/service_token_service_spec.rb'
     - 'spec/services/submission_payload_service_spec.rb'
-    - 'spec/value_objects/raw_message_spec.rb'
 
 # Offense count: 40
 RSpec/NestedGroups:
