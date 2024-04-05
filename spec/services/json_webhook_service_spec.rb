@@ -9,17 +9,17 @@ describe JsonWebhookService do
   end
 
   let(:submission) { create(:submission) }
+  let(:submission_id) { '5de849f3-bff4-4f10-b245-23b1435f1c70' }
 
   let(:user_answers) do
     {
       first_name: 'bob',
       last_name: 'madly',
       submissionDate: 1_571_756_381_535,
-      submissionId: '5de849f3-bff4-4f10-b245-23b1435f1c70'
+      submissionId: submission_id
     }
   end
 
-  let(:runner_callback_adapter) { instance_spy(Adapters::RunnerCallback) }
   let(:webhook_destination_adapter) { instance_spy(Adapters::JweWebhookDestination) }
   let(:webhook_attachment_fetcher) { instance_spy(WebhookAttachmentService) }
 
@@ -39,7 +39,7 @@ describe JsonWebhookService do
   let(:json_payload) do
     {
       serviceSlug: submission.service_slug,
-      submissionId: submission.decrypted_payload[:submission]['submission_id'],
+      submissionId: submission_id,
       submissionAnswers: user_answers,
       attachments:
     }.to_json
@@ -49,7 +49,7 @@ describe JsonWebhookService do
     allow(webhook_destination_adapter).to receive(:send_webhook)
     allow(webhook_attachment_fetcher).to receive(:execute).and_return(attachments)
     service.execute(
-      user_answers:, service_slug: submission.service_slug, payload_submission_id: submission.decrypted_payload[:submission]['submission_id']
+      user_answers:, service_slug: submission.service_slug, payload_submission_id: submission_id
     )
   end
 

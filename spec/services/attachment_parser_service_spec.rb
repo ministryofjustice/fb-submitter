@@ -1,9 +1,7 @@
 require 'rails_helper'
 
 describe AttachmentParserService do
-  subject(:service) { described_class.new(attachments:, v2submission:) }
-
-  let(:v2submission) { false }
+  subject(:service) { described_class.new(attachments:) }
 
   context 'when given no input' do
     let(:attachments) { [] }
@@ -14,32 +12,7 @@ describe AttachmentParserService do
   end
 
   context 'when given a single attachment' do
-    context 'when submissions are legacy v1' do
-      let(:attachments) do
-        [
-          {
-            type: 'output',
-            mimetype: 'applcation/pdf',
-            filename: 'foo.pdf',
-            url: 'https://example.com',
-            pdf_data: {
-              question: 'answer'
-            }
-          }
-        ]
-      end
-
-      it 'returns 1 object in array' do
-        expect(service.execute.count).to eq(1)
-      end
-
-      it 'returns a list of attachment objects' do
-        expect(service.execute.first).to have_attributes(class: Attachment, type: 'output', mimetype: 'applcation/pdf', filename: 'foo.pdf', url: 'https://example.com', path: nil)
-      end
-    end
-
-    context 'when submissions are v2' do
-      let(:v2submission) { true }
+    context 'when all attachments are successfully parsed' do
       let(:attachments) do
         [
           {
@@ -64,7 +37,6 @@ describe AttachmentParserService do
     end
 
     context 'when some attachment fails to parse' do
-      let(:v2submission) { true }
       let(:attachments) do
         [
           {

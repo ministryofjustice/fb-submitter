@@ -4,7 +4,7 @@ module Adapters
 
     # creds automatically retrieved from
     # ENV['AWS_ACCESS_KEY_ID'] and ENV['AWS_SECRET_ACCESS_KEY']
-    # opts[:from] will be in the format "Service Name <service.name@example.com>" for both V1 and V2 runners
+    # opts[:from] will be in the format "Service Name <service.name@example.com>"
     def self.send_mail(opts = {})
       service_name = opts[:from].split('<')[0]
 
