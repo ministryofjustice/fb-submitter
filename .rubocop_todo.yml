@@ -42,9 +42,7 @@ RSpec/NamedSubject:
     - 'spec/services/attachment_generator_spec.rb'
     - 'spec/services/db_sweeper_spec.rb'
     - 'spec/services/email_output_service_spec.rb'
-    - 'spec/services/generate_csv_content_spec.rb'
     - 'spec/services/service_token_service_spec.rb'
-    - 'spec/services/submission_payload_service_spec.rb'
 
 # Offense count: 40
 RSpec/NestedGroups:
@@ -75,15 +73,6 @@ Rails/ApplicationRecord:
 Rails/FilePath:
   Exclude:
     - 'spec/rails_helper.rb'
-
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: strict, flexible
-Rails/TimeZone:
-  Exclude:
-    - 'app/services/email_output_service.rb'
-    - 'app/services/submission_payload_service.rb'
 
 # Offense count: 1
 # Cop supports --auto-correct.
