@@ -10,14 +10,4 @@ class Submission < ActiveRecord::Base
   def decrypted_submission
     SubmissionEncryption.new.decrypt(payload)
   end
-
-  # @return true if can decrypt the submission in v2
-  # @return false otherwise
-  #
-  def v2?
-    decrypted_submission
-    true
-  rescue StandardError
-    false
-  end
 end
