@@ -1,4 +1,4 @@
-class BaseEmailOutputService
+class EmailOutputService
   include ActionView::Helpers::SanitizeHelper
 
   def initialize(emailer:, attachment_generator:, encryption_service:, submission_id:,
@@ -60,7 +60,7 @@ class BaseEmailOutputService
         body_parts: email_body_parts(email_body),
         attachments:,
         variant: action[:variant],
-        raw_message:
+        raw_message: RawMessage
       )
 
       email_payload.update!(succeeded_at: Time.zone.now)
@@ -75,17 +75,31 @@ class BaseEmailOutputService
     filenames = attachments.map(&:filename).sort
     email_payload = EmailPayload.where(submission_id:)
                                 .find do |payload|
-                                  payload.decrypted_to == to &&
-                                    payload.decrypted_attachments == filenames
-                                end
+      payload.decrypted_to == to &&
+        payload.decrypted_attachments == filenames
+    end
 
     email_payload || EmailPayload.create!(submission_id:,
                                           to: encryption_service.encrypt(to),
                                           attachments: encryption_service.encrypt(filenames))
   end
 
-  def email_body_for_index(action, _index = 0)
-    action.fetch(:email_body)
+  def email_body_parts(email_body)
+    {
+      'text/plain': strip_tags(email_body),
+      'text/html': email_body
+    }
+  end
+
+  def email_body_for_index(action, index = 0)
+    email_body = action.fetch(:email_body)
+    # Some emails would not have any user answers. Like for save & return and csv.
+    user_answers = action.fetch(:user_answers, '')
+    if index.zero?
+      email_body + user_answers
+    else
+      email_body
+    end
   end
 
   attr_reader :emailer, :attachment_generator, :encryption_service, :submission_id,

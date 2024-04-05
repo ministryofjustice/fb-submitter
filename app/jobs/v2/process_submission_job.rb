@@ -81,7 +81,7 @@ module V2
     end
 
     def send_email(submission:, action:, attachments:, pdf_attachment: nil)
-      EmailOutputServiceV2.new(
+      EmailOutputService.new(
         emailer: EmailService,
         attachment_generator: AttachmentGenerator.new,
         encryption_service: EncryptionService.new,

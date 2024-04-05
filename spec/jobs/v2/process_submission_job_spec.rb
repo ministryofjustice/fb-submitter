@@ -24,7 +24,7 @@ RSpec.describe V2::ProcessSubmissionJob do
                    Rails.root.join('spec/fixtures/payloads/pdf_generator.json')
                  )).merge('submission_id' => submission.id)
     end
-    let(:email_output_service) { instance_spy(EmailOutputServiceV2) }
+    let(:email_output_service) { instance_spy(EmailOutputService) }
     let(:generated_pdf_content) do
       "I'm one with the Force. The Force is with me.\n"
     end
@@ -32,7 +32,7 @@ RSpec.describe V2::ProcessSubmissionJob do
     before do
       allow(ENV).to receive(:[])
       allow(ENV).to receive(:[]).with('SUBMISSION_DECRYPTION_KEY').and_return(key)
-      allow(EmailOutputServiceV2).to receive(:new).and_return(email_output_service)
+      allow(EmailOutputService).to receive(:new).and_return(email_output_service)
     end
 
     context 'when email action' do

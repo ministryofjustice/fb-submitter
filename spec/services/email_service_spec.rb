@@ -18,7 +18,7 @@ describe EmailService do
   end
 
   describe '.sanitised_params' do
-    let(:opts) { { key: 'value', to: 'to@example.com', raw_message: V2::RawMessage } }
+    let(:opts) { { key: 'value', to: 'to@example.com', raw_message: RawMessage } }
 
     describe 'return value' do
       let(:return_value) { described_class.sanitised_params(opts) }
@@ -68,7 +68,7 @@ describe EmailService do
   end
 
   describe '.send_mail' do
-    let(:opts) { { key: 'value', to: 'to@example.com', raw_message: V2::RawMessage } }
+    let(:opts) { { key: 'value', to: 'to@example.com', raw_message: RawMessage } }
     let(:sanitised_params) { { key: 'sanitised value' } }
 
     before do

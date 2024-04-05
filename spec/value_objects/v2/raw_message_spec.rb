@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe V2::RawMessage do
+RSpec.describe RawMessage do
   subject(:raw_message) do
     described_class.new(
       from: 'Service name <sender@example.com>',

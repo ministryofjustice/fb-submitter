@@ -41,7 +41,6 @@ RSpec/NamedSubject:
     - 'spec/services/adapters/service_url_resolver_spec.rb'
     - 'spec/services/attachment_generator_spec.rb'
     - 'spec/services/db_sweeper_spec.rb'
-    - 'spec/services/email_output_service_spec.rb'
     - 'spec/services/service_token_service_spec.rb'
 
 # Offense count: 40

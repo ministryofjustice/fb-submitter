@@ -21,11 +21,7 @@ module Adapters
     private
 
     def body_as_string(body)
-      if body.is_a?(String)
-        body
-      else
-        body.to_json
-      end
+      body.is_a?(String) ? body : body.to_json
     end
 
     def encrypted_body(body)

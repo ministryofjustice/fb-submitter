@@ -1,10 +1,10 @@
 require 'rails_helper'
-require_relative '../../app/services/email_output_service_v2'
+require_relative '../../app/services/email_output_service'
 require_relative '../../app/services/email_service'
 require_relative '../../app/services/attachment_generator'
 require_relative '../../app/value_objects/attachment'
 
-RSpec.describe EmailOutputServiceV2 do
+RSpec.describe EmailOutputService do
   def match_payload(email_payloads, to, expected_filenames)
     expect(
       email_payloads.any? do |payload|
@@ -28,7 +28,7 @@ RSpec.describe EmailOutputServiceV2 do
   let(:payload_submission_id) { 'an-id-2323' }
 
   let(:email_service_mock) { class_double(EmailService) }
-  let(:raw_message_mock) { class_double(V2::RawMessage) }
+  let(:raw_message_mock) { class_double(RawMessage) }
   let(:attachment_generator) { AttachmentGenerator.new }
   let(:encryption_service) { EncryptionService.new }
 
@@ -78,7 +78,7 @@ RSpec.describe EmailOutputServiceV2 do
       },
       attachments: [],
       variant: 'submission',
-      raw_message: V2::RawMessage
+      raw_message: RawMessage
     }
   end
 
