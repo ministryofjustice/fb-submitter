@@ -6,12 +6,6 @@ require 'webmock/rspec'
 describe ProcessSubmissionService do
   subject(:service) { described_class.new(submission_id: submission.id) }
 
-  before do
-    # Stub service token cache API call
-    stub_request(:get, 'http://fake_service_token_cache_root_url/service/service-slug')
-      .to_return(status: 200, body: { token: '123' }.to_json, headers: {})
-  end
-
   context 'when csv' do
     let(:actions) do
       [

@@ -27,13 +27,10 @@ describe 'V2 Submissions endpoint', type: :request do
       Delayed::Worker.delay_jobs = false
 
       stub_request(
-        :get,
-        'http://fake_service_token_cache_root_url/service/mos-eisley'
-      ).to_return(status: 200, body: { token: '123' }.to_json)
-      stub_request(
         :post,
         'http://pdf-generator.com/v1/pdfs'
       ).to_return(status: 200, body: pdf_file_content)
+
       allow(ENV).to receive(:[])
       allow(ENV).to receive(:[])
         .with('SUBMISSION_DECRYPTION_KEY')

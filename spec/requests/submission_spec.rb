@@ -20,7 +20,6 @@ describe 'UserData API', type: :request do
       allow(Aws::SESV2::Client).to receive(:new).with(region: 'eu-west-1').and_return(stub_aws)
 
       # PDF Generator stubs
-      stub_request(:get, 'http://fake_service_token_cache_root_url/service/my-service').to_return(status: 200, body: { token: '123' }.to_json)
       stub_request(:post, 'http://pdf-generator.com/v1/pdfs').to_return(status: 200, body: pdf_file_content)
       allow(ENV).to receive(:[])
       allow(ENV).to receive(:[]).with('SUBMISSION_DECRYPTION_KEY').and_return(submission_decryption_key)

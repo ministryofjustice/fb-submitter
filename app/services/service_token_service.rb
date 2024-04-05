@@ -6,13 +6,6 @@ class ServiceTokenService
     @request_id = options[:request_id]
   end
 
-  # TODO: this method seems to not be in use anymore
-  # Legacy FB forms are using v2 token cache too
-  # Confirm to be sure and cleanup code/tests
-  def get
-    client.get(service_slug)
-  end
-
   def public_key
     client.public_key_for(service_slug)
   end

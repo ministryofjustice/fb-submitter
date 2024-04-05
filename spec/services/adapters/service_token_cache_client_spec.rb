@@ -11,16 +11,6 @@ RSpec.describe Adapters::ServiceTokenCacheClient do
     allow(ENV).to receive(:[]).with('SERVICE_TOKEN_CACHE_ROOT_URL').and_return(root_url)
   end
 
-  describe '#get' do
-    let(:uri) { URI('http://fake_service_token_cache_root_url/service/service-slug') }
-    let(:response) { OpenStruct.new(code: 200, body: '{"token":"some-token"}') }
-
-    it 'returns service token' do
-      allow(Net::HTTP).to receive(:get_response).with(uri).and_return(response)
-      expect(subject.get(service_slug)).to eql('some-token')
-    end
-  end
-
   describe '#public_key_for' do
     let(:uri) { URI('http://fake_service_token_cache_root_url/service/v2/service-slug') }
     let(:response) { OpenStruct.new(code: 200, body: "{\"token\":\"#{encoded_public_key}\"}") }
