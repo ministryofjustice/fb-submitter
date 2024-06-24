@@ -22,7 +22,6 @@ describe AttachmentGenerator do
     allow(pdf_attachment).to receive(:size).and_return(7777)
   end
 
-  # rubocop:disable RSpec/ExampleLength
   context 'when no attachments or pdfs are required' do
     it 'does not sort any attachments' do
       subject.execute(action: {}, attachments: [upload1, upload2], pdf_attachment:)

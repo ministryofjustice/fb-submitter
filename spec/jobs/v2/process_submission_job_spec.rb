@@ -25,6 +25,7 @@ RSpec.describe V2::ProcessSubmissionJob do
                  )).merge('submission_id' => submission.id)
     end
     let(:email_output_service) { instance_spy(EmailOutputService) }
+    let(:ms_graph_service) { instance_spy(V2::SendToMsGraphService) }
     let(:generated_pdf_content) do
       "I'm one with the Force. The Force is with me.\n"
     end
@@ -33,6 +34,7 @@ RSpec.describe V2::ProcessSubmissionJob do
       allow(ENV).to receive(:[])
       allow(ENV).to receive(:[]).with('SUBMISSION_DECRYPTION_KEY').and_return(key)
       allow(EmailOutputService).to receive(:new).and_return(email_output_service)
+      allow(V2::SendToMsGraphService).to receive(:new).and_return(ms_graph_service)
     end
 
     context 'when email action' do
@@ -185,6 +187,75 @@ RSpec.describe V2::ProcessSubmissionJob do
 
         expect(email_output_service).to have_received(:execute) do |args|
           expect(args[:pdf_attachment]).to be_nil
+        end
+      end
+    end
+
+    context 'when microsoft graph api action' do
+      let(:key) { SecureRandom.uuid[0..31] }
+      let(:submission) do
+        create(:submission, payload: encrypted_payload, access_token:)
+      end
+      let(:fixture) { payload_fixture }
+      let(:payload_fixture) do
+        JSON.parse(File.read(Rails.root.join('spec/fixtures/payloads/valid_submission.json')))
+      end
+      let(:access_token) do
+        'jar-jar-binks'
+      end
+      let(:action) { fixture['actions'].select { |action| action['kind'] == 'mslist' }.first }
+      let(:encrypted_payload) do
+        fixture['actions'] = fixture['actions'].select { |action| action['kind'] == 'mslist' }
+        SubmissionEncryption.new(key:).encrypt(fixture)
+      end
+      let(:response) do
+        {
+          webUrl: 'i_am_the_drive_url'
+        }
+      end
+
+      context 'when including attachments' do
+        before do
+          # download attachment stub
+          stub_request(:get, 'http://fb-user-filestore-api-svc-test-dev.formbuilder-platform-test-dev/service/dog-contest/user/1/123')
+            .to_return(status: 200, body: 'image', headers: {})
+
+          # post to graph api stub
+          stub_request(:post, 'https://rooturl.graph.example.com/sites/site_id/drive/items/root:/basset-hound-dog-picture.png:/content')
+            .to_return(status: 200, body: response.to_json, headers: {})
+
+          # post create folder stub
+          stub_request(:post, 'https://rooturl.graph.example.com/sites/site_id/drive/items/root/children')
+          .to_return(status: 201, body: { id: 'a-folder' }.to_json, headers: {})
+
+          # post to list
+          stub_request(:post, 'https://rooturl.graph.example.com/sites/site_id/lists/list_id')
+            .to_return(status: 200, body: response.to_json, headers: {})
+
+          # auth url call
+          stub_request(:post, 'https://authurl.example.com')
+            .to_return(status: 200, body: { 'access_token' => 'valid_token' }.to_json, headers: {})
+
+          allow(ENV).to receive(:[])
+
+          allow(ENV).to receive(:[]).with('SUBMISSION_DECRYPTION_KEY').and_return(key)
+          allow(EmailOutputService).to receive(:new).and_return(email_output_service)
+          allow(ms_graph_service).to receive(:create_folder_in_drive).and_return('a-folder')
+        end
+
+        it 'sends to graph api then attachments to drive api' do
+          perform_job
+
+          expect(ms_graph_service).to have_received(:send_attachment_to_drive) do |arg1, arg2, arg3|
+            expect(arg1.filename).to match(/basset-hound-dog-picture.png/)
+            expect(arg2).to eq(submission.id)
+            expect(arg3).to eq('a-folder')
+          end
+
+          expect(ms_graph_service).to have_received(:post_to_ms_list) do |arg1, arg2|
+            expect(arg1['submission_id']).to eq(submission.id)
+            expect(arg2).to eq(submission.id)
+          end
         end
       end
     end

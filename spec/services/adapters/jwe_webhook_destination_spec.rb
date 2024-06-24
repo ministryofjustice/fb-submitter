@@ -32,7 +32,6 @@ describe Adapters::JweWebhookDestination do
     expect(WebMock).to have_requested(:post, expected_url).once
   end
 
-  # rubocop:disable RSpec/ExampleLength
   it 'sends JWE encrypted payload' do
     allow(Typhoeus::Request).to receive(:new) do |url, hash|
       expect(url).to eql(expected_url)
@@ -42,7 +41,6 @@ describe Adapters::JweWebhookDestination do
 
     adapter.send_webhook(body: payload)
   end
-  # rubocop:enable RSpec/ExampleLength
 
   it 'throws exception if not 200 response' do
     stub_request(:post, expected_url).to_return(status: 500)

@@ -69,7 +69,8 @@
           "enum": [
             "csv",
             "email",
-            "json"
+            "json",
+            "mslist"
           ]
         },
         "variant": {
@@ -109,6 +110,18 @@
         },
         "key": {
           "type": "string"
+        },
+        "graph_url": {
+          "type": "string"
+        },
+        "site_id": {
+          "type": "string"
+        },
+        "list_id": {
+          "type": "string"
+        },
+        "drive_id": {
+          "type": "string"
         }
       },
       "anyOf":[
@@ -123,6 +136,13 @@
             "to",
             "from",
             "include_pdf"
+          ]
+        },
+        {
+          "required": [
+            "site_id",
+            "list_id",
+            "graph_url"
           ]
         }
       ],

@@ -35,6 +35,15 @@
       "url": "http://api-endpoint.com",
       "key": "fb730a667840d79c",
       "include_attachments": false
+    },
+    {
+      "kind": "mslist",
+      "variant": null,
+      "graph_url": "graph-url.microsoft.com",
+      "site_id": "1234",
+      "list_id": "5678",
+      "drive_id": "root",
+      "include_attachments": true
     }
   ],
   "pages": [

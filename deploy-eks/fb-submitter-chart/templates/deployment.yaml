@@ -97,6 +97,7 @@ spec:
               secretKeyRef:
                 name: fb-submitter-app-secrets-{{ .Values.environmentName }}
                 key: submission_decryption_key
+
       volumes:
         - name: tmp-files
           emptyDir: {}
@@ -188,6 +189,21 @@ spec:
               secretKeyRef:
                 name: fb-submitter-app-secrets-{{ .Values.environmentName }}
                 key: submission_decryption_key
+          - name: MS_ADMIN_APP_ID
+            valueFrom:
+              secretKeyRef:
+                name: fb-submitter-app-secrets-{{ .Values.environmentName }}
+                key: ms_admin_app_id
+          - name: MS_ADMIN_APP_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: fb-submitter-app-secrets-{{ .Values.environmentName }}
+                key: ms_admin_app_secret
+          - name: MS_OAUTH_URL
+            valueFrom:
+              secretKeyRef:
+                name: fb-submitter-app-secrets-{{ .Values.environmentName }}
+                key: ms_oauth_url
       volumes:
         - name: tmp-files
           emptyDir: {}

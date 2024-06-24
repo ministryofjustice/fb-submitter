@@ -153,7 +153,6 @@ RSpec.describe EmailOutputService do
     end
   end
 
-  # rubocop:disable RSpec/ExampleLength
   context 'when email sending fails' do
     let(:include_attachments) { true }
     let(:first_email_attachments) { [upload1, upload2] }
