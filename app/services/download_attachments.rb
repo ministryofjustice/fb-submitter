@@ -36,7 +36,7 @@ class DownloadAttachments
   def request(url:, file_path:, headers:)
     connection = Faraday.new(url) do |conn|
       conn.response :raise_error
-      conn.use :instrumentation, name: SUBSCRIPTION
+      conn.request :instrumentation, name: SUBSCRIPTION
 
       # Number of seconds to wait for the connection to open
       conn.options.open_timeout = DEFAULT_OPEN_TIMEOUT

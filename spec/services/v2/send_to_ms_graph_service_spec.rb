@@ -140,7 +140,7 @@ RSpec.describe V2::SendToMsGraphService do
               'Accept' => '*/*',
               'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
               'Content-Type' => 'application/x-www-form-urlencoded',
-              'User-Agent' => 'Faraday v1.10.3'
+              'User-Agent' => "Faraday v#{Faraday::VERSION}"
             }
           ).to_return(status: 200, body: { 'access_token' => 'valid_token' }.to_json, headers: {})
 
@@ -168,7 +168,7 @@ RSpec.describe V2::SendToMsGraphService do
               'Accept' => '*/*',
               'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
               'Content-Type' => 'application/x-www-form-urlencoded',
-              'User-Agent' => 'Faraday v1.10.3'
+              'User-Agent' => "Faraday v#{Faraday::VERSION}"
             }
           ).to_return(status: 500, body: {}.to_json, headers: {})
 
@@ -196,7 +196,7 @@ RSpec.describe V2::SendToMsGraphService do
               'Accept' => '*/*',
               'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
               'Content-Type' => 'application/x-www-form-urlencoded',
-              'User-Agent' => 'Faraday v1.10.3'
+              'User-Agent' => "Faraday v#{Faraday::VERSION}"
             }
           ).to_return(status: 403, body: {}.to_json, headers: {})
 
@@ -231,7 +231,7 @@ RSpec.describe V2::SendToMsGraphService do
               'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
               'Authorization' => 'Bearer valid_token',
               'Content-Type' => 'text/plain',
-              'User-Agent' => 'Faraday v1.10.3'
+              'User-Agent' => "Faraday v#{Faraday::VERSION}"
             }
           )
           .to_return(status: 200, body: response.to_json, headers: {})
@@ -283,7 +283,7 @@ RSpec.describe V2::SendToMsGraphService do
               'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
               'Authorization' => 'Bearer valid_token',
               'Content-Type' => 'application/json',
-              'User-Agent' => 'Faraday v1.10.3'
+              'User-Agent' => "Faraday v#{Faraday::VERSION}"
             }
           )
           .to_return(status: 200, body: response.to_json, headers: {})

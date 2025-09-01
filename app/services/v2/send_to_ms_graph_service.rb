@@ -125,8 +125,6 @@ module V2
     def auth_connection
       @auth_connection ||= Faraday.new(URI.parse(auth_url)) do |conn|
         conn.response :raise_error
-        conn.request :multipart
-        conn.request :url_encoded
         conn.adapter :net_http
       end
     end
