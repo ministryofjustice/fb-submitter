@@ -1,43 +1,65 @@
 version: '3.4'
 
 x-shared-variables: &shared-variables
-  DATABASE_URL: postgres://postgres:password@db/submitter_local
+  DATABASE_URL: postgres://postgres:password@submitter-db/submitter_local
+  RAILS_ENV: development
   FB_ENVIRONMENT_SLUG: test
   SECRET_KEY_BASE: xxxyyy
-  SERVICE_TOKEN_CACHE_ROOT_URL: http://fake_service_token_cache_root_url/
+  SERVICE_TOKEN_CACHE_ROOT_URL: http://service-token-cache-api:3000
   PDF_GENERATOR_ROOT_URL: http://pdf-generator.com
   ENCRYPTION_KEY: i6USnzeRKljfLMPbRlB2E9oikURx4ou3
   ENCRYPTION_SALT: lGlcn9HabIducdpwlSHcM06e9gFuIfS1Ogg5krtn1Fw=
   MAX_IAT_SKEW_SECONDS: 90
 
 services:
-  db:
+  submitter-db:
     image: postgres:14.6-alpine
     restart: always
     environment:
       POSTGRES_PASSWORD: password
       POSTGRES_USER: postgres
       POSTGRES_DB: submitter_local
+    ports:
+      - 5009:5432
+    networks:
+      - shared_net
 
-  app:
+  submitter-api:
     build:
       context: .
       dockerfile: ./docker/api/Dockerfile
       args:
         UID: "${UID}"
         BUNDLE_ARGS: ''
+    ports:
+      - 3009:3000
+    env_file:
+      - .env
     user: "${UID}:${UID}"
     environment:
       <<: *shared-variables
-      SUBMISSION_DECRYPTION_KEY: eRIF8glaggYMluja
-    links:
-      - db
+    depends_on:
+      - submitter-db
+    networks:
+      - shared_net
 
-  worker:
+  submitter-worker:
     build:
       context: .
       dockerfile: ./docker/workers/Dockerfile
+      args:
+        UID: "${UID}"
+        BUNDLE_ARGS: ''
+    ports:
+      - 3011:3000
     environment:
       <<: *shared-variables
-    links:
-      - db
+    depends_on:
+      - submitter-db
+    networks:
+      - shared_net
+
+networks:
+  shared_net:
+    name: formbuilder-bridge-network
+    external: true
