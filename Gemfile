@@ -24,10 +24,10 @@ gem 'tzinfo-data'
 group :development, :test do
   gem 'brakeman'
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'dotenv-rails'
   gem 'rspec-rails'
   gem 'rubocop'
   gem 'rubocop-govuk'
-  gem 'dotenv-rails'
 end
 
 group :development do

@@ -44,7 +44,7 @@ jobs:
           docker_layer_caching: true
       - run:
           name: test
-          command: docker-compose build && docker-compose run --rm app bundle exec rspec
+          command: docker-compose build && docker-compose run --rm submitter-api bundle exec rspec
       - slack/status: *slack_status
   lint:
     working_directory: ~/circle

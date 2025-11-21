@@ -7,6 +7,10 @@ build: stop
 
 .PHONY: serve
 serve: build
+	$(DOCKER_COMPOSE) up app
+
+.PHONY: setup
+setup: build
 	$(DOCKER_COMPOSE) build --parallel
 	$(DOCKER_COMPOSE) up -d
 

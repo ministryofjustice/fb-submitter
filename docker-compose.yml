@@ -1,38 +1,46 @@
 version: '3.4'
 
+networks:
+  app-net:
+    name: fb-app-bridge-network
+    external: true
+  db-net:
+    name: fb-db-bridge-network
+    external: true
+
 x-shared-variables: &shared-variables
+  UID: 1001
   DATABASE_URL: postgres://postgres:password@submitter-db/submitter_local
   RAILS_ENV: development
   FB_ENVIRONMENT_SLUG: test
   SECRET_KEY_BASE: xxxyyy
-  SERVICE_TOKEN_CACHE_ROOT_URL: http://service-token-cache-api:3000
-  PDF_GENERATOR_ROOT_URL: http://pdf-generator.com
+  SERVICE_TOKEN_CACHE_ROOT_URL: http://runner-service-token-cache-api:3000
+  PDF_GENERATOR_ROOT_URL: http://pdf-generator-api:3000
   ENCRYPTION_KEY: i6USnzeRKljfLMPbRlB2E9oikURx4ou3
   ENCRYPTION_SALT: lGlcn9HabIducdpwlSHcM06e9gFuIfS1Ogg5krtn1Fw=
+  SUBMISSION_DECRYPTION_KEY: 52905141-4738-4cce-8bd6-633c970c
   MAX_IAT_SKEW_SECONDS: 90
 
 services:
   submitter-db:
+    container_name: submitter-db
     image: postgres:14.6-alpine
     restart: always
     environment:
       POSTGRES_PASSWORD: password
       POSTGRES_USER: postgres
       POSTGRES_DB: submitter_local
-    ports:
-      - 5009:5432
     networks:
-      - shared_net
+      - db-net
 
   submitter-api:
+    container_name: submitter-api
     build:
       context: .
       dockerfile: ./docker/api/Dockerfile
       args:
         UID: "${UID}"
         BUNDLE_ARGS: ''
-    ports:
-      - 3009:3000
     env_file:
       - .env
     user: "${UID}:${UID}"
@@ -41,25 +49,39 @@ services:
     depends_on:
       - submitter-db
     networks:
-      - shared_net
+      - app-net
+      - db-net
 
   submitter-worker:
+    container_name: submitter-worker
     build:
       context: .
       dockerfile: ./docker/workers/Dockerfile
       args:
         UID: "${UID}"
         BUNDLE_ARGS: ''
-    ports:
-      - 3011:3000
     environment:
       <<: *shared-variables
     depends_on:
       - submitter-db
     networks:
-      - shared_net
+      - app-net
+      - db-net
 
-networks:
-  shared_net:
-    name: formbuilder-bridge-network
-    external: true
+  pdf-generator-api:
+    container_name: pdf-generator-api
+    # platform: linux/x86_64
+    platform: linux/amd64
+    build:
+      context: https://github.com/ministryofjustice/fb-pdf-generator.git
+      args:
+        UID: "${UID}"
+        BUNDLE_ARGS: '--path vendor/bundle'
+    user: "${UID}:${UID}"
+    environment:
+      RAILS_ENV: development
+      RAILS_LOG_TO_STDOUT: 'true'
+      SERVICE_TOKEN_CACHE_ROOT_URL: http://runner-service-token-cache-api:3000
+      SENTRY_DSN: ''
+    networks:
+      - app-net
