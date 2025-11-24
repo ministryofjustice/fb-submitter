@@ -1,7 +1,7 @@
 module V2
   class SubmissionsController < ActionController::API
-    include Concerns::ContentNegotiation
-    include Concerns::V2ErrorHandling
+    include ContentNegotiation
+    include V2ErrorHandling
     before_action ::Filters::AuthenticateApplication
     before_action ::Filters::ValidateEncryptedSubmission
     before_action ::Filters::ValidateSchema
