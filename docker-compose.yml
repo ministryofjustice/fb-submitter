@@ -3,10 +3,8 @@ version: '3.4'
 networks:
   app-net:
     name: fb-app-bridge-network
-    external: true
   db-net:
     name: fb-db-bridge-network
-    external: true
 
 x-shared-variables: &shared-variables
   UID: 1001
