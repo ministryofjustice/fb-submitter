@@ -7,7 +7,7 @@ build: stop
 
 .PHONY: serve
 serve: build
-	$(DOCKER_COMPOSE) up app
+	$(DOCKER_COMPOSE) up submitter-api
 
 .PHONY: setup
 setup: build

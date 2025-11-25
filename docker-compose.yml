@@ -1,5 +1,3 @@
-version: '3.4'
-
 networks:
   app-net:
     name: fb-app-bridge-network
