@@ -5,6 +5,7 @@ networks:
     name: fb-db-bridge-network
 
 x-shared-variables: &shared-variables
+  # Keys below are all fake and can be committed to git
   UID: 1001
   DATABASE_URL: postgres://postgres:password@submitter-db/submitter_local
   RAILS_ENV: development
@@ -14,7 +15,7 @@ x-shared-variables: &shared-variables
   PDF_GENERATOR_ROOT_URL: http://pdf-generator-api:3000
   ENCRYPTION_KEY: i6USnzeRKljfLMPbRlB2E9oikURx4ou3
   ENCRYPTION_SALT: lGlcn9HabIducdpwlSHcM06e9gFuIfS1Ogg5krtn1Fw=
-  SUBMISSION_DECRYPTION_KEY: 52905141-4738-4cce-8bd6-633c970c
+  SUBMISSION_DECRYPTION_KEY: 52905141-4738-4cce-8bd6-633c970c # It should be same as SUBMISSION_ENCRYPTION_KEY in fb-runner app
   MAX_IAT_SKEW_SECONDS: 90
 
 services:
