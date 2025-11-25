@@ -1,11 +1,11 @@
 require 'rails_helper'
 require_relative '../../../app/controllers/concerns/error_handling'
 
-RSpec.describe 'Concerns::ErrorHandling', type: :controller do
+RSpec.describe 'ErrorHandling', type: :controller do
   let(:parsed_body) { JSON.parse(response.body) }
 
   controller ActionController::Base do
-    include Concerns::ErrorHandling
+    include ErrorHandling
 
     def standard_error
       raise StandardError, 'boom!'
