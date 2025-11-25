@@ -12,6 +12,14 @@ Docker is a prerequisite for running the tests
 make spec
 ```
 
+## Running the app
+
+Docker is a prerequisite for running the app
+
+```sh
+make setup
+```
+
 ## Deployment
 
 Continuous Integration (CI) is enabled on this project via CircleCI.
