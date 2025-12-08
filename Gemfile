@@ -24,7 +24,7 @@ gem 'tzinfo-data'
 group :development, :test do
   gem 'brakeman'
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
-  gem 'dotenv-rails'
+  gem 'dotenv-rails', '>= 3.2.0'
   gem 'rspec-rails'
   gem 'rubocop'
   gem 'rubocop-govuk'
