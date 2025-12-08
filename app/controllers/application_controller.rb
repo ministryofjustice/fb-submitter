@@ -4,7 +4,7 @@ require_relative 'concerns/jwt_authentication'
 require_relative 'concerns/v2_error_handling'
 
 class ApplicationController < ActionController::API
-  include Concerns::ErrorHandling
-  include Concerns::JWTAuthentication
-  include Concerns::ContentNegotiation
+  include ErrorHandling
+  include JWTAuthentication
+  include ContentNegotiation
 end

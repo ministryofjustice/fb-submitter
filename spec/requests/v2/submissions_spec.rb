@@ -28,7 +28,7 @@ describe 'V2 Submissions endpoint', type: :request do
 
       stub_request(
         :post,
-        'http://pdf-generator.com/v1/pdfs'
+        'http://pdf-generator-api:3000/v1/pdfs'
       ).to_return(status: 200, body: pdf_file_content)
 
       allow(ENV).to receive(:[])

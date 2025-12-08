@@ -1,43 +1,84 @@
-version: '3.4'
+networks:
+  app-net:
+    name: fb-app-bridge-network
+  db-net:
+    name: fb-db-bridge-network
 
 x-shared-variables: &shared-variables
-  DATABASE_URL: postgres://postgres:password@db/submitter_local
+  # Keys below are all fake and can be committed to git
+  UID: 1001
+  DATABASE_URL: postgres://postgres:password@submitter-db/submitter_local
+  RAILS_ENV: development
   FB_ENVIRONMENT_SLUG: test
   SECRET_KEY_BASE: xxxyyy
-  SERVICE_TOKEN_CACHE_ROOT_URL: http://fake_service_token_cache_root_url/
-  PDF_GENERATOR_ROOT_URL: http://pdf-generator.com
+  SERVICE_TOKEN_CACHE_ROOT_URL: http://runner-service-token-cache-api:3000
+  PDF_GENERATOR_ROOT_URL: http://pdf-generator-api:3000
   ENCRYPTION_KEY: i6USnzeRKljfLMPbRlB2E9oikURx4ou3
   ENCRYPTION_SALT: lGlcn9HabIducdpwlSHcM06e9gFuIfS1Ogg5krtn1Fw=
+  SUBMISSION_DECRYPTION_KEY: 52905141-4738-4cce-8bd6-633c970c # It should be same as SUBMISSION_ENCRYPTION_KEY in fb-runner app
   MAX_IAT_SKEW_SECONDS: 90
 
 services:
-  db:
+  submitter-db:
+    container_name: submitter-db
     image: postgres:14.6-alpine
     restart: always
     environment:
       POSTGRES_PASSWORD: password
       POSTGRES_USER: postgres
       POSTGRES_DB: submitter_local
+    networks:
+      - db-net
 
-  app:
+  submitter-api:
+    container_name: submitter-api
     build:
       context: .
       dockerfile: ./docker/api/Dockerfile
       args:
         UID: "${UID}"
         BUNDLE_ARGS: ''
+    env_file:
+      - .env
     user: "${UID}:${UID}"
     environment:
       <<: *shared-variables
-      SUBMISSION_DECRYPTION_KEY: eRIF8glaggYMluja
-    links:
-      - db
+    depends_on:
+      - submitter-db
+    networks:
+      - app-net
+      - db-net
 
-  worker:
+  submitter-worker:
+    container_name: submitter-worker
     build:
       context: .
       dockerfile: ./docker/workers/Dockerfile
+      args:
+        UID: "${UID}"
+        BUNDLE_ARGS: ''
     environment:
       <<: *shared-variables
-    links:
-      - db
+    depends_on:
+      - submitter-db
+    networks:
+      - app-net
+      - db-net
+
+  pdf-generator-api:
+    container_name: pdf-generator-api
+    # platform: linux/x86_64
+    platform: linux/amd64
+    build:
+      context: https://github.com/ministryofjustice/fb-pdf-generator.git
+      args:
+        UID: "${UID}"
+        BUNDLE_ARGS: '--path vendor/bundle'
+    user: "${UID}:${UID}"
+    environment:
+      RAILS_ENV: development
+      RAILS_LOG_TO_STDOUT: 'true'
+      SERVICE_TOKEN_CACHE_ROOT_URL: http://runner-service-token-cache-api:3000
+      SENTRY_DSN: ''
+    networks:
+      - app-net

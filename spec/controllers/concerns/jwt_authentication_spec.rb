@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'ostruct'
 
-RSpec.describe 'Concerns::JWTAuthentication' do
+RSpec.describe 'JWTAuthentication' do
   let(:service_token) { 'service-token' }
   let(:service_slug) { 'service-slug' }
   let(:request_id) { '12345' }
@@ -14,8 +14,8 @@ RSpec.describe 'Concerns::JWTAuthentication' do
   let(:fake_client) { OpenStruct.new(public_key: Base64.strict_decode64(encoded_public_key)) }
 
   controller do
-    include Concerns::ErrorHandling
-    include Concerns::JWTAuthentication
+    include ErrorHandling
+    include JWTAuthentication
 
     def index
       head :ok

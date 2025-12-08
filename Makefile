@@ -7,7 +7,12 @@ build: stop
 
 .PHONY: serve
 serve: build
-	$(DOCKER_COMPOSE) up app
+	$(DOCKER_COMPOSE) up submitter-api
+
+.PHONY: setup
+setup: build
+	$(DOCKER_COMPOSE) build --parallel
+	$(DOCKER_COMPOSE) up -d
 
 .PHONY: stop
 stop:
@@ -15,16 +20,16 @@ stop:
 
 .PHONY: build
 spec: build
-	$(DOCKER_COMPOSE) run --rm app bundle exec rspec
+	$(DOCKER_COMPOSE) run --rm submitter-api env RAILS_ENV=test bundle exec rspec
 
 .PHONY: unit
 unit:
-	$(DOCKER_COMPOSE) run --rm app bundle exec rspec spec/controllers/concerns/error_handling_spec.rb
+	$(DOCKER_COMPOSE) run --rm submitter-api env RAILS_ENV=test bundle exec rspec spec/controllers/concerns/error_handling_spec.rb
 
 .PHONY: shell
 shell: stop build
-	$(DOCKER_COMPOSE) up -d app
-	$(DOCKER_COMPOSE) exec app bash
+	$(DOCKER_COMPOSE) up -d submitter-api
+	$(DOCKER_COMPOSE) exec submitter-api bash
 
 .PHONY: init
 init:

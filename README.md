@@ -4,6 +4,14 @@
 
 API for services built and deployed on Form Builder to send the user data to where it ultimately needs to go.
 
+## Running the API
+
+Docker is a prerequisite for running the api and required services
+
+```sh
+make setup
+```
+
 ## Running tests
 
 Docker is a prerequisite for running the tests

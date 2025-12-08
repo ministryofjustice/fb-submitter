@@ -51,7 +51,7 @@ RSpec.describe V2::ProcessSubmissionJob do
       end
 
       before do
-        stub_request(:post, 'http://pdf-generator.com/v1/pdfs')
+        stub_request(:post, 'http://pdf-generator-api:3000/v1/pdfs')
           .with(body: expected_pdf_request_body)
           .to_return(status: 200, body: generated_pdf_content, headers: {})
 
@@ -101,7 +101,7 @@ RSpec.describe V2::ProcessSubmissionJob do
       end
 
       before do
-        stub_request(:post, 'http://pdf-generator.com/v1/pdfs')
+        stub_request(:post, 'http://pdf-generator-api:3000/v1/pdfs')
           .with(body: expected_pdf_request_body)
           .to_return(status: 200, body: generated_pdf_content, headers: {})
       end

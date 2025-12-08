@@ -1,20 +1,20 @@
-module Concerns
-  module ContentNegotiation
-    extend ActiveSupport::Concern
+require 'active_support/concern'
 
-    included do
-      before_action :consider_all_requests_json
-      before_action :enforce_json_only
-    end
+module ContentNegotiation
+  extend ActiveSupport::Concern
 
-    def consider_all_requests_json
-      request.env['CONTENT_TYPE'] = 'application/json' if request.env['CONTENT_TYPE'] == 'application/x-www-form-urlencoded'
-    end
+  included do
+    before_action :consider_all_requests_json
+    before_action :enforce_json_only
+  end
 
-    def enforce_json_only
-      unless request.format.json?
-        render json: { error: 'Format not acceptable' }, status: :not_acceptable
-      end
+  def consider_all_requests_json
+    request.env['CONTENT_TYPE'] = 'application/json' if request.env['CONTENT_TYPE'] == 'application/x-www-form-urlencoded'
+  end
+
+  def enforce_json_only
+    unless request.format.json?
+      render json: { error: 'Format not acceptable' }, status: :not_acceptable
     end
   end
 end
