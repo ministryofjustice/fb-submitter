@@ -24,7 +24,9 @@ COPY --chown=appuser:appgroup Gemfile Gemfile.lock .ruby-version ./
 RUN gem install bundler
 
 RUN bundle config set force_ruby_platform true
-ARG BUNDLE_ARGS='--jobs 2 --without test development'
+RUN bundle config set deployment true
+RUN bundle config set without 'development'
+ARG BUNDLE_ARGS='--jobs 2'
 RUN bundle install --no-cache ${BUNDLE_ARGS}
 
 COPY --chown=appuser:appgroup . .
