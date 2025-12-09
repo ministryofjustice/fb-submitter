@@ -73,7 +73,7 @@ services:
       context: https://github.com/ministryofjustice/fb-pdf-generator.git
       args:
         UID: "${UID}"
-        BUNDLE_ARGS: '--path vendor/bundle'
+        BUNDLE_ARGS: ''
     user: "${UID}:${UID}"
     environment:
       RAILS_ENV: development
