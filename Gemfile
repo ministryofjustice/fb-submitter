@@ -26,6 +26,7 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'dotenv-rails'
   gem 'factory_bot_rails', '~> 6.4'
+  gem 'listen'
   gem 'rspec-rails'
   gem 'rubocop'
   gem 'rubocop-govuk'
@@ -34,7 +35,6 @@ end
 group :development do
   gem 'guard-rspec', require: false
   gem 'guard-shell'
-  gem 'listen'
 end
 
 group :test do
