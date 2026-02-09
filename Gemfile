@@ -6,7 +6,7 @@ gem 'aws-sdk-sesv2', '~> 1.43'
 gem 'bootsnap', '>= 1.1.0', require: false
 gem 'daemons'
 gem 'delayed_job_active_record', '~> 4.1.7'
-gem 'faraday', '~> 2.0'
+gem 'faraday', '~> 2.14'
 gem 'fb-jwt-auth', '~> 0.10.0'
 gem 'json-schema', '~> 4.1.1'
 gem 'jwe', '~> 1.1.1'
