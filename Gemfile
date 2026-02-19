@@ -14,9 +14,9 @@ gem 'jwt'
 gem 'mime-types'
 gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 6.4'
-gem 'rails', '~> 7.1.5.2'
+gem 'rails', '~> 7.1.6.0'
 gem 'sentry-delayed_job', '~> 5.14'
-gem 'sentry-rails', '~> 5.14'
+gem 'sentry-rails', '~> 5.20', '>= 5.20.0'
 gem 'sentry-ruby', '~> 5.14'
 gem 'typhoeus'
 gem 'tzinfo-data'
@@ -24,12 +24,12 @@ gem 'tzinfo-data'
 group :development, :test do
   gem 'brakeman'
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
-  gem 'dotenv-rails'
-  gem 'factory_bot_rails', '~> 6.4'
+  gem 'dotenv-rails', '>= 3.2.0'
+  gem 'factory_bot_rails', '~> 6.4', '>= 6.4.4'
   gem 'listen'
-  gem 'rspec-rails'
+  gem 'rspec-rails', '>= 7.0.2'
   gem 'rubocop'
-  gem 'rubocop-govuk'
+  gem 'rubocop-govuk', '>= 5.0.3'
 end
 
 group :development do
