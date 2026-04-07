@@ -5,7 +5,7 @@ ruby File.read('.ruby-version').strip
 gem 'aws-sdk-sesv2', '~> 1.43'
 gem 'bootsnap', '>= 1.1.0', require: false
 gem 'daemons'
-gem 'delayed_job_active_record', '~> 4.1.7'
+gem 'delayed_job_active_record', '~> 4.1.11'
 gem 'faraday', '~> 2.0'
 gem 'fb-jwt-auth', '~> 0.10.0'
 gem 'json-schema', '~> 4.1.1'
@@ -14,9 +14,9 @@ gem 'jwt'
 gem 'mime-types'
 gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 6.4'
-gem 'rails', '~> 7.1.5.2'
-gem 'sentry-delayed_job', '~> 5.14'
-gem 'sentry-rails', '~> 5.14'
+gem 'rails', '~> 8.1.2.1'
+gem 'sentry-delayed_job', '~> 5.20', '>= 5.20.0'
+gem 'sentry-rails', '~> 5.20', '>= 5.20.0'
 gem 'sentry-ruby', '~> 5.14'
 gem 'typhoeus'
 gem 'tzinfo-data'
@@ -24,12 +24,12 @@ gem 'tzinfo-data'
 group :development, :test do
   gem 'brakeman'
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
-  gem 'dotenv-rails'
-  gem 'factory_bot_rails', '~> 6.4'
+  gem 'dotenv-rails', '>= 3.2.0'
+  gem 'factory_bot_rails', '~> 6.4', '>= 6.4.4'
   gem 'listen'
-  gem 'rspec-rails'
+  gem 'rspec-rails', '>= 7.0.2'
   gem 'rubocop'
-  gem 'rubocop-govuk'
+  gem 'rubocop-govuk', '>= 5.0.3'
 end
 
 group :development do
@@ -38,7 +38,7 @@ group :development do
 end
 
 group :test do
-  gem 'database_cleaner-active_record', '~> 2.1.0'
+  gem 'database_cleaner-active_record', '~> 2.2.0'
   gem 'simplecov'
   gem 'simplecov-console', require: false
   gem 'webmock'
