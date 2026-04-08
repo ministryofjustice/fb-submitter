@@ -78,8 +78,8 @@ GEM
       mutex_m
       securerandom (>= 0.3)
       tzinfo (~> 2.0)
-    addressable (2.8.7)
-      public_suffix (>= 2.0.2, < 7.0)
+    addressable (2.9.0)
+      public_suffix (>= 2.0.2, < 8.0)
     ansi (1.5.0)
     ast (2.4.2)
     aws-eventstream (1.3.0)
@@ -96,7 +96,7 @@ GEM
       aws-eventstream (~> 1, >= 1.0.2)
     base64 (0.2.0)
     benchmark (0.4.0)
-    bigdecimal (3.1.8)
+    bigdecimal (4.1.1)
     bootsnap (1.18.4)
       msgpack (~> 1.2)
     brakeman (6.2.1)
@@ -106,7 +106,7 @@ GEM
     coderay (1.1.3)
     concurrent-ruby (1.3.4)
     connection_pool (2.5.0)
-    crack (1.0.0)
+    crack (1.0.1)
       bigdecimal
       rexml
     crass (1.0.6)
@@ -167,7 +167,7 @@ GEM
     guard-shell (0.7.2)
       guard (>= 2.0.0)
       guard-compat (~> 1.0)
-    hashdiff (1.1.1)
+    hashdiff (1.2.1)
     i18n (1.14.5)
       concurrent-ruby (~> 1.0)
     io-console (0.8.0)
@@ -177,7 +177,7 @@ GEM
       reline (>= 0.4.2)
     jmespath (1.6.2)
     json (2.7.2)
-    json-schema (4.1.1)
+    json-schema (4.2.0)
       addressable (>= 2.8)
     jwe (1.1.1)
       base64
@@ -240,7 +240,7 @@ GEM
     psych (5.2.3)
       date
       stringio
-    public_suffix (6.0.1)
+    public_suffix (6.0.2)
     puma (6.4.3)
       nio4r (~> 2.0)
     racc (1.8.1)
@@ -291,7 +291,7 @@ GEM
     regexp_parser (2.9.2)
     reline (0.6.0)
       io-console (~> 0.5)
-    rexml (3.4.2)
+    rexml (3.4.4)
     rspec (3.13.0)
       rspec-core (~> 3.13.0)
       rspec-expectations (~> 3.13.0)
@@ -379,7 +379,7 @@ GEM
       tzinfo (>= 1.0.0)
     unicode-display_width (2.6.0)
     uri (1.0.3)
-    webmock (3.23.1)
+    webmock (3.26.2)
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
@@ -407,7 +407,7 @@ DEPENDENCIES
   fb-jwt-auth (~> 0.10.0)
   guard-rspec
   guard-shell
-  json-schema (~> 4.1.1)
+  json-schema (~> 4.2.0)
   jwe (~> 1.1.1)
   jwt
   listen
@@ -425,10 +425,10 @@ DEPENDENCIES
   simplecov-console
   typhoeus
   tzinfo-data
-  webmock
+  webmock (>= 3.24.0)
 
 RUBY VERSION
-   ruby 3.2.0p0
+   ruby 3.1.7p261
 
 BUNDLED WITH
-   2.4.6
+   2.3.27
