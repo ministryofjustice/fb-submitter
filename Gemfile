@@ -8,7 +8,7 @@ gem 'daemons'
 gem 'delayed_job_active_record', '~> 4.1.7'
 gem 'faraday', '~> 2.0'
 gem 'fb-jwt-auth', '~> 0.10.0'
-gem 'json-schema', '~> 4.1.1'
+gem 'json-schema', '~> 4.2.0'
 gem 'jwe', '~> 1.1.1'
 gem 'jwt'
 gem 'mime-types'
@@ -41,5 +41,5 @@ group :test do
   gem 'database_cleaner-active_record', '~> 2.1.0'
   gem 'simplecov'
   gem 'simplecov-console', require: false
-  gem 'webmock'
+  gem 'webmock', '>= 3.24.0'
 end
