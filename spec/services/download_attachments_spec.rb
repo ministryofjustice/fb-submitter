@@ -28,10 +28,12 @@ describe DownloadAttachments do
   end
   let(:attachments) do
     [
-      'url' => url,
-      'mimetype' => 'application/pdf',
-      'filename' => 'evidence_one.pdf',
-      'type' => 'filestore'
+      {
+        'url' => url,
+        'mimetype' => 'application/pdf',
+        'filename' => 'evidence_one.pdf',
+        'type' => 'filestore'
+      }
     ]
   end
   let(:target_dir) { '/my/target/dir' }
