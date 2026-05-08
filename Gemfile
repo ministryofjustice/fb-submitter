@@ -6,9 +6,9 @@ gem 'aws-sdk-sesv2', '~> 1.43'
 gem 'bootsnap', '>= 1.1.0', require: false
 gem 'daemons'
 gem 'delayed_job_active_record', '~> 4.1.10'
-gem 'faraday', '~> 2.12.2'
+gem 'faraday', '~> 2.14.1'
 gem 'fb-jwt-auth', '~> 0.10.0'
-gem 'json-schema', '~> 4.2.0'
+gem 'json-schema', '~> 5.0.0'
 gem 'jwe', '~> 1.1.1'
 gem 'jwt'
 gem 'mime-types'
@@ -25,11 +25,11 @@ group :development, :test do
   gem 'brakeman'
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'dotenv-rails', '~> 3.2.0'
-  gem 'factory_bot_rails', '~> 6.4.4'
+  gem 'factory_bot_rails', '~> 6.5.0'
   gem 'listen'
-  gem 'rspec-rails', '~> 7.0.2'
+  gem 'rspec-rails', '~> 8.0.0'
   gem 'rubocop'
-  gem 'rubocop-govuk', '~> 5.0.3'
+  gem 'rubocop-govuk', '~> 5.2.0'
 end
 
 group :development do
@@ -41,5 +41,5 @@ group :test do
   gem 'database_cleaner-active_record', '~> 2.2.0'
   gem 'simplecov'
   gem 'simplecov-console', require: false
-  gem 'webmock'
+  gem 'webmock', '~> 3.24.0'
 end
