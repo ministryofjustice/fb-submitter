@@ -23,7 +23,7 @@ describe Adapters::AmazonSESAdapter do
       {
         to: to_address,
         from: supplied_from_address,
-        raw_message: double(to_s: email_body) # rubocop:disable RSpec/VerifiedDoubles
+        raw_message: double(to_s: email_body)
       }
     end
     let(:expected_payload) do
