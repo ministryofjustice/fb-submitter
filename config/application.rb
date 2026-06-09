@@ -20,8 +20,7 @@ Bundler.require(*Rails.groups)
 
 module FbSubmitter
   class Application < Rails::Application
-    # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 6.1
+    config.load_defaults 8.1
     config.active_support.cache_format_version = 7.0
     config.autoload_paths += [
       Rails.root.join('app/value_objects'),
