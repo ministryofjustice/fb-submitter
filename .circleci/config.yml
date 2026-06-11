@@ -287,7 +287,8 @@ workflows:
           type: approval
           requires:
             - acceptance_tests
-            - deploy_to_test_eks
+            - deploy_to_test_dev
+            - deploy_to_test_production
           filters:
             branches:
               only:
