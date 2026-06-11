@@ -7,7 +7,7 @@ orbs:
 jobs:
   login-to-aws:
     docker: &docker_image
-      - image: 'cimg/ruby:3.3-node'
+      - image: "cimg/ruby:3.3-node"
     steps:
       - checkout
       - aws-cli/setup:
@@ -26,7 +26,7 @@ jobs:
             - bash.env
   build:
     docker: &ruby_image
-      - image: 'cimg/ruby:3.3'
+      - image: "cimg/ruby:3.3"
     steps:
       - checkout
       - ruby/install-deps
@@ -89,12 +89,12 @@ jobs:
             echo "export SSH_FILE_FOR_SECRETS=~/.ssh/id_rsa_f6b5f3b9d67ed45b0557fb62cc124dad" >> $BASH_ENV
       - run: &deploy_scripts
           name: cloning deploy scripts
-          command: 'git clone git@github.com:ministryofjustice/fb-deploy.git deploy-scripts'
+          command: "git clone git@github.com:ministryofjustice/fb-deploy.git deploy-scripts"
       - run:
           name: build and push docker images
           environment:
             ENVIRONMENT_NAME: test
-          command: './deploy-scripts/bin/build'
+          command: "./deploy-scripts/bin/build"
       - slack/status: *slack_status
   build_and_push_worker_image:
     working_directory: ~/circle/git/fb-submitter
@@ -117,7 +117,7 @@ jobs:
           name: build and push docker images
           environment:
             ENVIRONMENT_NAME: test
-          command: './deploy-scripts/bin/build'
+          command: "./deploy-scripts/bin/build"
       - run:
           name: Restore env
           command: |
@@ -142,7 +142,7 @@ jobs:
             PLATFORM_ENV: test
             DEPLOYMENT_ENV: dev
             K8S_NAMESPACE: formbuilder-platform-test-dev
-          command: './deploy-scripts/bin/deploy-eks'
+          command: "./deploy-scripts/bin/deploy-eks"
       - slack/status: *slack_status
   deploy_to_test_production:
     working_directory: ~/circle/git/fb-submitter
@@ -160,7 +160,7 @@ jobs:
             PLATFORM_ENV: test
             DEPLOYMENT_ENV: production
             K8S_NAMESPACE: formbuilder-platform-test-production
-          command: './deploy-scripts/bin/deploy-eks'
+          command: "./deploy-scripts/bin/deploy-eks"
       - slack/status: *slack_status
   deploy_to_live_dev:
     working_directory: ~/circle/git/fb-submitter
@@ -178,7 +178,7 @@ jobs:
             PLATFORM_ENV: live
             DEPLOYMENT_ENV: dev
             K8S_NAMESPACE: formbuilder-platform-live-dev
-          command: './deploy-scripts/bin/deploy-eks'
+          command: "./deploy-scripts/bin/deploy-eks"
       - slack/status:
           only_for_branches: main
           success_message: ":rocket:  Successfully deployed to Live Dev  :guitar:"
@@ -200,7 +200,7 @@ jobs:
             PLATFORM_ENV: live
             DEPLOYMENT_ENV: production
             K8S_NAMESPACE: formbuilder-platform-live-production
-          command: './deploy-scripts/bin/deploy-eks'
+          command: "./deploy-scripts/bin/deploy-eks"
       - slack/status:
           only_for_branches: main
           success_message: ":rocket:  Successfully deployed to Live Production  :guitar:"
@@ -215,7 +215,7 @@ jobs:
       - run: *deploy_scripts
       - run:
           name: Run acceptance tests
-          command: './deploy-scripts/bin/acceptance_tests'
+          command: "./deploy-scripts/bin/acceptance_tests"
       - slack/status: *slack_status
   smoke_tests:
     docker: *ecr_image
@@ -225,7 +225,7 @@ jobs:
       - run: *deploy_scripts
       - run:
           name: Run smoke tests
-          command: './deploy-scripts/bin/smoke_tests'
+          command: "./deploy-scripts/bin/smoke_tests"
       - slack/status: *slack_status
 
 workflows:
@@ -238,16 +238,16 @@ workflows:
             - moj-forms-platform-apps
       - test:
           requires:
-            -  build
+            - build
       - build:
           requires:
-            -  login-to-aws
+            - login-to-aws
       - lint:
           requires:
-            -  build
+            - build
       - security:
           requires:
-            -  build
+            - build
       - build_and_push_image:
           context: *context
           requires:
@@ -257,7 +257,7 @@ workflows:
           filters:
             branches:
               only:
-                - main
+                - testing-secrets-and-add-gate
       - build_and_push_worker_image:
           context: *context
           requires:
@@ -267,7 +267,7 @@ workflows:
           filters:
             branches:
               only:
-                - main
+                - testing-secrets-and-add-gate
       - deploy_to_test_dev:
           context: *context
           requires:
@@ -283,10 +283,20 @@ workflows:
           requires:
             - deploy_to_test_dev
             - deploy_to_test_production
+      - production_deploy_approval:
+          type: approval
+          requires:
+            - acceptance_tests
+            - deploy_to_test_eks
+          filters:
+            branches:
+              only:
+                - main
       - deploy_to_live_dev:
           context: *context
           requires:
             - acceptance_tests
+            - production_deploy_approval
           filters:
             branches:
               only:
@@ -295,6 +305,7 @@ workflows:
           context: *context
           requires:
             - acceptance_tests
+            - production_deploy_approval
           filters:
             branches:
               only:
