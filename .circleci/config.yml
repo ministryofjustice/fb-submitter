@@ -257,7 +257,7 @@ workflows:
           filters:
             branches:
               only:
-                - testing-secrets-and-add-gate
+                - main
       - build_and_push_worker_image:
           context: *context
           requires:
@@ -267,7 +267,7 @@ workflows:
           filters:
             branches:
               only:
-                - testing-secrets-and-add-gate
+                - main
       - deploy_to_test_dev:
           context: *context
           requires:
