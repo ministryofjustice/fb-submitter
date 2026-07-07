@@ -26,12 +26,11 @@ RUN gem install bundler
 RUN bundle config set force_ruby_platform true
 RUN bundle config set deployment true
 RUN bundle config set without 'development'
-ARG BUNDLE_ARGS='--jobs 2'
-RUN bundle install --no-cache ${BUNDLE_ARGS}
+RUN bundle install --no-cache --jobs=2 --retry=3
 
 COPY --chown=appuser:appgroup . .
 
 USER ${UID}
 
 ARG RAILS_ENV=production
-CMD bin/delayed_job run
+CMD ["bin/delayed_job", "run"]

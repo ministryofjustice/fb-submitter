@@ -26,15 +26,14 @@ RUN gem install bundler
 RUN bundle config set force_ruby_platform true
 RUN bundle config set deployment true
 RUN bundle config set without 'development'
-ARG BUNDLE_ARGS='--jobs 2'
-RUN bundle install --no-cache ${BUNDLE_ARGS}
+RUN bundle install --no-cache --jobs=2 --retry=3
 
 COPY --chown=appuser:appgroup . .
 
-ENV APP_PORT 3000
+ENV APP_PORT=3000
 EXPOSE $APP_PORT
 
 USER ${UID}
 
 ARG RAILS_ENV=production
-CMD bundle exec rake db:migrate:ignore_concurrent && bundle exec rails s -e ${RAILS_ENV} -p ${APP_PORT} --binding=0.0.0.0
+CMD ["sh", "-c", "bundle exec rake db:migrate:ignore_concurrent && bundle exec rails s -e ${RAILS_ENV} -p ${APP_PORT} --binding=0.0.0.0"]
