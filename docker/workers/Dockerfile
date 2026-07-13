@@ -26,7 +26,8 @@ RUN gem install bundler
 RUN bundle config set force_ruby_platform true
 RUN bundle config set deployment true
 RUN bundle config set without 'development'
-RUN bundle install --no-cache --jobs=2 --retry=3
+ARG BUNDLE_ARGS='--jobs 2 --retry=3'
+RUN bundle install --no-cache ${BUNDLE_ARGS}
 
 COPY --chown=appuser:appgroup . .
 
