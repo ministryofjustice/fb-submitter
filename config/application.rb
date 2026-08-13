@@ -24,7 +24,8 @@ module FbSubmitter
     config.active_support.cache_format_version = 7.0
     config.autoload_paths += [
       Rails.root.join('app/value_objects'),
-      Rails.root.join('app/controllers/concerns')
+      Rails.root.join('app/controllers/concerns'),
+      Rails.root.join('lib')
     ]
     # Configuration for the application, engines, and railties goes here.
     #
