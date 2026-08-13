@@ -27,7 +27,7 @@ class DownloadAttachments
 
       Rails.logger.info(
         'Download File Details: ' \
-          "file_masked_name=#{::StringUtils.mask(File.basename(filename, '.*'))}, " \
+          "file_masked_name=#{StringUtils.mask(File.basename(filename, '.*'))}, " \
           "file_encrypted_name=#{EncryptionService.new.encrypt(filename)}, " \
           "file_extension=#{File.extname(filename)}, " \
           "file_mimetype=#{mimetype}, " \
