@@ -24,6 +24,16 @@ class DownloadAttachments
       filename = attachment.fetch('filename')
       mimetype = attachment.fetch('mimetype')
       tmp_path = file_path_for_download(url:)
+
+      Rails.logger.info(
+        'Download File Details: ' \
+          "file_masked_name=#{StringUtils.mask(File.basename(filename, '.*'))}, " \
+          "file_encrypted_name=#{EncryptionService.new.encrypt(filename)}, " \
+          "file_extension=#{File.extname(filename)}, " \
+          "file_mimetype=#{mimetype}, " \
+          "file_url=#{url}"
+      )
+
       request(url:, file_path: tmp_path, headers:)
       results << Attachment.new(url:, path: tmp_path, filename:, mimetype:)
     end
