@@ -28,7 +28,6 @@ RSpec.describe EmailOutputService do
   let(:payload_submission_id) { 'an-id-2323' }
 
   let(:email_service_mock) { class_double(EmailService) }
-  let(:raw_message_mock) { class_double(RawMessage) }
   let(:attachment_generator) { AttachmentGenerator.new }
   let(:encryption_service) { EncryptionService.new }
 
