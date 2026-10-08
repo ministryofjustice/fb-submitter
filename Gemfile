@@ -7,7 +7,7 @@ gem 'bootsnap', '>= 1.1.0', require: false
 gem 'csv'
 gem 'daemons'
 gem 'delayed_job_active_record', '~> 4.1.10'
-gem 'faraday', '~> 2.14.1'
+gem 'faraday', '~> 2.14.3'
 gem 'fb-jwt-auth', '~> 0.10.0'
 gem 'json-schema', '~> 5.0.0'
 gem 'jwe', '~> 1.1.1'

@@ -142,7 +142,7 @@ GEM
     factory_bot_rails (6.5.1)
       factory_bot (~> 6.5)
       railties (>= 6.1.0)
-    faraday (2.14.2)
+    faraday (2.14.3)
       faraday-net_http (>= 2.0, < 3.5)
       json
       logger
@@ -185,7 +185,7 @@ GEM
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
     jmespath (1.6.2)
-    json (2.19.8)
+    json (2.21.2)
     json-schema (5.0.1)
       addressable (~> 2.8)
     jwe (1.1.1)
@@ -222,14 +222,15 @@ GEM
       prism (~> 1.5)
     msgpack (1.8.2)
     nenv (0.3.0)
-    net-http (0.9.1)
+    net-http (0.10.0)
+      net-protocol (>= 0.3.0)
       uri (>= 0.11.1)
     net-imap (0.6.6)
       date
       net-protocol
     net-pop (0.1.2)
       net-protocol
-    net-protocol (0.2.2)
+    net-protocol (0.4.0)
       timeout
     net-smtp (0.5.1)
       net-protocol
@@ -405,7 +406,7 @@ GEM
     unicode-display_width (3.2.0)
       unicode-emoji (~> 4.1)
     unicode-emoji (4.2.0)
-    uri (1.1.1)
+    uri (1.1.2)
     useragent (0.16.11)
     webmock (3.24.0)
       addressable (>= 2.8.0)
@@ -431,7 +432,7 @@ DEPENDENCIES
   delayed_job_active_record (~> 4.1.10)
   dotenv-rails (~> 3.2.0)
   factory_bot_rails (~> 6.5.0)
-  faraday (~> 2.14.1)
+  faraday (~> 2.14.3)
   fb-jwt-auth (~> 0.10.0)
   guard-rspec (~> 4.7.3)
   guard-shell (~> 0.7.2)
