@@ -194,7 +194,6 @@ describe DownloadAttachments do
 
   context 'when the network request is unsuccessful' do
     let(:mock_request) { double }
-    let(:bad_response) { instance_double(Faraday::Response, code: 500, return_code: 500) }
 
     context 'when failure' do
       before do
