@@ -28,7 +28,7 @@ group :development, :test do
   gem 'dotenv-rails', '~> 3.2.0'
   gem 'factory_bot_rails', '~> 6.5.0'
   gem 'listen'
-  gem 'rspec-rails', '~> 8.0.0'
+  gem 'rspec-rails', '~> 8.0.5'
   gem 'rubocop'
   gem 'rubocop-govuk', '~> 5.2.0'
 end
