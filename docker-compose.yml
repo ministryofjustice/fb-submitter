@@ -21,7 +21,7 @@ x-shared-variables: &shared-variables
 services:
   submitter-db:
     container_name: submitter-db
-    image: postgres:14.6-alpine
+    image: postgres:15.19-alpine
     restart: always
     environment:
       POSTGRES_PASSWORD: password
