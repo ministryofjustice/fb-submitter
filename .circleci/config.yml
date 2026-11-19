@@ -30,7 +30,7 @@ jobs:
             - bash.env
   build:
     docker: &ruby_image
-      - image: "cimg/ruby:4.0-node"
+      - image: "cimg/ruby:4.0"
     steps:
       - checkout
       - ruby/install-deps
