@@ -1,4 +1,4 @@
-FROM ruby:3.4.9-alpine
+FROM ruby:4.0.9-alpine
 
 ARG UID=1001
 
@@ -21,7 +21,7 @@ RUN chown appuser:appgroup ./rds-ca-bundle-root.crt
 
 COPY --chown=appuser:appgroup Gemfile Gemfile.lock .ruby-version ./
 
-RUN gem install bundler
+RUN gem install bundler -v 4.0.24
 
 RUN bundle config set force_ruby_platform true
 RUN bundle config set deployment true
